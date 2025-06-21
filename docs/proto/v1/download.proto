@@ -43,7 +43,6 @@ message SetToQueueRequest{
     optional int32 maxQuality = 2;
 }
 
-
 message SetToQueueResponse{
     repeated LinkRequest linksInWork = 1;
 }
