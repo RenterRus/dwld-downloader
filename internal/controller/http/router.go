@@ -19,7 +19,7 @@ func NewHttpServer(s *Server) error {
 			w.Write([]byte(fmt.Sprintf("Available at %s", time.Now().Format(time.DateTime))))
 		})
 
-		fmt.Printf("HTTP starting in %s:%d (/health)", s.Host, s.Port)
+		fmt.Printf("\nHTTP starting in %s:%d (/health)\n", s.Host, s.Port)
 
 		if err := http.ListenAndServe(fmt.Sprintf("%s:%d", s.Host, s.Port), nil); err != nil {
 			return fmt.Errorf("http server is stopped: %w", err)
