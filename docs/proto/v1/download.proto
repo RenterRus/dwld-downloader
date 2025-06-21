@@ -1,5 +1,8 @@
 syntax = "proto3";
 
+// Импорт пустого типа
+import "google/protobuf/empty.proto";
+
 // Имя пакета
 package grpc.v1;
 
@@ -7,15 +10,55 @@ package grpc.v1;
 option go_package = "docs/proto/v1";
 
 service Downloader {
-    rpc Download (DownloadRequest) returns (DownloadResponse) {}
+    rpc SetToQueue (SetToQueueRequest) returns (SetToQueueResponse) {}
+    rpc DeleteFromQueue(DeleteFromQueueRequest) returns (DeleteFromQueueResponse) {}
+    rpc CleanHistory(google.protobuf.Empty) returns (CleanHistoryResponse) {}
+    rpc WorkQueue (google.protobuf.Empty) returns (WorkQueueResponse) {}
+    rpc History (google.protobuf.Empty) returns (HistoryResponse) {}
 }
 
 
-message DownloadRequest{
+message HistoryResponse{
+    repeated LinkRequest history = 1;
+}
 
+message WorkQueueResponse{
+    repeated LinkRequest linksInWork = 1;
+}
+
+message CleanHistoryResponse{
+    repeated LinkRequest history = 1;
+}
+
+message DeleteFromQueueRequest{
+    string link = 1;
+}
+
+message DeleteFromQueueResponse{
+    repeated LinkRequest linksInWork = 1;
+}
+
+message SetToQueueRequest{
+    string link = 1;
+    optional int32 maxQuality = 2;
 }
 
 
-message DownloadResponse{
+message SetToQueueResponse{
+    repeated LinkRequest linksInWork = 1;
+}
 
+message LinkRequest {
+    string link = 1;
+    string status = 3;
+  
+    optional string name = 2;
+    optional Stage stage = 4;
+
+}
+
+message Stage{
+    string configure = 1;
+    string progress = 2;
+    string message = 3;
 }
