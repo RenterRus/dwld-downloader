@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// Имя пакета
+package grpc.v1;
+
+// Опция расположения генерашки
+option go_package = "docs/proto/v1";
+
+service Downloader {
+    rpc Download (DownloadRequest) returns (DownloadResponse) {}
+}
+
+
+message DownloadRequest{
+
+}
+
+
+message DownloadResponse{
+
+}
