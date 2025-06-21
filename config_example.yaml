@@ -1,0 +1,27 @@
+grpc:
+    host: "127.0.0.1"
+    port: 8888
+    enable: true
+
+http:
+    host: "127.0.0.1"
+    port: 8899
+    enable: true
+
+ftp:
+    addr:
+        host: "127.0.0.1"
+        port: 8999
+        enable: true
+    user: "user"
+    pass: "pass"
+    remotedirectory: "/raid/video"
+
+pathtodb: "./db/links.db"
+
+cache:
+    host: "127.0.0.1"
+    port: 9999
+    enable: true
+
+eagermode: true

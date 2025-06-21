@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "dwld-downloader/internal/app"
 
+func main() {
+	app.NewApp()
 }
