@@ -6,8 +6,15 @@ import (
 	"sync"
 )
 
-func NewApp() error {
-	conf, err := ReadConfig(".", "config_example")
+func NewApp(configPath string) error {
+	lastSlash := 0
+	for i, v := range configPath {
+		if v == '/' {
+			lastSlash = i
+		}
+	}
+
+	conf, err := ReadConfig(configPath[:lastSlash], configPath[lastSlash+1:])
 	if err != nil {
 		return fmt.Errorf("ReadConfig: %w", err)
 	}

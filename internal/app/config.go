@@ -3,30 +3,31 @@ package app
 import (
 	"fmt"
 
+	validator "github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
 )
 
 type Server struct {
-	Host   string
-	Port   int
-	Enable bool
+	Host   string `validate:"required"`
+	Port   int    `validate:"required"`
+	Enable bool   `validate:"required"`
 }
 
 type FTPClient struct {
-	Addr            Server
-	User            string
-	Pass            string
-	RemoteDirectory string
+	Addr            Server `validate:"required"`
+	User            string `validate:"required"`
+	Pass            string `validate:"required"`
+	RemoteDirectory string `validate:"required"`
 }
 
 type Config struct {
-	GRPC Server
-	HTTP Server
-	FTP  FTPClient
+	GRPC Server    `validate:"required"`
+	HTTP Server    `validate:"required"`
+	FTP  FTPClient `validate:"required"`
 
-	PathToDB string
-	Cache    Server
+	PathToDB string `validate:"required"`
+	Cache    Server `validate:"required"`
 
 	EagerMode bool
 }
@@ -52,5 +53,18 @@ func ReadConfig(path string, fileName string) (*Config, error) {
 		return nil, fmt.Errorf("ReadConfig (Unmarshal): %w", err)
 	}
 
+	if err := valid(res); err != nil {
+		return nil, fmt.Errorf("ReadConfig (Validate): %w", err)
+	}
+
 	return res, nil
+}
+
+func valid(conf *Config) error {
+	v := validator.New(validator.WithRequiredStructEnabled())
+	if err := v.Struct(conf); err != nil {
+		return fmt.Errorf("validation faild: %w", err)
+	}
+
+	return nil
 }
