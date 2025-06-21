@@ -8,3 +8,6 @@ proto-v1: ### generate source files from proto
 		--go-grpc_opt=paths=source_relative \
 		docs/proto/v1/*.proto
 .PHONY: proto-v1
+
+update:
+	@git pull && make build
