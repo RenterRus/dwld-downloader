@@ -27,7 +27,9 @@ type Config struct {
 	FTP  FTPClient `validate:"required"`
 
 	PathToDB string `validate:"required"`
-	Cache    Server `validate:"required"`
+	WorkPath string `validate:"required"`
+
+	Cache Server `validate:"required"`
 
 	EagerMode bool
 }

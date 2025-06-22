@@ -18,6 +18,7 @@ ftp:
     remotedirectory: "/raid/video"
 
 pathtodb: "./db/links.db"
+workPath: "/home/user"
 
 cache:
     host: "127.0.0.1"
