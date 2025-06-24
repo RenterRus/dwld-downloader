@@ -30,8 +30,6 @@ type Config struct {
 	WorkPath string `validate:"required"`
 
 	Cache Server `validate:"required"`
-
-	EagerMode bool
 }
 
 func ReadConfig(path string, fileName string) (*Config, error) {

@@ -24,5 +24,3 @@ cache:
     host: "127.0.0.1"
     port: 9999
     enable: true
-
-eagermode: true
