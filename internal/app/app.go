@@ -5,6 +5,7 @@ import (
 	"dwld-downloader/internal/controller/http"
 	"dwld-downloader/internal/usecase/download"
 	"dwld-downloader/pkg/grpcserver"
+	"dwld-downloader/pkg/httpserver"
 	"fmt"
 	"log"
 	"os"
@@ -14,7 +15,6 @@ import (
 )
 
 func NewApp(configPath string) error {
-	l := log.Logger{}
 	lastSlash := 0
 	for i, v := range configPath {
 		if v == '/' {
@@ -28,18 +28,19 @@ func NewApp(configPath string) error {
 	}
 
 	go func() {
-		http.NewHttpServer(&http.Server{
+		httpserver.NewHttpServer(&httpserver.Server{
 			Host:   conf.HTTP.Host,
 			Port:   conf.HTTP.Port,
 			Enable: conf.HTTP.Enable,
+			Mux:    http.NewRoute(),
 		})
 	}()
 
 	downloadUsecases := download.NewDownload()
+
 	// gRPC Server
 	grpcServer := grpcserver.New(grpcserver.Port(strconv.Itoa(conf.GRPC.Port)))
-	grpc.NewRouter(grpcServer.App, downloadUsecases, l)
-
+	grpc.NewRouter(grpcServer.App, downloadUsecases)
 	grpcServer.Start()
 
 	// Waiting signal
@@ -48,14 +49,14 @@ func NewApp(configPath string) error {
 
 	select {
 	case s := <-interrupt:
-		l.Printf("app - Run - signal: %s\n", s.String())
+		log.Printf("app - Run - signal: %s\n", s.String())
 	case err = <-grpcServer.Notify():
-		l.Fatal(fmt.Errorf("app - Run - grpcServer.Notify: %w", err))
+		log.Fatal(fmt.Errorf("app - Run - grpcServer.Notify: %w", err))
 	}
 
 	err = grpcServer.Shutdown()
 	if err != nil {
-		l.Fatal(fmt.Errorf("app - Run - grpcServer.Shutdown: %w", err))
+		log.Fatal(fmt.Errorf("app - Run - grpcServer.Shutdown: %w", err))
 	}
 
 	return nil

@@ -4,15 +4,13 @@ import (
 	v1 "dwld-downloader/docs/proto/v1"
 
 	"dwld-downloader/internal/usecase"
-	"log"
 
 	pbgrpc "google.golang.org/grpc"
 )
 
-func NewDownloadRoutes(app *pbgrpc.Server, usecases usecase.Downloader, l log.Logger) {
+func NewDownloadRoutes(app *pbgrpc.Server, usecases usecase.Downloader) {
 	r := &V1{
 		u: usecases,
-		l: l,
 	}
 
 	v1.RegisterDownloaderServer(app, r)
