@@ -11,3 +11,9 @@ proto-v1: ### generate source files from proto
 
 update:
 	@git pull && make build
+
+install goose:
+	@go get -u github.com/pressly/goose/v3/cmd/goose@latest
+
+create migration:
+	@go run github.com/pressly/goose/v3/cmd/goose@latest create create_links sql -dir migration

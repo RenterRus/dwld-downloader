@@ -1,7 +1,7 @@
 package v1
 
 import (
-	v1 "dwld-downloader/docs/proto/v1"
+	proto "dwld-downloader/docs/proto/v1"
 
 	"dwld-downloader/internal/usecase"
 
@@ -13,5 +13,5 @@ func NewDownloadRoutes(app *pbgrpc.Server, usecases usecase.Downloader) {
 		u: usecases,
 	}
 
-	v1.RegisterDownloaderServer(app, r)
+	proto.RegisterDownloaderServer(app, r)
 }

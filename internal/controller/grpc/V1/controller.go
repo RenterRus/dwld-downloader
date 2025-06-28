@@ -1,12 +1,12 @@
 package v1
 
 import (
-	v1 "dwld-downloader/docs/proto/v1"
+	proto "dwld-downloader/docs/proto/v1"
 	"dwld-downloader/internal/usecase"
 )
 
 type V1 struct {
-	v1.DownloaderServer
+	proto.DownloaderServer
 
 	u usecase.Downloader
 }
