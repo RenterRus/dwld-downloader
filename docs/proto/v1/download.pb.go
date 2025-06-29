@@ -26,7 +26,7 @@ const (
 
 type HistoryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	History       []*LinkRequest         `protobuf:"bytes,1,rep,name=history,proto3" json:"history,omitempty"`
+	History       []*Task                `protobuf:"bytes,1,rep,name=history,proto3" json:"history,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,7 +61,7 @@ func (*HistoryResponse) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *HistoryResponse) GetHistory() []*LinkRequest {
+func (x *HistoryResponse) GetHistory() []*Task {
 	if x != nil {
 		return x.History
 	}
@@ -70,7 +70,7 @@ func (x *HistoryResponse) GetHistory() []*LinkRequest {
 
 type WorkQueueResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	LinksInWork   []*LinkRequest         `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
+	LinksInWork   []*Task                `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -105,7 +105,7 @@ func (*WorkQueueResponse) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *WorkQueueResponse) GetLinksInWork() []*LinkRequest {
+func (x *WorkQueueResponse) GetLinksInWork() []*Task {
 	if x != nil {
 		return x.LinksInWork
 	}
@@ -114,7 +114,7 @@ func (x *WorkQueueResponse) GetLinksInWork() []*LinkRequest {
 
 type CleanHistoryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	History       []*LinkRequest         `protobuf:"bytes,1,rep,name=history,proto3" json:"history,omitempty"`
+	History       []*Task                `protobuf:"bytes,1,rep,name=history,proto3" json:"history,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -149,7 +149,7 @@ func (*CleanHistoryResponse) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CleanHistoryResponse) GetHistory() []*LinkRequest {
+func (x *CleanHistoryResponse) GetHistory() []*Task {
 	if x != nil {
 		return x.History
 	}
@@ -202,7 +202,7 @@ func (x *DeleteFromQueueRequest) GetLink() string {
 
 type DeleteFromQueueResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	LinksInWork   []*LinkRequest         `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
+	LinksInWork   []*Task                `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -237,7 +237,7 @@ func (*DeleteFromQueueResponse) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *DeleteFromQueueResponse) GetLinksInWork() []*LinkRequest {
+func (x *DeleteFromQueueResponse) GetLinksInWork() []*Task {
 	if x != nil {
 		return x.LinksInWork
 	}
@@ -298,7 +298,7 @@ func (x *SetToQueueRequest) GetMaxQuality() int32 {
 
 type SetToQueueResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	LinksInWork   []*LinkRequest         `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
+	LinksInWork   []*Task                `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -333,14 +333,14 @@ func (*SetToQueueResponse) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *SetToQueueResponse) GetLinksInWork() []*LinkRequest {
+func (x *SetToQueueResponse) GetLinksInWork() []*Task {
 	if x != nil {
 		return x.LinksInWork
 	}
 	return nil
 }
 
-type LinkRequest struct {
+type Task struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Link          string                 `protobuf:"bytes,1,opt,name=link,proto3" json:"link,omitempty"`
 	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
@@ -350,20 +350,20 @@ type LinkRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LinkRequest) Reset() {
-	*x = LinkRequest{}
+func (x *Task) Reset() {
+	*x = Task{}
 	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LinkRequest) String() string {
+func (x *Task) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LinkRequest) ProtoMessage() {}
+func (*Task) ProtoMessage() {}
 
-func (x *LinkRequest) ProtoReflect() protoreflect.Message {
+func (x *Task) ProtoReflect() protoreflect.Message {
 	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -375,33 +375,33 @@ func (x *LinkRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LinkRequest.ProtoReflect.Descriptor instead.
-func (*LinkRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use Task.ProtoReflect.Descriptor instead.
+func (*Task) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *LinkRequest) GetLink() string {
+func (x *Task) GetLink() string {
 	if x != nil {
 		return x.Link
 	}
 	return ""
 }
 
-func (x *LinkRequest) GetStatus() string {
+func (x *Task) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
 	return ""
 }
 
-func (x *LinkRequest) GetName() string {
+func (x *Task) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
 	}
 	return ""
 }
 
-func (x *LinkRequest) GetStage() *Stage {
+func (x *Task) GetStage() *Stage {
 	if x != nil {
 		return x.Stage
 	}
@@ -472,26 +472,26 @@ var File_docs_proto_v1_download_proto protoreflect.FileDescriptor
 
 const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\n" +
-	"\x1cdocs/proto/v1/download.proto\x12\agrpc.v1\x1a\x1bgoogle/protobuf/empty.proto\"A\n" +
-	"\x0fHistoryResponse\x12.\n" +
-	"\ahistory\x18\x01 \x03(\v2\x14.grpc.v1.LinkRequestR\ahistory\"K\n" +
-	"\x11WorkQueueResponse\x126\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\x14.grpc.v1.LinkRequestR\vlinksInWork\"F\n" +
-	"\x14CleanHistoryResponse\x12.\n" +
-	"\ahistory\x18\x01 \x03(\v2\x14.grpc.v1.LinkRequestR\ahistory\",\n" +
+	"\x1cdocs/proto/v1/download.proto\x12\agrpc.v1\x1a\x1bgoogle/protobuf/empty.proto\":\n" +
+	"\x0fHistoryResponse\x12'\n" +
+	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\"D\n" +
+	"\x11WorkQueueResponse\x12/\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"?\n" +
+	"\x14CleanHistoryResponse\x12'\n" +
+	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\",\n" +
 	"\x16DeleteFromQueueRequest\x12\x12\n" +
-	"\x04link\x18\x01 \x01(\tR\x04link\"Q\n" +
-	"\x17DeleteFromQueueResponse\x126\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\x14.grpc.v1.LinkRequestR\vlinksInWork\"[\n" +
+	"\x04link\x18\x01 \x01(\tR\x04link\"J\n" +
+	"\x17DeleteFromQueueResponse\x12/\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"[\n" +
 	"\x11SetToQueueRequest\x12\x12\n" +
 	"\x04link\x18\x01 \x01(\tR\x04link\x12#\n" +
 	"\n" +
 	"maxQuality\x18\x02 \x01(\x05H\x00R\n" +
 	"maxQuality\x88\x01\x01B\r\n" +
-	"\v_maxQuality\"L\n" +
-	"\x12SetToQueueResponse\x126\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\x14.grpc.v1.LinkRequestR\vlinksInWork\"\x90\x01\n" +
-	"\vLinkRequest\x12\x12\n" +
+	"\v_maxQuality\"E\n" +
+	"\x12SetToQueueResponse\x12/\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"\x89\x01\n" +
+	"\x04Task\x12\x12\n" +
 	"\x04link\x18\x01 \x01(\tR\x04link\x12\x16\n" +
 	"\x06status\x18\x03 \x01(\tR\x06status\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12)\n" +
@@ -532,17 +532,17 @@ var file_docs_proto_v1_download_proto_goTypes = []any{
 	(*DeleteFromQueueResponse)(nil), // 4: grpc.v1.DeleteFromQueueResponse
 	(*SetToQueueRequest)(nil),       // 5: grpc.v1.SetToQueueRequest
 	(*SetToQueueResponse)(nil),      // 6: grpc.v1.SetToQueueResponse
-	(*LinkRequest)(nil),             // 7: grpc.v1.LinkRequest
+	(*Task)(nil),                    // 7: grpc.v1.Task
 	(*Stage)(nil),                   // 8: grpc.v1.Stage
 	(*emptypb.Empty)(nil),           // 9: google.protobuf.Empty
 }
 var file_docs_proto_v1_download_proto_depIdxs = []int32{
-	7,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.LinkRequest
-	7,  // 1: grpc.v1.WorkQueueResponse.linksInWork:type_name -> grpc.v1.LinkRequest
-	7,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.LinkRequest
-	7,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.LinkRequest
-	7,  // 4: grpc.v1.SetToQueueResponse.linksInWork:type_name -> grpc.v1.LinkRequest
-	8,  // 5: grpc.v1.LinkRequest.stage:type_name -> grpc.v1.Stage
+	7,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.Task
+	7,  // 1: grpc.v1.WorkQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	7,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.Task
+	7,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	7,  // 4: grpc.v1.SetToQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	8,  // 5: grpc.v1.Task.stage:type_name -> grpc.v1.Stage
 	5,  // 6: grpc.v1.Downloader.SetToQueue:input_type -> grpc.v1.SetToQueueRequest
 	3,  // 7: grpc.v1.Downloader.DeleteFromQueue:input_type -> grpc.v1.DeleteFromQueueRequest
 	9,  // 8: grpc.v1.Downloader.CleanHistory:input_type -> google.protobuf.Empty

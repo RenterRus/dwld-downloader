@@ -19,15 +19,15 @@ service Downloader {
 
 
 message HistoryResponse{
-    repeated LinkRequest history = 1;
+    repeated Task history = 1;
 }
 
 message WorkQueueResponse{
-    repeated LinkRequest linksInWork = 1;
+    repeated Task linksInWork = 1;
 }
 
 message CleanHistoryResponse{
-    repeated LinkRequest history = 1;
+    repeated Task history = 1;
 }
 
 message DeleteFromQueueRequest{
@@ -35,7 +35,7 @@ message DeleteFromQueueRequest{
 }
 
 message DeleteFromQueueResponse{
-    repeated LinkRequest linksInWork = 1;
+    repeated Task linksInWork = 1;
 }
 
 message SetToQueueRequest{
@@ -44,10 +44,10 @@ message SetToQueueRequest{
 }
 
 message SetToQueueResponse{
-    repeated LinkRequest linksInWork = 1;
+    repeated Task linksInWork = 1;
 }
 
-message LinkRequest {
+message Task {
     string link = 1;
     string status = 3;
   

@@ -17,3 +17,23 @@ func NewDownload(dbRepo *persistent.SQLRepo, cache *temporary.Cache) usecase.Dow
 		cacheRepo: cache,
 	}
 }
+
+func (d *downlaoder) SetToQueue(link string, maxQuantity int32) ([]usecase.Task, error) {
+	return nil, nil
+}
+
+func (d *downlaoder) DeleteFromQueue(link string) ([]usecase.Task, error) {
+	return nil, nil
+}
+
+func (d *downlaoder) CleanHistory() ([]usecase.Task, error) {
+	return nil, nil
+}
+
+func (d *downlaoder) WorkQueue() ([]usecase.Task, error) {
+	return nil, nil
+}
+
+func (d *downlaoder) History() ([]usecase.Task, error) {
+	return nil, nil
+}
