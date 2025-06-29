@@ -343,9 +343,10 @@ func (x *SetToQueueResponse) GetLinksInWork() []*Task {
 type Task struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Link          string                 `protobuf:"bytes,1,opt,name=link,proto3" json:"link,omitempty"`
-	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Stage         *Stage                 `protobuf:"bytes,4,opt,name=stage,proto3,oneof" json:"stage,omitempty"`
+	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	MaxQuantity   string                 `protobuf:"bytes,3,opt,name=maxQuantity,proto3" json:"maxQuantity,omitempty"`
+	Name          *string                `protobuf:"bytes,4,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Stage         *Stage                 `protobuf:"bytes,5,opt,name=stage,proto3,oneof" json:"stage,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -390,6 +391,13 @@ func (x *Task) GetLink() string {
 func (x *Task) GetStatus() string {
 	if x != nil {
 		return x.Status
+	}
+	return ""
+}
+
+func (x *Task) GetMaxQuantity() string {
+	if x != nil {
+		return x.MaxQuantity
 	}
 	return ""
 }
@@ -490,12 +498,13 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"maxQuality\x88\x01\x01B\r\n" +
 	"\v_maxQuality\"E\n" +
 	"\x12SetToQueueResponse\x12/\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"\x89\x01\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"\xab\x01\n" +
 	"\x04Task\x12\x12\n" +
 	"\x04link\x18\x01 \x01(\tR\x04link\x12\x16\n" +
-	"\x06status\x18\x03 \x01(\tR\x06status\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12)\n" +
-	"\x05stage\x18\x04 \x01(\v2\x0e.grpc.v1.StageH\x01R\x05stage\x88\x01\x01B\a\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\x12 \n" +
+	"\vmaxQuantity\x18\x03 \x01(\tR\vmaxQuantity\x12\x17\n" +
+	"\x04name\x18\x04 \x01(\tH\x00R\x04name\x88\x01\x01\x12)\n" +
+	"\x05stage\x18\x05 \x01(\v2\x0e.grpc.v1.StageH\x01R\x05stage\x88\x01\x01B\a\n" +
 	"\x05_nameB\b\n" +
 	"\x06_stage\"[\n" +
 	"\x05Stage\x12\x1c\n" +

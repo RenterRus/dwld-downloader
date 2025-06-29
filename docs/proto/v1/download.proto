@@ -49,10 +49,10 @@ message SetToQueueResponse{
 
 message Task {
     string link = 1;
-    string status = 3;
-  
-    optional string name = 2;
-    optional Stage stage = 4;
+    string status = 2;
+    string maxQuantity = 3;
+    optional string name = 4;
+    optional Stage stage = 5;
 
 }
 
