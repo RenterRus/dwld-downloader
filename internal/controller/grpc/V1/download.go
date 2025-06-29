@@ -10,6 +10,7 @@ import (
 
 func (v *V1) SetToQueue(ctx context.Context, in *proto.SetToQueueRequest) (*proto.SetToQueueResponse, error) {
 	fmt.Println("SetToQueue")
+
 	return nil, nil
 }
 

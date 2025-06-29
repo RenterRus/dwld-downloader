@@ -4,7 +4,9 @@ import (
 	"dwld-downloader/internal/controller/grpc"
 	"dwld-downloader/internal/controller/http"
 	"dwld-downloader/internal/repo/persistent"
+	"dwld-downloader/internal/repo/temporary"
 	"dwld-downloader/internal/usecase/download"
+	"dwld-downloader/pkg/cache"
 	"dwld-downloader/pkg/grpcserver"
 	"dwld-downloader/pkg/httpserver"
 	"dwld-downloader/pkg/sqldb"
@@ -14,6 +16,8 @@ import (
 	"os/signal"
 	"strconv"
 	"syscall"
+
+	"github.com/AlekSi/pointer"
 )
 
 func NewApp(configPath string) error {
@@ -38,8 +42,10 @@ func NewApp(configPath string) error {
 		})
 	}()
 
+	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
 	downloadUsecases := download.NewDownload(
-		persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB)),
+		pointer.To(persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB))),
+		temporary.NewMemCache(cc),
 	)
 
 	// gRPC Server
@@ -58,6 +64,7 @@ func NewApp(configPath string) error {
 		log.Fatal(fmt.Errorf("app - Run - grpcServer.Notify: %w", err))
 	}
 
+	cc.Close()
 	err = grpcServer.Shutdown()
 	if err != nil {
 		log.Fatal(fmt.Errorf("app - Run - grpcServer.Shutdown: %w", err))
