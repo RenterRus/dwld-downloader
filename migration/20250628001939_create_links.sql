@@ -7,7 +7,7 @@ path text,
 work_status text,
 stage_config text,
 retry int,
-error text
+message text
 );
 -- +goose StatementEnd
 

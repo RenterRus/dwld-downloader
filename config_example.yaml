@@ -17,7 +17,8 @@ ftp:
     pass: "pass"
     remotedirectory: "/raid/video"
 
-pathtodb: "./db/links.db"
+pathtodb: "./db"
+namedb: "links.db"
 workPath: "/home/user"
 
 cache:

@@ -27,6 +27,7 @@ type Config struct {
 	FTP  FTPClient `validate:"required"`
 
 	PathToDB string `validate:"required"`
+	NameDB   string `validate:"required"`
 	WorkPath string `validate:"required"`
 
 	Cache Server `validate:"required"`

@@ -3,9 +3,11 @@ package app
 import (
 	"dwld-downloader/internal/controller/grpc"
 	"dwld-downloader/internal/controller/http"
+	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/usecase/download"
 	"dwld-downloader/pkg/grpcserver"
 	"dwld-downloader/pkg/httpserver"
+	"dwld-downloader/pkg/sqldb"
 	"fmt"
 	"log"
 	"os"
@@ -36,7 +38,9 @@ func NewApp(configPath string) error {
 		})
 	}()
 
-	downloadUsecases := download.NewDownload()
+	downloadUsecases := download.NewDownload(
+		persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB)),
+	)
 
 	// gRPC Server
 	grpcServer := grpcserver.New(grpcserver.Port(strconv.Itoa(conf.GRPC.Port)))
