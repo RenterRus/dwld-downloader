@@ -12,8 +12,16 @@ proto-v1: ### generate source files from proto
 update:
 	@git pull && make build
 
-install goose:
+install prereq mac brew:
+	@/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	@brew install go
 	@go get -u github.com/pressly/goose/v3/cmd/goose@latest
+	@brew install memcached
+	@brew install sqlite3
+	@go get google.golang.org/grpc
+	@brew install grpc
+	@brew install protoc-gen-go
+	@brew install protoc-gen-go-grpc
 
 create migration:
 	@go run github.com/pressly/goose/v3/cmd/goose@latest create create_links sql -dir migration
