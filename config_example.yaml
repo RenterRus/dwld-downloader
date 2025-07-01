@@ -17,6 +17,126 @@ ftp:
     pass: "pass"
     remotedirectory: "/raid/video"
 
+# RU
+#downloader:
+#    threads: 2
+#    percentToNext: 71
+#    stages:
+#        - positions: 1
+#          attemptBeforeNext: 10
+#          isCookie: false
+#          isEmbededCharters: true
+#          isMarkWatched: false
+#          extractors: ""
+#        - positions: 2
+#          attemptBeforeNext: 20
+#          isCookie: false
+#          isEmbededCharters: false
+#          isMarkWatched: false
+#          extractors: ""
+
+#YT
+downloader:
+    threads: 2
+    percentToNext: 97
+    stages:
+        - positions: 1
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: true
+          isMarkWatched: true
+          extractors: ""
+        - positions: 2
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: true
+          isMarkWatched: true
+          extractors: "youtube:player-client=tv_embedded"
+        - positions: 3
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: true
+          isMarkWatched: true
+          extractors: "youtube:player_client=default,ios"
+        - positions: 4
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: true
+          isMarkWatched: true
+          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
+        - positions: 5
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: ""
+        - positions: 6
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:player-client=tv_embedded"
+        - positions: 7
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:player_client=default,ios"
+        - positions: 8
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
+        - positions: 9
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: ""
+        - positions: 10
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:player-client=tv_embedded"
+        - positions: 11
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:player_client=default,ios"
+        - positions: 12
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
+        - positions: 13
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: true
+          isMarkWatched: true
+          extractors: "youtube:formats=missing_pot"
+        - positions: 14
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: true
+          isMarkWatched: false
+          extractors: "youtube:formats=missing_pot"
+        - positions: 15
+          attemptBeforeNext: 20
+          isCookie: true
+          isEmbededCharters: false
+          isMarkWatched: true
+          extractors: "youtube:formats=missing_pot"
+        - positions: 16
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: false
+          isMarkWatched: false
+          extractors: "youtube:formats=missing_pot"
+
 pathtodb: "./db"
 namedb: "links.db"
 workPath: "/home/user"

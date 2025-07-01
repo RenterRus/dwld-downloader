@@ -21,6 +21,21 @@ type FTPClient struct {
 	RemoteDirectory string `validate:"required"`
 }
 
+type Stage struct {
+	Positions         int    `validate:"required"`
+	AttemptBeforeNext int    `validate:"required"`
+	Threads           int    `validate:"required"`
+	IsCookie          bool   `validate:"required"`
+	IsEmbededCharters bool   `validate:"required"`
+	IsMarkWatched     bool   `validate:"required"`
+	Extractors        string `validate:"required"`
+}
+type DownloadConfig struct {
+	Threads       int     `validate:"required"`
+	PercentToNext int     `validate:"required"`
+	Stages        []Stage `validate:"required"`
+}
+
 type Config struct {
 	GRPC Server    `validate:"required"`
 	HTTP Server    `validate:"required"`
@@ -31,6 +46,8 @@ type Config struct {
 	WorkPath string `validate:"required"`
 
 	Cache Server `validate:"required"`
+
+	Downloader DownloadConfig `validate:"required"`
 }
 
 func ReadConfig(path string, fileName string) (*Config, error) {

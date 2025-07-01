@@ -28,6 +28,7 @@ ROADMAP:
 
 <br>
 
+[-] Реализовать usecases <br>
 [-] Реализовать CRUD в sqlite <br>
 [-] Реализовать CRUD в memcahed <br>
 [-] Реализовать стейджовый скачивальщик <br>
