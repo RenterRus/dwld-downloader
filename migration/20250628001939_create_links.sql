@@ -3,10 +3,11 @@
 create table if not exists links (
 link text unique,
 filename text,
+target_quantity integer,
 path text,
 work_status text,
 stage_config text,
-retry int,
+retry integer,
 message text
 );
 -- +goose StatementEnd

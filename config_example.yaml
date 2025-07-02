@@ -39,6 +39,7 @@ ftp:
 downloader:
     threads: 2
     percentToNext: 97
+    workPath: "/home/user"
     stages:
         - positions: 1
           attemptBeforeNext: 20
@@ -137,9 +138,9 @@ downloader:
           isMarkWatched: false
           extractors: "youtube:formats=missing_pot"
 
-pathtodb: "./db"
+pathtodb: "/Users/arturdavydov/Downloads/dwld-downloader"
 namedb: "links.db"
-workPath: "/home/user"
+
 
 cache:
     host: "127.0.0.1"

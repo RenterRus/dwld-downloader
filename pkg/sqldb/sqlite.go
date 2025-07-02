@@ -3,6 +3,8 @@ package sqldb
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type DB struct {
@@ -18,10 +20,27 @@ func NewDB(pathToDB, dbName string) *DB {
 	}
 }
 
-func (d *DB) Query(query string) (*sql.Rows, error) {
+func (d *DB) Select(query string, args ...any) (*sql.Rows, error) {
 	d.connect()
-	defer d.close()
-	res, err := d.conn.Query(query)
+	defer func() {
+		d.close()
+	}()
+
+	res, err := d.conn.Query(query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("query: %w", err)
+	}
+
+	return res, nil
+}
+
+func (d *DB) Exec(query string, args ...any) (sql.Result, error) {
+	d.connect()
+	defer func() {
+		d.close()
+	}()
+
+	res, err := d.conn.Exec(query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("query: %w", err)
 	}
@@ -33,7 +52,6 @@ func (d *DB) connect() (bool, error) {
 	var err error
 	d.conn, err = sql.Open("sqlite3", d.pathToDB+"/"+d.dbName)
 	if err != nil {
-		fmt.Println(err)
 		return false, fmt.Errorf("db connect(open): %w", err)
 	}
 

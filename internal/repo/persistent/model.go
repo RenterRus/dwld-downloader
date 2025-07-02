@@ -1,11 +1,20 @@
 package persistent
 
 type LinkModel struct {
-	link, filename, path, text, stage_config, message string
-	retry                                             int
+	Link           string  `sql:"link"`
+	Filename       *string `sql:"filename"`
+	Path           string  `sql:"path"`
+	WorkStatus     string  `sql:"work_status"`
+	StageConfig    *string `sql:"stage_config"`
+	Message        *string `sql:"message"`
+	Retry          *int    `sql:"retry"`
+	TargetQuantity int     `sql:"target_quantity"`
 }
 
 type SQLRepo interface {
-	Select(q string) ([]LinkModel, error)
-	Upsert(LinkModel) ([]LinkModel, error)
+	SelectHistory() ([]LinkModel, error)
+	Insert(link string, maxQuality int) ([]LinkModel, error)
+	Update(data LinkModel) ([]LinkModel, error)
+	Delete(link string) ([]LinkModel, error)
+	DeleteHistory() ([]LinkModel, error)
 }

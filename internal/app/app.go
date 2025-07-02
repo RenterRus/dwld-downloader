@@ -16,8 +16,6 @@ import (
 	"os/signal"
 	"strconv"
 	"syscall"
-
-	"github.com/AlekSi/pointer"
 )
 
 func NewApp(configPath string) error {
@@ -44,7 +42,7 @@ func NewApp(configPath string) error {
 
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
 	downloadUsecases := download.NewDownload(
-		pointer.To(persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB))),
+		persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB), conf.Downloader.WorkPath),
 		temporary.NewMemCache(cc),
 	)
 

@@ -7,11 +7,11 @@ import (
 )
 
 type downlaoder struct {
-	dbRepo    *persistent.SQLRepo
+	dbRepo    persistent.SQLRepo
 	cacheRepo *temporary.Cache
 }
 
-func NewDownload(dbRepo *persistent.SQLRepo, cache *temporary.Cache) usecase.Downloader {
+func NewDownload(dbRepo persistent.SQLRepo, cache *temporary.Cache) usecase.Downloader {
 	return &downlaoder{
 		dbRepo:    dbRepo,
 		cacheRepo: cache,
@@ -19,6 +19,7 @@ func NewDownload(dbRepo *persistent.SQLRepo, cache *temporary.Cache) usecase.Dow
 }
 
 func (d *downlaoder) SetToQueue(link string, maxQuantity int32) ([]*usecase.Task, error) {
+
 	return nil, nil
 }
 

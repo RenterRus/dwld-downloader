@@ -33,6 +33,7 @@ type Stage struct {
 type DownloadConfig struct {
 	Threads       int     `validate:"required"`
 	PercentToNext int     `validate:"required"`
+	WorkPath      string  `validate:"required"`
 	Stages        []Stage `validate:"required"`
 }
 
@@ -43,7 +44,6 @@ type Config struct {
 
 	PathToDB string `validate:"required"`
 	NameDB   string `validate:"required"`
-	WorkPath string `validate:"required"`
 
 	Cache Server `validate:"required"`
 
