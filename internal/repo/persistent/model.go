@@ -14,7 +14,7 @@ type LinkModel struct {
 type SQLRepo interface {
 	SelectHistory() ([]LinkModel, error)
 	Insert(link string, maxQuality int) ([]LinkModel, error)
-	Update(data LinkModel) ([]LinkModel, error)
+	UpdateStatus(link, status string) ([]LinkModel, error)
 	Delete(link string) ([]LinkModel, error)
 	DeleteHistory() ([]LinkModel, error)
 }

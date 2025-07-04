@@ -51,17 +51,33 @@ func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
-	return nil, nil
+
+	return p.SelectHistory()
 }
 
-func (p *persistentRepo) Update(data LinkModel) ([]LinkModel, error) {
-	return nil, nil
+func (p *persistentRepo) UpdateStatus(link, status string) ([]LinkModel, error) {
+	_, err := p.db.Exec("update links set work_status = $1 where link = $2;", status, link)
+	if err != nil {
+		return nil, fmt.Errorf("insert new link: %w", err)
+	}
+
+	return p.SelectHistory()
 }
 
 func (p *persistentRepo) Delete(link string) ([]LinkModel, error) {
-	return nil, nil
+	_, err := p.db.Exec("delete from links where link = $1;", link)
+	if err != nil {
+		return nil, fmt.Errorf("insert new link: %w", err)
+	}
+
+	return p.SelectHistory()
 }
 
 func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
-	return nil, nil
+	_, err := p.db.Exec("delete from links where work_status = $1;", "DONE")
+	if err != nil {
+		return nil, fmt.Errorf("insert new link: %w", err)
+	}
+
+	return p.SelectHistory()
 }
