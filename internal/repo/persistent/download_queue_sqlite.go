@@ -1,6 +1,7 @@
 package persistent
 
 import (
+	"dwld-downloader/internal/entity"
 	"dwld-downloader/pkg/sqldb"
 	"fmt"
 )
@@ -47,7 +48,7 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 }
 
 func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error) {
-	_, err := p.db.Exec("insert into links (link, target_quantity, work_status, path) values($1, $2, $3, $4);", link, maxQuality, "NEW", p.workDir)
+	_, err := p.db.Exec("insert into links (link, target_quantity, work_status, path) values($1, $2, $3, $4);", link, maxQuality, entity.StatusMapping[entity.NEW], p.workDir)
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
@@ -55,8 +56,8 @@ func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error
 	return p.SelectHistory()
 }
 
-func (p *persistentRepo) UpdateStatus(link, status string) ([]LinkModel, error) {
-	_, err := p.db.Exec("update links set work_status = $1 where link = $2;", status, link)
+func (p *persistentRepo) UpdateStatus(link string, status entity.Status) ([]LinkModel, error) {
+	_, err := p.db.Exec("update links set work_status = $1 where link = $2;", entity.StatusMapping[status], link)
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
@@ -74,7 +75,7 @@ func (p *persistentRepo) Delete(link string) ([]LinkModel, error) {
 }
 
 func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
-	_, err := p.db.Exec("delete from links where work_status = $1;", "DONE")
+	_, err := p.db.Exec("delete from links where work_status = $1;", entity.StatusMapping[entity.DONE])
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}

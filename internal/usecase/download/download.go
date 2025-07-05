@@ -8,10 +8,10 @@ import (
 
 type downlaoder struct {
 	dbRepo    persistent.SQLRepo
-	cacheRepo *temporary.Cache
+	cacheRepo temporary.CacheRepo
 }
 
-func NewDownload(dbRepo persistent.SQLRepo, cache *temporary.Cache) usecase.Downloader {
+func NewDownload(dbRepo persistent.SQLRepo, cache temporary.CacheRepo) usecase.Downloader {
 	return &downlaoder{
 		dbRepo:    dbRepo,
 		cacheRepo: cache,

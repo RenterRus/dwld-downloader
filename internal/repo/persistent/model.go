@@ -1,5 +1,7 @@
 package persistent
 
+import "dwld-downloader/internal/entity"
+
 type LinkModel struct {
 	Link           string  `sql:"link"`
 	Filename       *string `sql:"filename"`
@@ -14,7 +16,7 @@ type LinkModel struct {
 type SQLRepo interface {
 	SelectHistory() ([]LinkModel, error)
 	Insert(link string, maxQuality int) ([]LinkModel, error)
-	UpdateStatus(link, status string) ([]LinkModel, error)
+	UpdateStatus(link string, status entity.Status) ([]LinkModel, error)
 	Delete(link string) ([]LinkModel, error)
 	DeleteHistory() ([]LinkModel, error)
 }
