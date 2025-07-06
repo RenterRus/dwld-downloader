@@ -19,7 +19,7 @@ func NewSQLRepo(db *sqldb.DB, workDir string) SQLRepo {
 }
 
 func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
-	rows, err := p.db.Select("select link, filename, path, work_status, stage_config, retry, message, target_quantity from links")
+	rows, err := p.db.Select("select link, filename, work_status, stage_config, retry, message, target_quantity from links")
 	defer func() {
 		rows.Close()
 	}()
@@ -30,7 +30,7 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 	resp := make([]LinkModel, 0)
 	var row LinkModel
 	for rows.Next() {
-		err := rows.Scan(&row.Link, &row.Filename, &row.Path, &row.WorkStatus, &row.StageConfig, &row.Retry, &row.Message, &row.TargetQuantity)
+		err := rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.StageConfig, &row.Retry, &row.Message, &row.TargetQuantity)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -38,7 +38,6 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 		resp = append(resp, LinkModel{
 			Link:           row.Link,
 			Filename:       row.Filename,
-			Path:           row.Path,
 			WorkStatus:     row.WorkStatus,
 			StageConfig:    row.StageConfig,
 			Message:        row.Message,
@@ -51,7 +50,7 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 }
 
 func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error) {
-	_, err := p.db.Exec("insert into links (link, target_quantity, work_status, path) values($1, $2, $3, $4);", link, maxQuality, entity.StatusMapping[entity.NEW], p.workDir)
+	_, err := p.db.Exec("insert into links (link, target_quantity, work_status) values($1, $2, $3);", link, maxQuality, entity.StatusMapping[entity.NEW])
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
@@ -86,9 +85,9 @@ func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
 	return p.SelectHistory()
 }
 
-func (p *persistentRepo) SelectOne() (*LinkModel, error) {
-	rows, err := p.db.Select(`select link, filename, path, work_status, stage_config, retry, message, target_quantity from links
-	 where work_status = $1 order by RANDOM() limit 1;`, entity.StatusMapping[entity.NEW])
+func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
+	rows, err := p.db.Select(`select link, filename, work_status, stage_config, retry, message, target_quantity from links
+	 where work_status = $1 order by RANDOM() limit 1;`, entity.StatusMapping[status])
 	defer func() {
 		rows.Close()
 	}()
@@ -104,7 +103,7 @@ func (p *persistentRepo) SelectOne() (*LinkModel, error) {
 
 	row := &LinkModel{}
 
-	err = rows.Scan(&row.Link, &row.Filename, &row.Path, &row.WorkStatus, &row.StageConfig, &row.Retry, &row.Message, &row.TargetQuantity)
+	err = rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.StageConfig, &row.Retry, &row.Message, &row.TargetQuantity)
 	if err != nil {
 		return nil, fmt.Errorf("db.SelectOne(Scan): %w", err)
 	}
@@ -117,16 +116,12 @@ func (p *persistentRepo) Update(l *LinkModelRequest) error {
 	set 
 	work_status = $1,
 	filename = $2,
-    path = $3,
-    stage_config = $4,
-    message = $5,
-    retry = $6,
-	target_quantity = $7
- 	where link = $8;`, entity.StatusMapping[l.WorkStatus], *l.Filename, l.Path, *l.StageConfig, *l.Message, *l.Retry, l.TargetQuantity, l.Link)
+    stage_config = $3,
+    message = $4,
+    retry = $5,
+	target_quantity = $6
+ 	where link = $7;`, entity.StatusMapping[l.WorkStatus], *l.Filename, *l.StageConfig, *l.Message, *l.Retry, l.TargetQuantity, l.Link)
 	if err != nil {
-		fmt.Println("|||||||||||||")
-		fmt.Println(err)
-		fmt.Println("|||||||||||||")
 		return fmt.Errorf("update link: %w", err)
 	}
 

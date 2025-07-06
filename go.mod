@@ -3,8 +3,10 @@ module dwld-downloader
 go 1.23.3
 
 require (
+	github.com/AlekSi/pointer v1.2.0
 	github.com/bradfitz/gomemcache v0.0.0-20250403215159-8d39553ac7cf
 	github.com/go-playground/validator/v10 v10.26.0
+	github.com/pkg/sftp v1.13.7
 	github.com/samber/lo v1.51.0
 	github.com/spf13/viper v1.20.1
 	google.golang.org/grpc v1.73.0
@@ -12,10 +14,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require (
-	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/go-multierror v1.1.1 // indirect
-)
+require github.com/kr/fs v0.1.0 // indirect
 
 require (
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
@@ -23,10 +22,8 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
-	github.com/jlaffaye/ftp v0.2.0
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.28
-	github.com/moov-io/go-ftp v0.4.0
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
@@ -36,7 +33,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/crypto v0.36.0 // indirect
+	golang.org/x/crypto v0.36.0
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect

@@ -1,5 +1,10 @@
 package ftp
 
+import (
+	"dwld-downloader/internal/repo/persistent"
+	"dwld-downloader/internal/repo/temporary"
+)
+
 type FTPSenderConf struct {
 	Host       string
 	User       string
@@ -7,6 +12,8 @@ type FTPSenderConf struct {
 	LocalPath  string
 	RemotePath string
 	Port       int
+	SqlRepo    persistent.SQLRepo
+	Cache      temporary.CacheRepo
 }
 
 func NewFTPSender(conf *FTPSenderConf) Sender {
@@ -17,5 +24,7 @@ func NewFTPSender(conf *FTPSenderConf) Sender {
 		LocalPath:  conf.LocalPath,
 		RemotePath: conf.RemotePath,
 		Port:       conf.Port,
+		sqlRepo:    conf.SqlRepo,
+		cache:      conf.Cache,
 	}
 }

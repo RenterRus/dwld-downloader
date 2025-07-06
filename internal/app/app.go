@@ -7,6 +7,7 @@ import (
 	"dwld-downloader/internal/repo/temporary"
 	"dwld-downloader/internal/usecase/download"
 	"dwld-downloader/pkg/cache"
+	"dwld-downloader/pkg/ftp"
 	"dwld-downloader/pkg/grpcserver"
 	"dwld-downloader/pkg/httpserver"
 	"dwld-downloader/pkg/sqldb"
@@ -40,11 +41,27 @@ func NewApp(configPath string) error {
 		})
 	}()
 
+	db := persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB), conf.Downloader.WorkPath)
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
+	cache := temporary.NewMemCache(cc)
+
 	downloadUsecases := download.NewDownload(
-		persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB), conf.Downloader.WorkPath),
-		temporary.NewMemCache(cc),
+		db,
+		cache,
 	)
+
+	// FTPSender
+	ftpSender := ftp.NewSender(ftp.SenderConf{
+		Host:       conf.FTP.Addr.Host,
+		User:       conf.FTP.User,
+		Pass:       conf.FTP.Pass,
+		LocalPath:  conf.Downloader.WorkPath,
+		RemotePath: conf.FTP.RemoteDirectory,
+		Port:       conf.FTP.Addr.Port,
+		SqlRepo:    db,
+		Cache:      cache,
+	})
+	ftpSender.Start()
 
 	// gRPC Server
 	grpcServer := grpcserver.New(grpcserver.Port(strconv.Itoa(conf.GRPC.Port)))
@@ -63,7 +80,9 @@ func NewApp(configPath string) error {
 	}
 
 	cc.Close()
+	ftpSender.Stop()
 	err = grpcServer.Shutdown()
+
 	if err != nil {
 		log.Fatal(fmt.Errorf("app - Run - grpcServer.Shutdown: %w", err))
 	}

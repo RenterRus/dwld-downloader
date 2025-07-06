@@ -5,7 +5,6 @@ import "dwld-downloader/internal/entity"
 type LinkModel struct {
 	Link           string  `sql:"link"`
 	Filename       *string `sql:"filename"`
-	Path           string  `sql:"path"`
 	WorkStatus     string  `sql:"work_status"`
 	StageConfig    *string `sql:"stage_config"`
 	Message        *string `sql:"message"`
@@ -16,7 +15,6 @@ type LinkModel struct {
 type LinkModelRequest struct {
 	Link           string        `sql:"link"`
 	Filename       *string       `sql:"filename"`
-	Path           string        `sql:"path"`
 	WorkStatus     entity.Status `sql:"work_status"`
 	StageConfig    *string       `sql:"stage_config"`
 	Message        *string       `sql:"message"`
@@ -31,6 +29,6 @@ type SQLRepo interface {
 	Delete(link string) ([]LinkModel, error)
 	DeleteHistory() ([]LinkModel, error)
 
-	SelectOne() (*LinkModel, error)
+	SelectOne(status entity.Status) (*LinkModel, error)
 	Update(*LinkModelRequest) error
 }
