@@ -3,6 +3,7 @@ package temporary
 import (
 	"context"
 	"dwld-downloader/internal/entity"
+	"dwld-downloader/internal/repo/sensors"
 	"dwld-downloader/pkg/cache"
 	"encoding/json"
 	"fmt"
@@ -62,6 +63,7 @@ func (c *Cache) GetStatus() (*CacheResponse, error) {
 
 	return &CacheResponse{
 		WorkStatus: resp,
+		Sensors:    sensors.Sensors(),
 	}, nil
 }
 

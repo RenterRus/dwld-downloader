@@ -28,6 +28,7 @@ type TaskResp struct {
 type CacheResponse struct {
 	//				link	 filename
 	WorkStatus map[string]map[string]TaskResp
+	Sensors    string
 }
 
 type CacheRepo interface {
