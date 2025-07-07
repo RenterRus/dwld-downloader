@@ -3,6 +3,7 @@ package main
 import (
 	"dwld-downloader/internal/app"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 )
@@ -15,5 +16,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	app.NewApp(*path)
+	if err := app.NewApp(*path); err != nil {
+		fmt.Println(err)
+	}
 }
