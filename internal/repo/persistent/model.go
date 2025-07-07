@@ -6,9 +6,7 @@ type LinkModel struct {
 	Link           string  `sql:"link"`
 	Filename       *string `sql:"filename"`
 	WorkStatus     string  `sql:"work_status"`
-	StageConfig    *string `sql:"stage_config"`
 	Message        *string `sql:"message"`
-	Retry          *int    `sql:"retry"`
 	TargetQuantity int     `sql:"target_quantity"`
 }
 
@@ -16,9 +14,7 @@ type LinkModelRequest struct {
 	Link           string        `sql:"link"`
 	Filename       *string       `sql:"filename"`
 	WorkStatus     entity.Status `sql:"work_status"`
-	StageConfig    *string       `sql:"stage_config"`
 	Message        *string       `sql:"message"`
-	Retry          *int          `sql:"retry"`
 	TargetQuantity int           `sql:"target_quantity"`
 }
 

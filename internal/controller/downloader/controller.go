@@ -1,7 +1,9 @@
 package downloader
 
+import "context"
+
 type Downloader interface {
-	Downloader(link string, quality int32)
-	Processor()
-	GetLink() (string, error)
+	Downloader(*Task) error
+	Processor(context.Context)
+	GetLink() (*Task, error)
 }

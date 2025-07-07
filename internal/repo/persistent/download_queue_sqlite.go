@@ -101,7 +101,7 @@ func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
 
 	row := &LinkModel{}
 
-	err = rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.StageConfig, &row.Retry, &row.Message, &row.TargetQuantity)
+	err = rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.Message, &row.TargetQuantity)
 	if err != nil {
 		return nil, fmt.Errorf("db.SelectOne(Scan): %w", err)
 	}
@@ -114,11 +114,9 @@ func (p *persistentRepo) Update(l *LinkModelRequest) error {
 	set 
 	work_status = $1,
 	filename = $2,
-    stage_config = $3,
-    message = $4,
-    retry = $5,
-	target_quantity = $6
- 	where link = $7;`, entity.StatusMapping[l.WorkStatus], *l.Filename, *l.StageConfig, *l.Message, *l.Retry, l.TargetQuantity, l.Link)
+    message = $3,
+    target_quantity = $4
+ 	where link = $5;`, entity.StatusMapping[l.WorkStatus], *l.Filename, *l.Message, l.TargetQuantity, l.Link)
 	if err != nil {
 		return fmt.Errorf("update link: %w", err)
 	}

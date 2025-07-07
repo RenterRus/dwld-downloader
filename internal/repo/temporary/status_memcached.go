@@ -51,12 +51,13 @@ func (c *Cache) GetStatus() (*CacheResponse, error) {
 			}
 
 			resp[preResp.Link][preResp.FileName] = TaskResp{
-				MoveTo:     preResp.MoveTo,
-				MaxQuality: preResp.MaxQuality,
-				Procentage: preResp.Procentage,
-				Status:     entity.StatusMapping[preResp.Status],
-				StageNum:   preResp.StageNum,
-				StageConf:  preResp.StageConf,
+				MoveTo:       preResp.MoveTo,
+				MaxQuality:   preResp.MaxQuality,
+				Procentage:   preResp.Procentage,
+				Status:       entity.StatusMapping[preResp.Status],
+				DownloadSize: preResp.DownloadSize,
+				CurrentSize:  preResp.CurrentSize,
+				Message:      preResp.Message,
 			}
 		}
 	}

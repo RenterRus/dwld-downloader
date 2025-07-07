@@ -65,8 +65,6 @@ func (f *FTPSender) presend(link *persistent.LinkModel) error {
 		MaxQuality: link.TargetQuantity,
 		Procentage: 100,
 		Status:     entity.SENDING,
-		StageNum:   0,
-		StageConf:  *link.StageConfig,
 	})
 
 	if err := f.send(*link.Filename); err != nil {

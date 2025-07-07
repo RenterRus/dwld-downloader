@@ -5,8 +5,6 @@ link text unique,
 filename text,
 target_quantity integer,
 work_status text,
-stage_config text,
-retry integer,
 message text
 );
 -- +goose StatementEnd
