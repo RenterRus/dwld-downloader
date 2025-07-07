@@ -1,12 +1,14 @@
 package app
 
 import (
+	dwnl "dwld-downloader/internal/controller/downloader"
 	"dwld-downloader/internal/controller/grpc"
 	"dwld-downloader/internal/controller/http"
 	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/repo/temporary"
 	"dwld-downloader/internal/usecase/download"
 	"dwld-downloader/pkg/cache"
+	"dwld-downloader/pkg/downloader"
 	"dwld-downloader/pkg/ftp"
 	"dwld-downloader/pkg/grpcserver"
 	"dwld-downloader/pkg/httpserver"
@@ -17,6 +19,8 @@ import (
 	"os/signal"
 	"strconv"
 	"syscall"
+
+	"github.com/samber/lo"
 )
 
 func NewApp(configPath string) error {
@@ -45,6 +49,26 @@ func NewApp(configPath string) error {
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
 	cache := temporary.NewMemCache(cc)
 
+	dwld := downloader.NewDownloader(downloader.DownloaderConf{
+		WorkDir:       conf.Downloader.WorkPath,
+		Threads:       conf.Downloader.Threads,
+		PercentToNext: conf.Downloader.PercentToNext,
+		Stages: lo.Map(conf.Downloader.Stages, func(stage Stage, _ int) dwnl.Stage {
+			return dwnl.Stage{
+				Positions:         stage.Positions,
+				AttemptBeforeNext: stage.AttemptBeforeNext,
+				Threads:           stage.Threads,
+				IsCookie:          stage.IsCookie,
+				IsEmbededCharters: stage.IsEmbededCharters,
+				IsMarkWatched:     stage.IsEmbededCharters,
+				Extractors:        stage.Extractors,
+			}
+		}),
+		SqlRepo: db,
+		Cache:   cache,
+	})
+
+	dwld.Start()
 	downloadUsecases := download.NewDownload(
 		db,
 		cache,
@@ -80,6 +104,7 @@ func NewApp(configPath string) error {
 	}
 
 	cc.Close()
+	dwld.Stop()
 	ftpSender.Stop()
 	err = grpcServer.Shutdown()
 

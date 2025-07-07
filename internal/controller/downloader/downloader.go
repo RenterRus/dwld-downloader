@@ -91,6 +91,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 	totalSize := float64(0)
 
 	dl := ytdlp.New().
+		SetWorkDir(d.WorkDir).
 		FormatSort("res,ext:mp4:m4a").
 		RecodeVideo("mp4").
 		Output("%(title)s.%(ext)s").
