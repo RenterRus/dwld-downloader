@@ -1,4 +1,4 @@
-package v1
+package apiv1
 
 import (
 	proto "dwld-downloader/docs/proto/v1"

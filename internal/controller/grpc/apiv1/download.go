@@ -1,9 +1,9 @@
-package v1
+package apiv1
 
 import (
 	"context"
 	proto "dwld-downloader/docs/proto/v1"
-	"dwld-downloader/internal/controller/grpc/V1/response"
+	"dwld-downloader/internal/controller/grpc/apiv1/response"
 	"dwld-downloader/internal/usecase"
 	"fmt"
 

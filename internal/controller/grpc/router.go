@@ -1,7 +1,7 @@
 package grpc
 
 import (
-	v1 "dwld-downloader/internal/controller/grpc/v1"
+	v1 "dwld-downloader/internal/controller/grpc/apiv1"
 	"dwld-downloader/internal/usecase"
 
 	pbgrpc "google.golang.org/grpc"
