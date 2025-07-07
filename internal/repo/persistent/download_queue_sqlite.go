@@ -19,7 +19,7 @@ func NewSQLRepo(db *sqldb.DB, workDir string) SQLRepo {
 }
 
 func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
-	rows, err := p.db.Select("select link, filename, work_status, stage_config, retry, message, target_quantity from links")
+	rows, err := p.db.Select("select link, filename, work_status, message, target_quantity from links")
 	defer func() {
 		rows.Close()
 	}()
@@ -30,7 +30,7 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 	resp := make([]LinkModel, 0)
 	var row LinkModel
 	for rows.Next() {
-		err := rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.StageConfig, &row.Retry, &row.Message, &row.TargetQuantity)
+		err := rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.Message, &row.TargetQuantity)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -39,9 +39,7 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 			Link:           row.Link,
 			Filename:       row.Filename,
 			WorkStatus:     row.WorkStatus,
-			StageConfig:    row.StageConfig,
 			Message:        row.Message,
-			Retry:          row.Retry,
 			TargetQuantity: row.TargetQuantity,
 		})
 	}
@@ -50,7 +48,7 @@ func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
 }
 
 func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error) {
-	_, err := p.db.Exec("insert into links (link, target_quantity, work_status) values($1, $2, $3);", link, maxQuality, entity.StatusMapping[entity.NEW])
+	_, err := p.db.Exec("insert into links (link, filename, target_quantity, work_status) values($1, $2, $3, $4);", link, "COMING SOON", maxQuality, entity.StatusMapping[entity.NEW])
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
@@ -86,7 +84,7 @@ func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
 }
 
 func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
-	rows, err := p.db.Select(`select link, filename, work_status, stage_config, retry, message, target_quantity from links
+	rows, err := p.db.Select(`select link, filename, work_status, message, target_quantity from links
 	 where work_status = $1 order by RANDOM() limit 1;`, entity.StatusMapping[status])
 	defer func() {
 		rows.Close()

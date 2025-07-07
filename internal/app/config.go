@@ -30,6 +30,7 @@ type Stage struct {
 	IsMarkWatched     bool   `validate:"required"`
 	Extractors        string `validate:"required"`
 }
+
 type DownloadConfig struct {
 	Threads       int     `validate:"required"`
 	PercentToNext int     `validate:"required"`
