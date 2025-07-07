@@ -192,6 +192,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 						Message:      err.Error(),
 					})
 					err_resp = err
+					fmt.Printf("download failed: %s", err.Error())
 					continue
 				}
 
