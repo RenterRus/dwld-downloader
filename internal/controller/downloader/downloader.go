@@ -53,8 +53,17 @@ type DownloaderConf struct {
 	Cache         temporary.CacheRepo
 }
 
-func NewDownloader(conf DownloaderConf) Downloader {
+func InstallYTDLP() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("YTDLP failed auto install: %v\nLaunch without\n", r)
+		}
+	}()
 	ytdlp.MustInstall(context.Background(), nil)
+}
+
+func NewDownloader(conf DownloaderConf) Downloader {
+	InstallYTDLP()
 
 	stages := make(map[int]Stage)
 	for _, v := range conf.Stages {
@@ -241,7 +250,12 @@ func (d *DownloaderSource) GetLink() (*Task, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Downloader GetLink (select): %w", err)
 	}
-
+	if link == nil {
+		link = &persistent.LinkModel{
+			Link:           "",
+			TargetQuantity: MIN_QUALITY,
+		}
+	}
 	return &Task{
 		Link:    link.Link,
 		Quality: link.TargetQuantity,
