@@ -15,6 +15,11 @@ service Downloader {
     rpc CleanHistory(google.protobuf.Empty) returns (CleanHistoryResponse) {}
     rpc Status (google.protobuf.Empty) returns (StatusResponse) {}
     rpc Queue (google.protobuf.Empty) returns (HistoryResponse) {}
+    rpc Healtheck (google.protobuf.Empty) returns (HealtheckResponse) {}
+}
+
+message HealtheckResponse{
+   optional string message = 1;
 }
 
 

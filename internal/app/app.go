@@ -2,7 +2,6 @@ package app
 
 import (
 	"dwld-downloader/internal/controller/grpc"
-	"dwld-downloader/internal/controller/http"
 	"dwld-downloader/internal/entity"
 	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/repo/temporary"
@@ -11,7 +10,6 @@ import (
 	"dwld-downloader/pkg/downloader"
 	"dwld-downloader/pkg/ftp"
 	"dwld-downloader/pkg/grpcserver"
-	"dwld-downloader/pkg/httpserver"
 	"dwld-downloader/pkg/sqldb"
 	"fmt"
 	"log"
@@ -35,15 +33,6 @@ func NewApp(configPath string) error {
 	if err != nil {
 		return fmt.Errorf("ReadConfig: %w", err)
 	}
-
-	go func() {
-		httpserver.NewHttpServer(&httpserver.Server{
-			Host:   conf.HTTP.Host,
-			Port:   conf.HTTP.Port,
-			Enable: conf.HTTP.Enable,
-			Mux:    http.NewRoute(),
-		})
-	}()
 
 	db := persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB), conf.Downloader.WorkPath)
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)

@@ -27,6 +27,7 @@ const (
 	Downloader_CleanHistory_FullMethodName    = "/grpc.v1.Downloader/CleanHistory"
 	Downloader_Status_FullMethodName          = "/grpc.v1.Downloader/Status"
 	Downloader_Queue_FullMethodName           = "/grpc.v1.Downloader/Queue"
+	Downloader_Healtheck_FullMethodName       = "/grpc.v1.Downloader/Healtheck"
 )
 
 // DownloaderClient is the client API for Downloader service.
@@ -38,6 +39,7 @@ type DownloaderClient interface {
 	CleanHistory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CleanHistoryResponse, error)
 	Status(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*StatusResponse, error)
 	Queue(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HistoryResponse, error)
+	Healtheck(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HealtheckResponse, error)
 }
 
 type downloaderClient struct {
@@ -98,6 +100,16 @@ func (c *downloaderClient) Queue(ctx context.Context, in *emptypb.Empty, opts ..
 	return out, nil
 }
 
+func (c *downloaderClient) Healtheck(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HealtheckResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HealtheckResponse)
+	err := c.cc.Invoke(ctx, Downloader_Healtheck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DownloaderServer is the server API for Downloader service.
 // All implementations must embed UnimplementedDownloaderServer
 // for forward compatibility.
@@ -107,6 +119,7 @@ type DownloaderServer interface {
 	CleanHistory(context.Context, *emptypb.Empty) (*CleanHistoryResponse, error)
 	Status(context.Context, *emptypb.Empty) (*StatusResponse, error)
 	Queue(context.Context, *emptypb.Empty) (*HistoryResponse, error)
+	Healtheck(context.Context, *emptypb.Empty) (*HealtheckResponse, error)
 	mustEmbedUnimplementedDownloaderServer()
 }
 
@@ -131,6 +144,9 @@ func (UnimplementedDownloaderServer) Status(context.Context, *emptypb.Empty) (*S
 }
 func (UnimplementedDownloaderServer) Queue(context.Context, *emptypb.Empty) (*HistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Queue not implemented")
+}
+func (UnimplementedDownloaderServer) Healtheck(context.Context, *emptypb.Empty) (*HealtheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Healtheck not implemented")
 }
 func (UnimplementedDownloaderServer) mustEmbedUnimplementedDownloaderServer() {}
 func (UnimplementedDownloaderServer) testEmbeddedByValue()                    {}
@@ -243,6 +259,24 @@ func _Downloader_Queue_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Downloader_Healtheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DownloaderServer).Healtheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Downloader_Healtheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DownloaderServer).Healtheck(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Downloader_ServiceDesc is the grpc.ServiceDesc for Downloader service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -269,6 +303,10 @@ var Downloader_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Queue",
 			Handler:    _Downloader_Queue_Handler,
+		},
+		{
+			MethodName: "Healtheck",
+			Handler:    _Downloader_Healtheck_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

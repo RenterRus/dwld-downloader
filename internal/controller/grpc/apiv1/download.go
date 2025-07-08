@@ -7,6 +7,7 @@ import (
 	"dwld-downloader/internal/usecase"
 	"fmt"
 
+	"github.com/AlekSi/pointer"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -84,5 +85,11 @@ func (v *V1) Queue(ctx context.Context, in *emptypb.Empty) (*proto.HistoryRespon
 		History: lo.Map(tasks, func(t *usecase.Task, _ int) *proto.Task {
 			return response.TasksToLinks(t)
 		}),
+	}, nil
+}
+
+func (v *V1) Healtheck(ctx context.Context, in *emptypb.Empty) (*proto.HealtheckResponse, error) {
+	return &proto.HealtheckResponse{
+		Message: pointer.To("OK"),
 	}, nil
 }

@@ -9,13 +9,12 @@
 package v1
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -24,6 +23,50 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+type HealtheckResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       *string                `protobuf:"bytes,1,opt,name=message,proto3,oneof" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HealtheckResponse) Reset() {
+	*x = HealtheckResponse{}
+	mi := &file_docs_proto_v1_download_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HealtheckResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HealtheckResponse) ProtoMessage() {}
+
+func (x *HealtheckResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_docs_proto_v1_download_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HealtheckResponse.ProtoReflect.Descriptor instead.
+func (*HealtheckResponse) Descriptor() ([]byte, []int) {
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *HealtheckResponse) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
 
 type HistoryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -34,7 +77,7 @@ type HistoryResponse struct {
 
 func (x *HistoryResponse) Reset() {
 	*x = HistoryResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[0]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -46,7 +89,7 @@ func (x *HistoryResponse) String() string {
 func (*HistoryResponse) ProtoMessage() {}
 
 func (x *HistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[0]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,7 +102,7 @@ func (x *HistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HistoryResponse.ProtoReflect.Descriptor instead.
 func (*HistoryResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{0}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *HistoryResponse) GetHistory() []*Task {
@@ -86,7 +129,7 @@ type OnWork struct {
 
 func (x *OnWork) Reset() {
 	*x = OnWork{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[1]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -98,7 +141,7 @@ func (x *OnWork) String() string {
 func (*OnWork) ProtoMessage() {}
 
 func (x *OnWork) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[1]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -111,7 +154,7 @@ func (x *OnWork) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnWork.ProtoReflect.Descriptor instead.
 func (*OnWork) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{1}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *OnWork) GetLink() string {
@@ -187,7 +230,7 @@ type StatusResponse struct {
 
 func (x *StatusResponse) Reset() {
 	*x = StatusResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -199,7 +242,7 @@ func (x *StatusResponse) String() string {
 func (*StatusResponse) ProtoMessage() {}
 
 func (x *StatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -212,7 +255,7 @@ func (x *StatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatusResponse.ProtoReflect.Descriptor instead.
 func (*StatusResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{2}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *StatusResponse) GetLinksInWork() []*OnWork {
@@ -238,7 +281,7 @@ type CleanHistoryResponse struct {
 
 func (x *CleanHistoryResponse) Reset() {
 	*x = CleanHistoryResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -250,7 +293,7 @@ func (x *CleanHistoryResponse) String() string {
 func (*CleanHistoryResponse) ProtoMessage() {}
 
 func (x *CleanHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -263,7 +306,7 @@ func (x *CleanHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CleanHistoryResponse.ProtoReflect.Descriptor instead.
 func (*CleanHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{3}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CleanHistoryResponse) GetHistory() []*Task {
@@ -282,7 +325,7 @@ type DeleteFromQueueRequest struct {
 
 func (x *DeleteFromQueueRequest) Reset() {
 	*x = DeleteFromQueueRequest{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -294,7 +337,7 @@ func (x *DeleteFromQueueRequest) String() string {
 func (*DeleteFromQueueRequest) ProtoMessage() {}
 
 func (x *DeleteFromQueueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -307,7 +350,7 @@ func (x *DeleteFromQueueRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFromQueueRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFromQueueRequest) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{4}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteFromQueueRequest) GetLink() string {
@@ -326,7 +369,7 @@ type DeleteFromQueueResponse struct {
 
 func (x *DeleteFromQueueResponse) Reset() {
 	*x = DeleteFromQueueResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -338,7 +381,7 @@ func (x *DeleteFromQueueResponse) String() string {
 func (*DeleteFromQueueResponse) ProtoMessage() {}
 
 func (x *DeleteFromQueueResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -351,7 +394,7 @@ func (x *DeleteFromQueueResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFromQueueResponse.ProtoReflect.Descriptor instead.
 func (*DeleteFromQueueResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{5}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteFromQueueResponse) GetLinksInWork() []*Task {
@@ -371,7 +414,7 @@ type SetToQueueRequest struct {
 
 func (x *SetToQueueRequest) Reset() {
 	*x = SetToQueueRequest{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -383,7 +426,7 @@ func (x *SetToQueueRequest) String() string {
 func (*SetToQueueRequest) ProtoMessage() {}
 
 func (x *SetToQueueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -396,7 +439,7 @@ func (x *SetToQueueRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetToQueueRequest.ProtoReflect.Descriptor instead.
 func (*SetToQueueRequest) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{6}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SetToQueueRequest) GetLink() string {
@@ -422,7 +465,7 @@ type SetToQueueResponse struct {
 
 func (x *SetToQueueResponse) Reset() {
 	*x = SetToQueueResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -434,7 +477,7 @@ func (x *SetToQueueResponse) String() string {
 func (*SetToQueueResponse) ProtoMessage() {}
 
 func (x *SetToQueueResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -447,7 +490,7 @@ func (x *SetToQueueResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetToQueueResponse.ProtoReflect.Descriptor instead.
 func (*SetToQueueResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{7}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SetToQueueResponse) GetLinksInWork() []*Task {
@@ -470,7 +513,7 @@ type Task struct {
 
 func (x *Task) Reset() {
 	*x = Task{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -482,7 +525,7 @@ func (x *Task) String() string {
 func (*Task) ProtoMessage() {}
 
 func (x *Task) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -495,7 +538,7 @@ func (x *Task) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Task.ProtoReflect.Descriptor instead.
 func (*Task) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{8}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Task) GetLink() string {
@@ -537,7 +580,11 @@ var File_docs_proto_v1_download_proto protoreflect.FileDescriptor
 
 const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\n" +
-	"\x1cdocs/proto/v1/download.proto\x12\agrpc.v1\x1a\x1bgoogle/protobuf/empty.proto\":\n" +
+	"\x1cdocs/proto/v1/download.proto\x12\agrpc.v1\x1a\x1bgoogle/protobuf/empty.proto\">\n" +
+	"\x11HealtheckResponse\x12\x1d\n" +
+	"\amessage\x18\x01 \x01(\tH\x00R\amessage\x88\x01\x01B\n" +
+	"\n" +
+	"\b_message\":\n" +
 	"\x0fHistoryResponse\x12'\n" +
 	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\"\x8a\x02\n" +
 	"\x06OnWork\x12\x12\n" +
@@ -577,7 +624,7 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\amessage\x18\x05 \x01(\tH\x01R\amessage\x88\x01\x01B\a\n" +
 	"\x05_nameB\n" +
 	"\n" +
-	"\b_message2\xf0\x02\n" +
+	"\b_message2\xb3\x03\n" +
 	"\n" +
 	"Downloader\x12G\n" +
 	"\n" +
@@ -585,7 +632,8 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\x0fDeleteFromQueue\x12\x1f.grpc.v1.DeleteFromQueueRequest\x1a .grpc.v1.DeleteFromQueueResponse\"\x00\x12G\n" +
 	"\fCleanHistory\x12\x16.google.protobuf.Empty\x1a\x1d.grpc.v1.CleanHistoryResponse\"\x00\x12;\n" +
 	"\x06Status\x12\x16.google.protobuf.Empty\x1a\x17.grpc.v1.StatusResponse\"\x00\x12;\n" +
-	"\x05Queue\x12\x16.google.protobuf.Empty\x1a\x18.grpc.v1.HistoryResponse\"\x00B\x0fZ\rdocs/proto/v1b\x06proto3"
+	"\x05Queue\x12\x16.google.protobuf.Empty\x1a\x18.grpc.v1.HistoryResponse\"\x00\x12A\n" +
+	"\tHealtheck\x12\x16.google.protobuf.Empty\x1a\x1a.grpc.v1.HealtheckResponse\"\x00B\x0fZ\rdocs/proto/v1b\x06proto3"
 
 var (
 	file_docs_proto_v1_download_proto_rawDescOnce sync.Once
@@ -599,37 +647,40 @@ func file_docs_proto_v1_download_proto_rawDescGZIP() []byte {
 	return file_docs_proto_v1_download_proto_rawDescData
 }
 
-var file_docs_proto_v1_download_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_docs_proto_v1_download_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_docs_proto_v1_download_proto_goTypes = []any{
-	(*HistoryResponse)(nil),         // 0: grpc.v1.HistoryResponse
-	(*OnWork)(nil),                  // 1: grpc.v1.OnWork
-	(*StatusResponse)(nil),          // 2: grpc.v1.StatusResponse
-	(*CleanHistoryResponse)(nil),    // 3: grpc.v1.CleanHistoryResponse
-	(*DeleteFromQueueRequest)(nil),  // 4: grpc.v1.DeleteFromQueueRequest
-	(*DeleteFromQueueResponse)(nil), // 5: grpc.v1.DeleteFromQueueResponse
-	(*SetToQueueRequest)(nil),       // 6: grpc.v1.SetToQueueRequest
-	(*SetToQueueResponse)(nil),      // 7: grpc.v1.SetToQueueResponse
-	(*Task)(nil),                    // 8: grpc.v1.Task
-	(*emptypb.Empty)(nil),           // 9: google.protobuf.Empty
+	(*HealtheckResponse)(nil),       // 0: grpc.v1.HealtheckResponse
+	(*HistoryResponse)(nil),         // 1: grpc.v1.HistoryResponse
+	(*OnWork)(nil),                  // 2: grpc.v1.OnWork
+	(*StatusResponse)(nil),          // 3: grpc.v1.StatusResponse
+	(*CleanHistoryResponse)(nil),    // 4: grpc.v1.CleanHistoryResponse
+	(*DeleteFromQueueRequest)(nil),  // 5: grpc.v1.DeleteFromQueueRequest
+	(*DeleteFromQueueResponse)(nil), // 6: grpc.v1.DeleteFromQueueResponse
+	(*SetToQueueRequest)(nil),       // 7: grpc.v1.SetToQueueRequest
+	(*SetToQueueResponse)(nil),      // 8: grpc.v1.SetToQueueResponse
+	(*Task)(nil),                    // 9: grpc.v1.Task
+	(*emptypb.Empty)(nil),           // 10: google.protobuf.Empty
 }
 var file_docs_proto_v1_download_proto_depIdxs = []int32{
-	8,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.Task
-	1,  // 1: grpc.v1.StatusResponse.linksInWork:type_name -> grpc.v1.OnWork
-	8,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.Task
-	8,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.Task
-	8,  // 4: grpc.v1.SetToQueueResponse.linksInWork:type_name -> grpc.v1.Task
-	6,  // 5: grpc.v1.Downloader.SetToQueue:input_type -> grpc.v1.SetToQueueRequest
-	4,  // 6: grpc.v1.Downloader.DeleteFromQueue:input_type -> grpc.v1.DeleteFromQueueRequest
-	9,  // 7: grpc.v1.Downloader.CleanHistory:input_type -> google.protobuf.Empty
-	9,  // 8: grpc.v1.Downloader.Status:input_type -> google.protobuf.Empty
-	9,  // 9: grpc.v1.Downloader.Queue:input_type -> google.protobuf.Empty
-	7,  // 10: grpc.v1.Downloader.SetToQueue:output_type -> grpc.v1.SetToQueueResponse
-	5,  // 11: grpc.v1.Downloader.DeleteFromQueue:output_type -> grpc.v1.DeleteFromQueueResponse
-	3,  // 12: grpc.v1.Downloader.CleanHistory:output_type -> grpc.v1.CleanHistoryResponse
-	2,  // 13: grpc.v1.Downloader.Status:output_type -> grpc.v1.StatusResponse
-	0,  // 14: grpc.v1.Downloader.Queue:output_type -> grpc.v1.HistoryResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
+	9,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.Task
+	2,  // 1: grpc.v1.StatusResponse.linksInWork:type_name -> grpc.v1.OnWork
+	9,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.Task
+	9,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	9,  // 4: grpc.v1.SetToQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	7,  // 5: grpc.v1.Downloader.SetToQueue:input_type -> grpc.v1.SetToQueueRequest
+	5,  // 6: grpc.v1.Downloader.DeleteFromQueue:input_type -> grpc.v1.DeleteFromQueueRequest
+	10, // 7: grpc.v1.Downloader.CleanHistory:input_type -> google.protobuf.Empty
+	10, // 8: grpc.v1.Downloader.Status:input_type -> google.protobuf.Empty
+	10, // 9: grpc.v1.Downloader.Queue:input_type -> google.protobuf.Empty
+	10, // 10: grpc.v1.Downloader.Healtheck:input_type -> google.protobuf.Empty
+	8,  // 11: grpc.v1.Downloader.SetToQueue:output_type -> grpc.v1.SetToQueueResponse
+	6,  // 12: grpc.v1.Downloader.DeleteFromQueue:output_type -> grpc.v1.DeleteFromQueueResponse
+	4,  // 13: grpc.v1.Downloader.CleanHistory:output_type -> grpc.v1.CleanHistoryResponse
+	3,  // 14: grpc.v1.Downloader.Status:output_type -> grpc.v1.StatusResponse
+	1,  // 15: grpc.v1.Downloader.Queue:output_type -> grpc.v1.HistoryResponse
+	0,  // 16: grpc.v1.Downloader.Healtheck:output_type -> grpc.v1.HealtheckResponse
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -640,15 +691,16 @@ func file_docs_proto_v1_download_proto_init() {
 	if File_docs_proto_v1_download_proto != nil {
 		return
 	}
-	file_docs_proto_v1_download_proto_msgTypes[6].OneofWrappers = []any{}
-	file_docs_proto_v1_download_proto_msgTypes[8].OneofWrappers = []any{}
+	file_docs_proto_v1_download_proto_msgTypes[0].OneofWrappers = []any{}
+	file_docs_proto_v1_download_proto_msgTypes[7].OneofWrappers = []any{}
+	file_docs_proto_v1_download_proto_msgTypes[9].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_docs_proto_v1_download_proto_rawDesc), len(file_docs_proto_v1_download_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
