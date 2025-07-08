@@ -25,8 +25,8 @@ const (
 	Downloader_SetToQueue_FullMethodName      = "/grpc.v1.Downloader/SetToQueue"
 	Downloader_DeleteFromQueue_FullMethodName = "/grpc.v1.Downloader/DeleteFromQueue"
 	Downloader_CleanHistory_FullMethodName    = "/grpc.v1.Downloader/CleanHistory"
-	Downloader_WorkQueue_FullMethodName       = "/grpc.v1.Downloader/WorkQueue"
-	Downloader_History_FullMethodName         = "/grpc.v1.Downloader/History"
+	Downloader_Status_FullMethodName          = "/grpc.v1.Downloader/Status"
+	Downloader_Queue_FullMethodName           = "/grpc.v1.Downloader/Queue"
 )
 
 // DownloaderClient is the client API for Downloader service.
@@ -36,8 +36,8 @@ type DownloaderClient interface {
 	SetToQueue(ctx context.Context, in *SetToQueueRequest, opts ...grpc.CallOption) (*SetToQueueResponse, error)
 	DeleteFromQueue(ctx context.Context, in *DeleteFromQueueRequest, opts ...grpc.CallOption) (*DeleteFromQueueResponse, error)
 	CleanHistory(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CleanHistoryResponse, error)
-	WorkQueue(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WorkQueueResponse, error)
-	History(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HistoryResponse, error)
+	Status(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*StatusResponse, error)
+	Queue(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HistoryResponse, error)
 }
 
 type downloaderClient struct {
@@ -78,20 +78,20 @@ func (c *downloaderClient) CleanHistory(ctx context.Context, in *emptypb.Empty, 
 	return out, nil
 }
 
-func (c *downloaderClient) WorkQueue(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WorkQueueResponse, error) {
+func (c *downloaderClient) Status(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*StatusResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(WorkQueueResponse)
-	err := c.cc.Invoke(ctx, Downloader_WorkQueue_FullMethodName, in, out, cOpts...)
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, Downloader_Status_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *downloaderClient) History(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HistoryResponse, error) {
+func (c *downloaderClient) Queue(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HistoryResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HistoryResponse)
-	err := c.cc.Invoke(ctx, Downloader_History_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Downloader_Queue_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,8 +105,8 @@ type DownloaderServer interface {
 	SetToQueue(context.Context, *SetToQueueRequest) (*SetToQueueResponse, error)
 	DeleteFromQueue(context.Context, *DeleteFromQueueRequest) (*DeleteFromQueueResponse, error)
 	CleanHistory(context.Context, *emptypb.Empty) (*CleanHistoryResponse, error)
-	WorkQueue(context.Context, *emptypb.Empty) (*WorkQueueResponse, error)
-	History(context.Context, *emptypb.Empty) (*HistoryResponse, error)
+	Status(context.Context, *emptypb.Empty) (*StatusResponse, error)
+	Queue(context.Context, *emptypb.Empty) (*HistoryResponse, error)
 	mustEmbedUnimplementedDownloaderServer()
 }
 
@@ -126,11 +126,11 @@ func (UnimplementedDownloaderServer) DeleteFromQueue(context.Context, *DeleteFro
 func (UnimplementedDownloaderServer) CleanHistory(context.Context, *emptypb.Empty) (*CleanHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CleanHistory not implemented")
 }
-func (UnimplementedDownloaderServer) WorkQueue(context.Context, *emptypb.Empty) (*WorkQueueResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WorkQueue not implemented")
+func (UnimplementedDownloaderServer) Status(context.Context, *emptypb.Empty) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Status not implemented")
 }
-func (UnimplementedDownloaderServer) History(context.Context, *emptypb.Empty) (*HistoryResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method History not implemented")
+func (UnimplementedDownloaderServer) Queue(context.Context, *emptypb.Empty) (*HistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Queue not implemented")
 }
 func (UnimplementedDownloaderServer) mustEmbedUnimplementedDownloaderServer() {}
 func (UnimplementedDownloaderServer) testEmbeddedByValue()                    {}
@@ -207,38 +207,38 @@ func _Downloader_CleanHistory_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Downloader_WorkQueue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Downloader_Status_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DownloaderServer).WorkQueue(ctx, in)
+		return srv.(DownloaderServer).Status(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Downloader_WorkQueue_FullMethodName,
+		FullMethod: Downloader_Status_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DownloaderServer).WorkQueue(ctx, req.(*emptypb.Empty))
+		return srv.(DownloaderServer).Status(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Downloader_History_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Downloader_Queue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DownloaderServer).History(ctx, in)
+		return srv.(DownloaderServer).Queue(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Downloader_History_FullMethodName,
+		FullMethod: Downloader_Queue_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DownloaderServer).History(ctx, req.(*emptypb.Empty))
+		return srv.(DownloaderServer).Queue(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -263,12 +263,12 @@ var Downloader_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Downloader_CleanHistory_Handler,
 		},
 		{
-			MethodName: "WorkQueue",
-			Handler:    _Downloader_WorkQueue_Handler,
+			MethodName: "Status",
+			Handler:    _Downloader_Status_Handler,
 		},
 		{
-			MethodName: "History",
-			Handler:    _Downloader_History_Handler,
+			MethodName: "Queue",
+			Handler:    _Downloader_Queue_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

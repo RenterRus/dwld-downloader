@@ -9,12 +9,13 @@
 package v1
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 const (
@@ -68,27 +69,35 @@ func (x *HistoryResponse) GetHistory() []*Task {
 	return nil
 }
 
-type WorkQueueResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	LinksInWork   []*Task                `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type OnWork struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Link           string                 `protobuf:"bytes,1,opt,name=link,proto3" json:"link,omitempty"`
+	Filename       string                 `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`
+	MoveTo         string                 `protobuf:"bytes,3,opt,name=moveTo,proto3" json:"moveTo,omitempty"`
+	TargetQuantity int64                  `protobuf:"varint,4,opt,name=targetQuantity,proto3" json:"targetQuantity,omitempty"`
+	Procentage     float64                `protobuf:"fixed64,5,opt,name=procentage,proto3" json:"procentage,omitempty"`
+	Status         string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
+	TotalSize      float64                `protobuf:"fixed64,7,opt,name=totalSize,proto3" json:"totalSize,omitempty"`
+	CurrentSize    float64                `protobuf:"fixed64,8,opt,name=currentSize,proto3" json:"currentSize,omitempty"`
+	Message        string                 `protobuf:"bytes,9,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *WorkQueueResponse) Reset() {
-	*x = WorkQueueResponse{}
+func (x *OnWork) Reset() {
+	*x = OnWork{}
 	mi := &file_docs_proto_v1_download_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *WorkQueueResponse) String() string {
+func (x *OnWork) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*WorkQueueResponse) ProtoMessage() {}
+func (*OnWork) ProtoMessage() {}
 
-func (x *WorkQueueResponse) ProtoReflect() protoreflect.Message {
+func (x *OnWork) ProtoReflect() protoreflect.Message {
 	mi := &file_docs_proto_v1_download_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -100,16 +109,124 @@ func (x *WorkQueueResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use WorkQueueResponse.ProtoReflect.Descriptor instead.
-func (*WorkQueueResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use OnWork.ProtoReflect.Descriptor instead.
+func (*OnWork) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *WorkQueueResponse) GetLinksInWork() []*Task {
+func (x *OnWork) GetLink() string {
+	if x != nil {
+		return x.Link
+	}
+	return ""
+}
+
+func (x *OnWork) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+func (x *OnWork) GetMoveTo() string {
+	if x != nil {
+		return x.MoveTo
+	}
+	return ""
+}
+
+func (x *OnWork) GetTargetQuantity() int64 {
+	if x != nil {
+		return x.TargetQuantity
+	}
+	return 0
+}
+
+func (x *OnWork) GetProcentage() float64 {
+	if x != nil {
+		return x.Procentage
+	}
+	return 0
+}
+
+func (x *OnWork) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *OnWork) GetTotalSize() float64 {
+	if x != nil {
+		return x.TotalSize
+	}
+	return 0
+}
+
+func (x *OnWork) GetCurrentSize() float64 {
+	if x != nil {
+		return x.CurrentSize
+	}
+	return 0
+}
+
+func (x *OnWork) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type StatusResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LinksInWork   []*OnWork              `protobuf:"bytes,1,rep,name=linksInWork,proto3" json:"linksInWork,omitempty"`
+	Sensors       string                 `protobuf:"bytes,2,opt,name=sensors,proto3" json:"sensors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StatusResponse) Reset() {
+	*x = StatusResponse{}
+	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StatusResponse) ProtoMessage() {}
+
+func (x *StatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StatusResponse.ProtoReflect.Descriptor instead.
+func (*StatusResponse) Descriptor() ([]byte, []int) {
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *StatusResponse) GetLinksInWork() []*OnWork {
 	if x != nil {
 		return x.LinksInWork
 	}
 	return nil
+}
+
+func (x *StatusResponse) GetSensors() string {
+	if x != nil {
+		return x.Sensors
+	}
+	return ""
 }
 
 type CleanHistoryResponse struct {
@@ -121,7 +238,7 @@ type CleanHistoryResponse struct {
 
 func (x *CleanHistoryResponse) Reset() {
 	*x = CleanHistoryResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -133,7 +250,7 @@ func (x *CleanHistoryResponse) String() string {
 func (*CleanHistoryResponse) ProtoMessage() {}
 
 func (x *CleanHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[2]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -146,7 +263,7 @@ func (x *CleanHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CleanHistoryResponse.ProtoReflect.Descriptor instead.
 func (*CleanHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{2}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CleanHistoryResponse) GetHistory() []*Task {
@@ -165,7 +282,7 @@ type DeleteFromQueueRequest struct {
 
 func (x *DeleteFromQueueRequest) Reset() {
 	*x = DeleteFromQueueRequest{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -177,7 +294,7 @@ func (x *DeleteFromQueueRequest) String() string {
 func (*DeleteFromQueueRequest) ProtoMessage() {}
 
 func (x *DeleteFromQueueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[3]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -190,7 +307,7 @@ func (x *DeleteFromQueueRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFromQueueRequest.ProtoReflect.Descriptor instead.
 func (*DeleteFromQueueRequest) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{3}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DeleteFromQueueRequest) GetLink() string {
@@ -209,7 +326,7 @@ type DeleteFromQueueResponse struct {
 
 func (x *DeleteFromQueueResponse) Reset() {
 	*x = DeleteFromQueueResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -221,7 +338,7 @@ func (x *DeleteFromQueueResponse) String() string {
 func (*DeleteFromQueueResponse) ProtoMessage() {}
 
 func (x *DeleteFromQueueResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[4]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -234,7 +351,7 @@ func (x *DeleteFromQueueResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFromQueueResponse.ProtoReflect.Descriptor instead.
 func (*DeleteFromQueueResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{4}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteFromQueueResponse) GetLinksInWork() []*Task {
@@ -254,7 +371,7 @@ type SetToQueueRequest struct {
 
 func (x *SetToQueueRequest) Reset() {
 	*x = SetToQueueRequest{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -266,7 +383,7 @@ func (x *SetToQueueRequest) String() string {
 func (*SetToQueueRequest) ProtoMessage() {}
 
 func (x *SetToQueueRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[5]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -279,7 +396,7 @@ func (x *SetToQueueRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetToQueueRequest.ProtoReflect.Descriptor instead.
 func (*SetToQueueRequest) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{5}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SetToQueueRequest) GetLink() string {
@@ -305,7 +422,7 @@ type SetToQueueResponse struct {
 
 func (x *SetToQueueResponse) Reset() {
 	*x = SetToQueueResponse{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -317,7 +434,7 @@ func (x *SetToQueueResponse) String() string {
 func (*SetToQueueResponse) ProtoMessage() {}
 
 func (x *SetToQueueResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[6]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -330,7 +447,7 @@ func (x *SetToQueueResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetToQueueResponse.ProtoReflect.Descriptor instead.
 func (*SetToQueueResponse) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{6}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SetToQueueResponse) GetLinksInWork() []*Task {
@@ -346,14 +463,14 @@ type Task struct {
 	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	MaxQuantity   string                 `protobuf:"bytes,3,opt,name=maxQuantity,proto3" json:"maxQuantity,omitempty"`
 	Name          *string                `protobuf:"bytes,4,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Stage         *Stage                 `protobuf:"bytes,5,opt,name=stage,proto3,oneof" json:"stage,omitempty"`
+	Message       *string                `protobuf:"bytes,5,opt,name=message,proto3,oneof" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Task) Reset() {
 	*x = Task{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -365,7 +482,7 @@ func (x *Task) String() string {
 func (*Task) ProtoMessage() {}
 
 func (x *Task) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[7]
+	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -378,7 +495,7 @@ func (x *Task) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Task.ProtoReflect.Descriptor instead.
 func (*Task) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{7}
+	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Task) GetLink() string {
@@ -409,69 +526,9 @@ func (x *Task) GetName() string {
 	return ""
 }
 
-func (x *Task) GetStage() *Stage {
-	if x != nil {
-		return x.Stage
-	}
-	return nil
-}
-
-type Stage struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Configure     string                 `protobuf:"bytes,1,opt,name=configure,proto3" json:"configure,omitempty"`
-	Progress      string                 `protobuf:"bytes,2,opt,name=progress,proto3" json:"progress,omitempty"`
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Stage) Reset() {
-	*x = Stage{}
-	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Stage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Stage) ProtoMessage() {}
-
-func (x *Stage) ProtoReflect() protoreflect.Message {
-	mi := &file_docs_proto_v1_download_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Stage.ProtoReflect.Descriptor instead.
-func (*Stage) Descriptor() ([]byte, []int) {
-	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *Stage) GetConfigure() string {
-	if x != nil {
-		return x.Configure
-	}
-	return ""
-}
-
-func (x *Stage) GetProgress() string {
-	if x != nil {
-		return x.Progress
-	}
-	return ""
-}
-
-func (x *Stage) GetMessage() string {
-	if x != nil {
-		return x.Message
+func (x *Task) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
 	}
 	return ""
 }
@@ -482,9 +539,22 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\n" +
 	"\x1cdocs/proto/v1/download.proto\x12\agrpc.v1\x1a\x1bgoogle/protobuf/empty.proto\":\n" +
 	"\x0fHistoryResponse\x12'\n" +
-	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\"D\n" +
-	"\x11WorkQueueResponse\x12/\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"?\n" +
+	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\"\x8a\x02\n" +
+	"\x06OnWork\x12\x12\n" +
+	"\x04link\x18\x01 \x01(\tR\x04link\x12\x1a\n" +
+	"\bfilename\x18\x02 \x01(\tR\bfilename\x12\x16\n" +
+	"\x06moveTo\x18\x03 \x01(\tR\x06moveTo\x12&\n" +
+	"\x0etargetQuantity\x18\x04 \x01(\x03R\x0etargetQuantity\x12\x1e\n" +
+	"\n" +
+	"procentage\x18\x05 \x01(\x01R\n" +
+	"procentage\x12\x16\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status\x12\x1c\n" +
+	"\ttotalSize\x18\a \x01(\x01R\ttotalSize\x12 \n" +
+	"\vcurrentSize\x18\b \x01(\x01R\vcurrentSize\x12\x18\n" +
+	"\amessage\x18\t \x01(\tR\amessage\"]\n" +
+	"\x0eStatusResponse\x121\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\x0f.grpc.v1.OnWorkR\vlinksInWork\x12\x18\n" +
+	"\asensors\x18\x02 \x01(\tR\asensors\"?\n" +
 	"\x14CleanHistoryResponse\x12'\n" +
 	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\",\n" +
 	"\x16DeleteFromQueueRequest\x12\x12\n" +
@@ -498,27 +568,24 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"maxQuality\x88\x01\x01B\r\n" +
 	"\v_maxQuality\"E\n" +
 	"\x12SetToQueueResponse\x12/\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"\xab\x01\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"\xa1\x01\n" +
 	"\x04Task\x12\x12\n" +
 	"\x04link\x18\x01 \x01(\tR\x04link\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x12 \n" +
 	"\vmaxQuantity\x18\x03 \x01(\tR\vmaxQuantity\x12\x17\n" +
-	"\x04name\x18\x04 \x01(\tH\x00R\x04name\x88\x01\x01\x12)\n" +
-	"\x05stage\x18\x05 \x01(\v2\x0e.grpc.v1.StageH\x01R\x05stage\x88\x01\x01B\a\n" +
-	"\x05_nameB\b\n" +
-	"\x06_stage\"[\n" +
-	"\x05Stage\x12\x1c\n" +
-	"\tconfigure\x18\x01 \x01(\tR\tconfigure\x12\x1a\n" +
-	"\bprogress\x18\x02 \x01(\tR\bprogress\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage2\xf8\x02\n" +
+	"\x04name\x18\x04 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x1d\n" +
+	"\amessage\x18\x05 \x01(\tH\x01R\amessage\x88\x01\x01B\a\n" +
+	"\x05_nameB\n" +
+	"\n" +
+	"\b_message2\xf0\x02\n" +
 	"\n" +
 	"Downloader\x12G\n" +
 	"\n" +
 	"SetToQueue\x12\x1a.grpc.v1.SetToQueueRequest\x1a\x1b.grpc.v1.SetToQueueResponse\"\x00\x12V\n" +
 	"\x0fDeleteFromQueue\x12\x1f.grpc.v1.DeleteFromQueueRequest\x1a .grpc.v1.DeleteFromQueueResponse\"\x00\x12G\n" +
-	"\fCleanHistory\x12\x16.google.protobuf.Empty\x1a\x1d.grpc.v1.CleanHistoryResponse\"\x00\x12A\n" +
-	"\tWorkQueue\x12\x16.google.protobuf.Empty\x1a\x1a.grpc.v1.WorkQueueResponse\"\x00\x12=\n" +
-	"\aHistory\x12\x16.google.protobuf.Empty\x1a\x18.grpc.v1.HistoryResponse\"\x00B\x0fZ\rdocs/proto/v1b\x06proto3"
+	"\fCleanHistory\x12\x16.google.protobuf.Empty\x1a\x1d.grpc.v1.CleanHistoryResponse\"\x00\x12;\n" +
+	"\x06Status\x12\x16.google.protobuf.Empty\x1a\x17.grpc.v1.StatusResponse\"\x00\x12;\n" +
+	"\x05Queue\x12\x16.google.protobuf.Empty\x1a\x18.grpc.v1.HistoryResponse\"\x00B\x0fZ\rdocs/proto/v1b\x06proto3"
 
 var (
 	file_docs_proto_v1_download_proto_rawDescOnce sync.Once
@@ -535,38 +602,37 @@ func file_docs_proto_v1_download_proto_rawDescGZIP() []byte {
 var file_docs_proto_v1_download_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_docs_proto_v1_download_proto_goTypes = []any{
 	(*HistoryResponse)(nil),         // 0: grpc.v1.HistoryResponse
-	(*WorkQueueResponse)(nil),       // 1: grpc.v1.WorkQueueResponse
-	(*CleanHistoryResponse)(nil),    // 2: grpc.v1.CleanHistoryResponse
-	(*DeleteFromQueueRequest)(nil),  // 3: grpc.v1.DeleteFromQueueRequest
-	(*DeleteFromQueueResponse)(nil), // 4: grpc.v1.DeleteFromQueueResponse
-	(*SetToQueueRequest)(nil),       // 5: grpc.v1.SetToQueueRequest
-	(*SetToQueueResponse)(nil),      // 6: grpc.v1.SetToQueueResponse
-	(*Task)(nil),                    // 7: grpc.v1.Task
-	(*Stage)(nil),                   // 8: grpc.v1.Stage
+	(*OnWork)(nil),                  // 1: grpc.v1.OnWork
+	(*StatusResponse)(nil),          // 2: grpc.v1.StatusResponse
+	(*CleanHistoryResponse)(nil),    // 3: grpc.v1.CleanHistoryResponse
+	(*DeleteFromQueueRequest)(nil),  // 4: grpc.v1.DeleteFromQueueRequest
+	(*DeleteFromQueueResponse)(nil), // 5: grpc.v1.DeleteFromQueueResponse
+	(*SetToQueueRequest)(nil),       // 6: grpc.v1.SetToQueueRequest
+	(*SetToQueueResponse)(nil),      // 7: grpc.v1.SetToQueueResponse
+	(*Task)(nil),                    // 8: grpc.v1.Task
 	(*emptypb.Empty)(nil),           // 9: google.protobuf.Empty
 }
 var file_docs_proto_v1_download_proto_depIdxs = []int32{
-	7,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.Task
-	7,  // 1: grpc.v1.WorkQueueResponse.linksInWork:type_name -> grpc.v1.Task
-	7,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.Task
-	7,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.Task
-	7,  // 4: grpc.v1.SetToQueueResponse.linksInWork:type_name -> grpc.v1.Task
-	8,  // 5: grpc.v1.Task.stage:type_name -> grpc.v1.Stage
-	5,  // 6: grpc.v1.Downloader.SetToQueue:input_type -> grpc.v1.SetToQueueRequest
-	3,  // 7: grpc.v1.Downloader.DeleteFromQueue:input_type -> grpc.v1.DeleteFromQueueRequest
-	9,  // 8: grpc.v1.Downloader.CleanHistory:input_type -> google.protobuf.Empty
-	9,  // 9: grpc.v1.Downloader.WorkQueue:input_type -> google.protobuf.Empty
-	9,  // 10: grpc.v1.Downloader.History:input_type -> google.protobuf.Empty
-	6,  // 11: grpc.v1.Downloader.SetToQueue:output_type -> grpc.v1.SetToQueueResponse
-	4,  // 12: grpc.v1.Downloader.DeleteFromQueue:output_type -> grpc.v1.DeleteFromQueueResponse
-	2,  // 13: grpc.v1.Downloader.CleanHistory:output_type -> grpc.v1.CleanHistoryResponse
-	1,  // 14: grpc.v1.Downloader.WorkQueue:output_type -> grpc.v1.WorkQueueResponse
-	0,  // 15: grpc.v1.Downloader.History:output_type -> grpc.v1.HistoryResponse
-	11, // [11:16] is the sub-list for method output_type
-	6,  // [6:11] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	8,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.Task
+	1,  // 1: grpc.v1.StatusResponse.linksInWork:type_name -> grpc.v1.OnWork
+	8,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.Task
+	8,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	8,  // 4: grpc.v1.SetToQueueResponse.linksInWork:type_name -> grpc.v1.Task
+	6,  // 5: grpc.v1.Downloader.SetToQueue:input_type -> grpc.v1.SetToQueueRequest
+	4,  // 6: grpc.v1.Downloader.DeleteFromQueue:input_type -> grpc.v1.DeleteFromQueueRequest
+	9,  // 7: grpc.v1.Downloader.CleanHistory:input_type -> google.protobuf.Empty
+	9,  // 8: grpc.v1.Downloader.Status:input_type -> google.protobuf.Empty
+	9,  // 9: grpc.v1.Downloader.Queue:input_type -> google.protobuf.Empty
+	7,  // 10: grpc.v1.Downloader.SetToQueue:output_type -> grpc.v1.SetToQueueResponse
+	5,  // 11: grpc.v1.Downloader.DeleteFromQueue:output_type -> grpc.v1.DeleteFromQueueResponse
+	3,  // 12: grpc.v1.Downloader.CleanHistory:output_type -> grpc.v1.CleanHistoryResponse
+	2,  // 13: grpc.v1.Downloader.Status:output_type -> grpc.v1.StatusResponse
+	0,  // 14: grpc.v1.Downloader.Queue:output_type -> grpc.v1.HistoryResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_docs_proto_v1_download_proto_init() }
@@ -574,8 +640,8 @@ func file_docs_proto_v1_download_proto_init() {
 	if File_docs_proto_v1_download_proto != nil {
 		return
 	}
-	file_docs_proto_v1_download_proto_msgTypes[5].OneofWrappers = []any{}
-	file_docs_proto_v1_download_proto_msgTypes[7].OneofWrappers = []any{}
+	file_docs_proto_v1_download_proto_msgTypes[6].OneofWrappers = []any{}
+	file_docs_proto_v1_download_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

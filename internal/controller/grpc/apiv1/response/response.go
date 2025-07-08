@@ -11,10 +11,6 @@ func TasksToLinks(task *usecase.Task) *proto.Task {
 		MaxQuantity: task.MaxQuantity,
 		Status:      task.Status,
 		Name:        task.Name,
-		Stage: &proto.Stage{
-			Configure: task.Stage.Configure,
-			Progress:  task.Stage.Progress,
-			Message:   task.Stage.Message,
-		},
+		Message:     task.Message,
 	}
 }

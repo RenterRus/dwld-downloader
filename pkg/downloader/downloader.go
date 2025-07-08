@@ -3,6 +3,7 @@ package downloader
 import (
 	"context"
 	"dwld-downloader/internal/controller/downloader"
+	"dwld-downloader/internal/entity"
 	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/repo/temporary"
 )
@@ -11,7 +12,7 @@ type DownloaderConf struct {
 	WorkDir       string
 	Threads       int
 	PercentToNext int
-	Stages        []downloader.Stage
+	Stages        []entity.Stage
 	SqlRepo       persistent.SQLRepo
 	Cache         temporary.CacheRepo
 }

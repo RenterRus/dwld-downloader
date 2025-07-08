@@ -6,6 +6,7 @@ import (
 	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/repo/temporary"
 	"fmt"
+	"math/rand/v2"
 	"strings"
 	"sync"
 	"time"
@@ -15,7 +16,7 @@ import (
 )
 
 const (
-	TIMEOUT_WORKERS = 10
+	TIMEOUT_WORKERS = 7
 	MIN_QUALITY     = 720
 	MAX_QUALITY     = 10000
 )
@@ -24,20 +25,11 @@ type Task struct {
 	Link    string
 	Quality int
 }
-type Stage struct {
-	Positions         int
-	AttemptBeforeNext int
-	Threads           int
-	IsCookie          bool
-	IsEmbededCharters bool
-	IsMarkWatched     bool
-	Extractors        string
-}
 
 type DownloaderSource struct {
 	WorkDir       string
 	PercentToNext int
-	Stages        map[int]Stage
+	Stages        map[int]entity.Stage
 	sqlRepo       persistent.SQLRepo
 	cache         temporary.CacheRepo
 	workersPool   chan struct{}
@@ -48,7 +40,7 @@ type DownloaderConf struct {
 	WorkDir       string
 	Threads       int
 	PercentToNext int
-	Stages        []Stage
+	Stages        []entity.Stage
 	SqlRepo       persistent.SQLRepo
 	Cache         temporary.CacheRepo
 }
@@ -65,7 +57,7 @@ func InstallYTDLP() {
 func NewDownloader(conf DownloaderConf) Downloader {
 	InstallYTDLP()
 
-	stages := make(map[int]Stage)
+	stages := make(map[int]entity.Stage)
 	for _, v := range conf.Stages {
 		stages[v.Positions] = v
 	}
@@ -79,6 +71,36 @@ func NewDownloader(conf DownloaderConf) Downloader {
 		workersPool:   make(chan struct{}, conf.Threads),
 		totalStages:   len(stages),
 	}
+}
+
+type statInfo struct {
+	task        *Task
+	msg         string
+	filename    string
+	totalSize   float64
+	currectSize float64
+	procentage  float64
+}
+
+func (d *DownloaderSource) statUpdate(stat statInfo) {
+	d.sqlRepo.Update(&persistent.LinkModelRequest{
+		Link:           stat.task.Link,
+		Filename:       pointer.To(stat.filename),
+		WorkStatus:     entity.WORK,
+		Message:        pointer.To(stat.msg),
+		TargetQuantity: stat.task.Quality,
+	})
+	d.cache.SetStatus(&temporary.TaskRequest{
+		FileName:     stat.filename,
+		Link:         stat.task.Link,
+		MoveTo:       d.WorkDir,
+		MaxQuality:   stat.task.Quality,
+		Procentage:   stat.procentage,
+		Status:       entity.WORK,
+		DownloadSize: stat.totalSize,
+		CurrentSize:  stat.currectSize,
+		Message:      stat.msg,
+	})
 }
 
 func (d *DownloaderSource) Downloader(task *Task) error {
@@ -122,8 +144,16 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 			status = "converting"
 		}
 
-		//update.Filename
-		filename = *update.Info.Filename
+		if filename != *update.Info.Filename {
+			filename = *update.Info.Filename
+			d.sqlRepo.Update(&persistent.LinkModelRequest{
+				Link:           task.Link,
+				Filename:       pointer.To(filename),
+				WorkStatus:     entity.WORK,
+				Message:        pointer.To(status),
+				TargetQuantity: task.Quality,
+			})
+		}
 
 		d.cache.SetStatus(&temporary.TaskRequest{
 			FileName:     filename,
@@ -170,33 +200,31 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 			}
 
 			for retry := range stg.AttemptBeforeNext {
-				_ = retry
 				_, err := dl.Run(context.TODO(), task.Link)
 				if err != nil {
-					d.sqlRepo.Update(&persistent.LinkModelRequest{
-						Link:           task.Link,
-						Filename:       pointer.To(filename),
-						WorkStatus:     entity.WORK,
-						Message:        pointer.To(err.Error()),
-						TargetQuantity: task.Quality,
-					})
-					d.cache.SetStatus(&temporary.TaskRequest{
-						FileName:     filename,
-						Link:         task.Link,
-						MoveTo:       d.WorkDir,
-						MaxQuality:   qualtiy,
-						Procentage:   0,
-						Status:       entity.WORK,
-						DownloadSize: totalSize,
-						CurrentSize:  size,
-						Message:      err.Error(),
+					d.statUpdate(statInfo{
+						task:        task,
+						msg:         fmt.Sprintf("download failed on stage #%d with retries on stage %d. Reason: %s", i+1, retry, err.Error()),
+						filename:    filename,
+						totalSize:   totalSize,
+						currectSize: size,
+						procentage:  0,
 					})
 					err_resp = err
-					fmt.Printf("download failed: %s", err.Error())
+					fmt.Printf("download failed: %s\n", err.Error())
 					continue
 				}
 
 				// Скачивание и конвертация прошли успешно
+				d.statUpdate(statInfo{
+					task:        task,
+					msg:         fmt.Sprintf("download complete on stage #%d witn retries on stage %d", i+1, retry),
+					filename:    filename,
+					totalSize:   totalSize,
+					currectSize: size,
+					procentage:  1000,
+				})
+
 				return nil
 			}
 		}
@@ -223,6 +251,7 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 					<-d.workersPool
 					return
 				}
+
 				if task.Link != "" {
 					err := d.Downloader(task)
 					if err != nil {
@@ -236,10 +265,12 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 					}
 
 					d.sqlRepo.UpdateStatus(task.Link, entity.SENDING)
-				} else {
-					time.Sleep(time.Second * TIMEOUT_WORKERS)
+					return
 				}
+
+				time.Sleep(time.Second * TIMEOUT_WORKERS)
 			}()
+			time.Sleep(time.Second * time.Duration(rand.IntN(TIMEOUT_WORKERS)+1))
 		default:
 			time.Sleep(time.Second * TIMEOUT_WORKERS)
 		}
@@ -257,6 +288,9 @@ func (d *DownloaderSource) GetLink() (*Task, error) {
 			TargetQuantity: MIN_QUALITY,
 		}
 	}
+
+	d.sqlRepo.UpdateStatus(link.Link, entity.WORK)
+
 	return &Task{
 		Link:    link.Link,
 		Quality: link.TargetQuantity,

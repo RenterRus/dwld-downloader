@@ -14,6 +14,7 @@ type SenderConf struct {
 	LocalPath  string
 	RemotePath string
 	Port       int
+	Enable     bool
 	SqlRepo    persistent.SQLRepo
 	Cache      temporary.CacheRepo
 }
@@ -34,6 +35,7 @@ func NewSender(conf SenderConf) *Sender {
 			Port:       conf.Port,
 			SqlRepo:    conf.SqlRepo,
 			Cache:      conf.Cache,
+			Enable:     conf.Enable,
 		}),
 		notify: make(chan struct{}, 1),
 	}

@@ -13,8 +13,8 @@ service Downloader {
     rpc SetToQueue (SetToQueueRequest) returns (SetToQueueResponse) {}
     rpc DeleteFromQueue(DeleteFromQueueRequest) returns (DeleteFromQueueResponse) {}
     rpc CleanHistory(google.protobuf.Empty) returns (CleanHistoryResponse) {}
-    rpc WorkQueue (google.protobuf.Empty) returns (WorkQueueResponse) {}
-    rpc History (google.protobuf.Empty) returns (HistoryResponse) {}
+    rpc Status (google.protobuf.Empty) returns (StatusResponse) {}
+    rpc Queue (google.protobuf.Empty) returns (HistoryResponse) {}
 }
 
 
@@ -22,8 +22,21 @@ message HistoryResponse{
     repeated Task history = 1;
 }
 
-message WorkQueueResponse{
-    repeated Task linksInWork = 1;
+message OnWork{
+    string link = 1;
+    string filename = 2;
+    string moveTo = 3;
+    int64 targetQuantity = 4;
+    double procentage = 5;
+    string status = 6;
+    double totalSize = 7;
+    double currentSize = 8;
+    string message = 9;
+}
+
+message StatusResponse{
+    repeated OnWork linksInWork = 1;
+    string sensors = 2;
 }
 
 message CleanHistoryResponse{
@@ -52,12 +65,5 @@ message Task {
     string status = 2;
     string maxQuantity = 3;
     optional string name = 4;
-    optional Stage stage = 5;
-
-}
-
-message Stage{
-    string configure = 1;
-    string progress = 2;
-    string message = 3;
+    optional string message = 5;
 }

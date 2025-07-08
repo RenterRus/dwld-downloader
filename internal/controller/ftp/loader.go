@@ -24,6 +24,7 @@ type FTPSender struct {
 	LocalPath  string
 	RemotePath string
 	Port       int
+	Enable     bool
 	sqlRepo    persistent.SQLRepo
 	cache      temporary.CacheRepo
 }
@@ -67,8 +68,11 @@ func (f *FTPSender) presend(link *persistent.LinkModel) error {
 		Status:     entity.SENDING,
 	})
 
-	if err := f.send(*link.Filename); err != nil {
-		return fmt.Errorf("send file: %s", err.Error())
+	if f.Enable {
+		if err := f.send(*link.Filename, link.Link, link.TargetQuantity); err != nil {
+			fmt.Printf("[send file by ftp: %s\\n", err.Error())
+			return fmt.Errorf("send file: %s", err.Error())
+		}
 	}
 
 	f.sqlRepo.UpdateStatus(link.Link, entity.DONE)
@@ -77,7 +81,7 @@ func (f *FTPSender) presend(link *persistent.LinkModel) error {
 	return nil
 }
 
-func (f *FTPSender) send(filename string) error {
+func (f *FTPSender) send(filename, link string, targetQuantity int) error {
 	config := &ssh.ClientConfig{
 		User: f.User,
 		Auth: []ssh.AuthMethod{
@@ -112,6 +116,19 @@ func (f *FTPSender) send(filename string) error {
 		return fmt.Errorf("ftp send (create remote): %w", err)
 	}
 	defer dstFile.Close()
+
+	st, _ := srcFile.Stat()
+	f.cache.SetStatus(&temporary.TaskRequest{
+		FileName:     filename,
+		Link:         link,
+		MoveTo:       f.RemotePath,
+		MaxQuality:   targetQuantity,
+		Procentage:   100,
+		Status:       entity.SENDING,
+		DownloadSize: float64(float64(st.Size()/1024) / 1024),
+		CurrentSize:  float64(float64(st.Size()/1024) / 1024),
+		Message:      "sending",
+	})
 
 	_, err = io.Copy(dstFile, srcFile)
 	if err != nil {

@@ -32,6 +32,7 @@ func NewMemCache(conn *cache.Cache) CacheRepo {
 
 func (c *Cache) GetStatus() (*CacheResponse, error) {
 	resp := make(map[string]map[string]TaskResp)
+
 	for _, link := range c.links {
 		for file := range link {
 			res, err := c.get(file)
@@ -113,7 +114,7 @@ func (c *Cache) toucer() {
 
 func (c *Cache) set(key, value string, TTLSec int32) error {
 	err := c.c.Conn.Set(&memcache.Item{
-		Key:        key,
+		Key:        keygen(key),
 		Value:      []byte(value),
 		Expiration: TTLSec,
 	})
@@ -125,7 +126,7 @@ func (c *Cache) set(key, value string, TTLSec int32) error {
 }
 
 func (c *Cache) get(key string) (string, error) {
-	item, err := c.c.Conn.Get(key)
+	item, err := c.c.Conn.Get(keygen(key))
 	if err != nil {
 		return "", fmt.Errorf("cache get: %w", err)
 	}

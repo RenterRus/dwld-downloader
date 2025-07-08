@@ -12,6 +12,7 @@ type FTPSenderConf struct {
 	LocalPath  string
 	RemotePath string
 	Port       int
+	Enable     bool
 	SqlRepo    persistent.SQLRepo
 	Cache      temporary.CacheRepo
 }
@@ -24,6 +25,7 @@ func NewFTPSender(conf *FTPSenderConf) Sender {
 		LocalPath:  conf.LocalPath,
 		RemotePath: conf.RemotePath,
 		Port:       conf.Port,
+		Enable:     conf.Enable,
 		sqlRepo:    conf.SqlRepo,
 		cache:      conf.Cache,
 	}

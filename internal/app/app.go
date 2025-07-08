@@ -1,9 +1,9 @@
 package app
 
 import (
-	dwnl "dwld-downloader/internal/controller/downloader"
 	"dwld-downloader/internal/controller/grpc"
 	"dwld-downloader/internal/controller/http"
+	"dwld-downloader/internal/entity"
 	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/repo/temporary"
 	"dwld-downloader/internal/usecase/download"
@@ -53,8 +53,8 @@ func NewApp(configPath string) error {
 		WorkDir:       conf.Downloader.WorkPath,
 		Threads:       conf.Downloader.Threads,
 		PercentToNext: conf.Downloader.PercentToNext,
-		Stages: lo.Map(conf.Downloader.Stages, func(stage Stage, _ int) dwnl.Stage {
-			return dwnl.Stage{
+		Stages: lo.Map(conf.Downloader.Stages, func(stage Stage, _ int) entity.Stage {
+			return entity.Stage{
 				Positions:         stage.Positions,
 				AttemptBeforeNext: stage.AttemptBeforeNext,
 				Threads:           stage.Threads,
@@ -68,7 +68,6 @@ func NewApp(configPath string) error {
 		Cache:   cache,
 	})
 
-	dwld.Start()
 	downloadUsecases := download.NewDownload(
 		db,
 		cache,
@@ -84,8 +83,11 @@ func NewApp(configPath string) error {
 		Port:       conf.FTP.Addr.Port,
 		SqlRepo:    db,
 		Cache:      cache,
+		Enable:     conf.FTP.Addr.Enable,
 	})
-	ftpSender.Start()
+
+	go dwld.Start()
+	go ftpSender.Start()
 
 	// gRPC Server
 	grpcServer := grpcserver.New(grpcserver.Port(strconv.Itoa(conf.GRPC.Port)))

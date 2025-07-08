@@ -15,3 +15,13 @@ var StatusMapping map[Status]string = map[Status]string{
 	SENDING: "SENDING",
 	DONE:    "DONE",
 }
+
+type Stage struct {
+	Positions         int
+	AttemptBeforeNext int
+	Threads           int
+	IsCookie          bool
+	IsEmbededCharters bool
+	IsMarkWatched     bool
+	Extractors        string
+}

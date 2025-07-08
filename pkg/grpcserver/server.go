@@ -35,7 +35,6 @@ func New(opts ...Option) *Server {
 	return s
 }
 
-// Start -.
 func (s *Server) Start() {
 	go func() {
 		ln, err := net.Listen("tcp", s.address)
@@ -51,12 +50,10 @@ func (s *Server) Start() {
 	}()
 }
 
-// Notify -.
 func (s *Server) Notify() <-chan error {
 	return s.notify
 }
 
-// Shutdown -.
 func (s *Server) Shutdown() error {
 	s.App.GracefulStop()
 

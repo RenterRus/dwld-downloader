@@ -21,6 +21,7 @@ ftp:
 #downloader:
 #    threads: 2
 #    percentToNext: 71
+#    workPath: "/Users/arturdavydov/Downloads/dwld-downloader"
 #    stages:
 #        - positions: 1
 #          attemptBeforeNext: 10

@@ -50,21 +50,32 @@ func (v *V1) CleanHistory(ctx context.Context, in *emptypb.Empty) (*proto.CleanH
 	}, nil
 }
 
-func (v *V1) WorkQueue(ctx context.Context, in *emptypb.Empty) (*proto.WorkQueueResponse, error) {
-	tasks, err := v.u.WorkQueue()
+func (v *V1) Status(ctx context.Context, in *emptypb.Empty) (*proto.StatusResponse, error) {
+	tasks, err := v.u.Status()
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}
 
-	return &proto.WorkQueueResponse{
-		LinksInWork: lo.Map(tasks, func(t *usecase.Task, _ int) *proto.Task {
-			return response.TasksToLinks(t)
+	return &proto.StatusResponse{
+		Sensors: tasks.Sensors,
+		LinksInWork: lo.Map(tasks.LinksInWork, func(t *usecase.OnWork, _ int) *proto.OnWork {
+			return &proto.OnWork{
+				Link:           t.Link,
+				Filename:       t.Filename,
+				MoveTo:         t.MoveTo,
+				TargetQuantity: t.TargetQuantity,
+				Procentage:     t.Procentage,
+				Status:         t.Status,
+				TotalSize:      t.TotalSize,
+				CurrentSize:    t.CurrentSize,
+				Message:        t.Message,
+			}
 		}),
 	}, nil
 }
 
-func (v *V1) History(ctx context.Context, in *emptypb.Empty) (*proto.HistoryResponse, error) {
-	tasks, err := v.u.History()
+func (v *V1) Queue(ctx context.Context, in *emptypb.Empty) (*proto.HistoryResponse, error) {
+	tasks, err := v.u.Queue()
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}

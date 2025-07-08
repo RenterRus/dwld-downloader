@@ -23,5 +23,15 @@ install prereq mac brew:
 	@brew install protoc-gen-go
 	@brew install protoc-gen-go-grpc
 
+install on server:
+	@sudo apt install sqlite3
+	@sudo apt install memcached libmemcached-tools
+	@sudo systemctl enable memcached
+	@sudo systemctl restart memcached
+	@go mod tidy
+	@sudo apt install lm-sensors
+	@sudo systemctl restart kmod
+
+
 create migration:
 	@go run github.com/pressly/goose/v3/cmd/goose@latest create create_links sql -dir migration

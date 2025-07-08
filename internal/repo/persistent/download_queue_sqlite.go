@@ -1,6 +1,7 @@
 package persistent
 
 import (
+	"database/sql"
 	"dwld-downloader/internal/entity"
 	"dwld-downloader/pkg/sqldb"
 	"fmt"
@@ -12,14 +13,33 @@ type persistentRepo struct {
 }
 
 func NewSQLRepo(db *sqldb.DB, workDir string) SQLRepo {
-	return &persistentRepo{
+	resp := &persistentRepo{
 		db:      db,
 		workDir: workDir,
 	}
+
+	resp.workToNew()
+
+	return resp
 }
 
-func (p *persistentRepo) SelectHistory() ([]LinkModel, error) {
-	rows, err := p.db.Select("select link, filename, work_status, message, target_quantity from links")
+func (p *persistentRepo) workToNew() {
+	_, err := p.db.Exec("update links set work_status = $1 where work_status = $2", entity.StatusMapping[entity.NEW], entity.StatusMapping[entity.WORK])
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (p *persistentRepo) SelectHistory(withoutStatus *entity.Status) ([]LinkModel, error) {
+	var rows *sql.Rows
+	var err error
+
+	if withoutStatus != nil {
+		rows, err = p.db.Select("select link, filename, work_status, message, target_quantity from links where work_status != $1", entity.StatusMapping[*withoutStatus])
+	} else {
+		rows, err = p.db.Select("select link, filename, work_status, message, target_quantity from links")
+	}
+
 	defer func() {
 		rows.Close()
 	}()
@@ -53,7 +73,7 @@ func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
 
-	return p.SelectHistory()
+	return p.SelectHistory(nil)
 }
 
 func (p *persistentRepo) UpdateStatus(link string, status entity.Status) ([]LinkModel, error) {
@@ -62,7 +82,7 @@ func (p *persistentRepo) UpdateStatus(link string, status entity.Status) ([]Link
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
 
-	return p.SelectHistory()
+	return p.SelectHistory(nil)
 }
 
 func (p *persistentRepo) Delete(link string) ([]LinkModel, error) {
@@ -71,7 +91,7 @@ func (p *persistentRepo) Delete(link string) ([]LinkModel, error) {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
 
-	return p.SelectHistory()
+	return p.SelectHistory(nil)
 }
 
 func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
@@ -80,7 +100,7 @@ func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
 
-	return p.SelectHistory()
+	return p.SelectHistory(nil)
 }
 
 func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
