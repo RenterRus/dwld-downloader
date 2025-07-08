@@ -70,7 +70,7 @@ func (x *HealtheckResponse) GetMessage() string {
 
 type HistoryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	History       []*Task                `protobuf:"bytes,1,rep,name=history,proto3" json:"history,omitempty"`
+	Queue         []*Task                `protobuf:"bytes,1,rep,name=queue,proto3" json:"queue,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -105,9 +105,9 @@ func (*HistoryResponse) Descriptor() ([]byte, []int) {
 	return file_docs_proto_v1_download_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *HistoryResponse) GetHistory() []*Task {
+func (x *HistoryResponse) GetQueue() []*Task {
 	if x != nil {
-		return x.History
+		return x.Queue
 	}
 	return nil
 }
@@ -584,9 +584,9 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\x11HealtheckResponse\x12\x1d\n" +
 	"\amessage\x18\x01 \x01(\tH\x00R\amessage\x88\x01\x01B\n" +
 	"\n" +
-	"\b_message\":\n" +
-	"\x0fHistoryResponse\x12'\n" +
-	"\ahistory\x18\x01 \x03(\v2\r.grpc.v1.TaskR\ahistory\"\x8a\x02\n" +
+	"\b_message\"6\n" +
+	"\x0fHistoryResponse\x12#\n" +
+	"\x05queue\x18\x01 \x03(\v2\r.grpc.v1.TaskR\x05queue\"\x8a\x02\n" +
 	"\x06OnWork\x12\x12\n" +
 	"\x04link\x18\x01 \x01(\tR\x04link\x12\x1a\n" +
 	"\bfilename\x18\x02 \x01(\tR\bfilename\x12\x16\n" +
@@ -662,7 +662,7 @@ var file_docs_proto_v1_download_proto_goTypes = []any{
 	(*emptypb.Empty)(nil),           // 10: google.protobuf.Empty
 }
 var file_docs_proto_v1_download_proto_depIdxs = []int32{
-	9,  // 0: grpc.v1.HistoryResponse.history:type_name -> grpc.v1.Task
+	9,  // 0: grpc.v1.HistoryResponse.queue:type_name -> grpc.v1.Task
 	2,  // 1: grpc.v1.StatusResponse.linksInWork:type_name -> grpc.v1.OnWork
 	9,  // 2: grpc.v1.CleanHistoryResponse.history:type_name -> grpc.v1.Task
 	9,  // 3: grpc.v1.DeleteFromQueueResponse.linksInWork:type_name -> grpc.v1.Task

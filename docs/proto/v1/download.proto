@@ -24,7 +24,7 @@ message HealtheckResponse{
 
 
 message HistoryResponse{
-    repeated Task history = 1;
+    repeated Task queue = 1;
 }
 
 message OnWork{

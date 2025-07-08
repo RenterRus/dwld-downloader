@@ -13,7 +13,17 @@ import (
 )
 
 func (v *V1) SetToQueue(ctx context.Context, in *proto.SetToQueueRequest) (*proto.SetToQueueResponse, error) {
-	tasks, err := v.u.SetToQueue(in.Link, *in.MaxQuality)
+	fmt.Println("================\nSetToQueue")
+	defer func() {
+		fmt.Println(in)
+		fmt.Println("================")
+	}()
+
+	if in == nil || pointer.Get(in).Link == "" {
+		return nil, fmt.Errorf("SetToQueue: empty request")
+	}
+
+	tasks, err := v.u.SetToQueue(in.GetLink(), *in.MaxQuality)
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}
@@ -26,7 +36,13 @@ func (v *V1) SetToQueue(ctx context.Context, in *proto.SetToQueueRequest) (*prot
 }
 
 func (v *V1) DeleteFromQueue(ctx context.Context, in *proto.DeleteFromQueueRequest) (*proto.DeleteFromQueueResponse, error) {
-	tasks, err := v.u.DeleteFromQueue(in.Link)
+	fmt.Println("================\nDeleteFromQueue")
+	defer func() {
+		fmt.Println(in)
+		fmt.Println("================")
+	}()
+
+	tasks, err := v.u.DeleteFromQueue(in.GetLink())
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}
@@ -39,6 +55,11 @@ func (v *V1) DeleteFromQueue(ctx context.Context, in *proto.DeleteFromQueueReque
 }
 
 func (v *V1) CleanHistory(ctx context.Context, in *emptypb.Empty) (*proto.CleanHistoryResponse, error) {
+	fmt.Println("================\nCleanHistory")
+	defer func() {
+		fmt.Println("================")
+	}()
+
 	tasks, err := v.u.CleanHistory()
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
@@ -52,6 +73,11 @@ func (v *V1) CleanHistory(ctx context.Context, in *emptypb.Empty) (*proto.CleanH
 }
 
 func (v *V1) Status(ctx context.Context, in *emptypb.Empty) (*proto.StatusResponse, error) {
+	fmt.Println("================\nStatus")
+	defer func() {
+		fmt.Println("================")
+	}()
+
 	tasks, err := v.u.Status()
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
@@ -76,19 +102,29 @@ func (v *V1) Status(ctx context.Context, in *emptypb.Empty) (*proto.StatusRespon
 }
 
 func (v *V1) Queue(ctx context.Context, in *emptypb.Empty) (*proto.HistoryResponse, error) {
+	fmt.Println("================\nQueue")
+	defer func() {
+		fmt.Println("================")
+	}()
+
 	tasks, err := v.u.Queue()
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}
 
 	return &proto.HistoryResponse{
-		History: lo.Map(tasks, func(t *usecase.Task, _ int) *proto.Task {
+		Queue: lo.Map(tasks, func(t *usecase.Task, _ int) *proto.Task {
 			return response.TasksToLinks(t)
 		}),
 	}, nil
 }
 
 func (v *V1) Healtheck(ctx context.Context, in *emptypb.Empty) (*proto.HealtheckResponse, error) {
+	fmt.Println("================\nHealtheck")
+	defer func() {
+		fmt.Println("================")
+	}()
+
 	return &proto.HealtheckResponse{
 		Message: pointer.To("OK"),
 	}, nil

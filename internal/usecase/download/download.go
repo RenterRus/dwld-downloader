@@ -1,13 +1,11 @@
 package download
 
 import (
-	"dwld-downloader/internal/entity"
 	"dwld-downloader/internal/repo/persistent"
 	"dwld-downloader/internal/repo/temporary"
 	"dwld-downloader/internal/usecase"
 	"fmt"
 
-	"github.com/AlekSi/pointer"
 	"github.com/samber/lo"
 )
 
@@ -81,7 +79,7 @@ func (d *downlaoder) Status() (*usecase.StatusResponse, error) {
 }
 
 func (d *downlaoder) Queue() ([]*usecase.Task, error) {
-	resp, err := d.dbRepo.SelectHistory(pointer.To(entity.DONE))
+	resp, err := d.dbRepo.SelectHistory(nil)
 	if err != nil {
 		return nil, fmt.Errorf("Queue: %w", err)
 	}
