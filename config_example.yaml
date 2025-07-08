@@ -3,11 +3,6 @@ grpc:
     port: 8888
     enable: true
 
-http:
-    host: "127.0.0.1"
-    port: 8899
-    enable: true
-
 ftp:
     addr:
         host: "192.168.0.105"

@@ -40,7 +40,6 @@ type DownloadConfig struct {
 
 type Config struct {
 	GRPC Server    `validate:"required"`
-	HTTP Server    `validate:"required"`
 	FTP  FTPClient `validate:"required"`
 
 	PathToDB string `validate:"required"`
