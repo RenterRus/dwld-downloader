@@ -3,8 +3,8 @@ package downloader
 import (
 	"context"
 
-	"github.com/RenterRus/dwld-downloader/internal/controller/downloader"
 	"github.com/RenterRus/dwld-downloader/internal/entity"
+	"github.com/RenterRus/dwld-downloader/internal/repo/downloader"
 	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
 	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 )
