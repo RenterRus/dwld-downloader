@@ -2,6 +2,7 @@ package response
 
 import (
 	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
+
 	"github.com/RenterRus/dwld-downloader/internal/usecase"
 )
 

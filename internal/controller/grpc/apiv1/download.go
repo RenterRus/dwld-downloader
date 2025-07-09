@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
 	"github.com/RenterRus/dwld-downloader/internal/controller/grpc/apiv1/response"
+
+	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
+
 	"github.com/RenterRus/dwld-downloader/internal/usecase"
 
 	"github.com/AlekSi/pointer"

@@ -16,7 +16,7 @@ ftp:
 downloader:
     threads: 2
     percentToNext: 71
-    workPath: "/Users/arturdavydov/Downloads/github.com/RenterRus/dwld-downloader"
+    workPath: "/Users/arturdavydov/Downloads/dwld-downloader"
     stages:
         - positions: 1
           attemptBeforeNext: 10
@@ -35,7 +35,7 @@ downloader:
 #downloader:
 #    threads: 2
 #    percentToNext: 97
-#    workPath: "/Users/arturdavydov/Downloads/github.com/RenterRus/dwld-downloader"
+#    workPath: "/Users/arturdavydov/Downloads/dwld-downloader"
 #    stages:
 #        - positions: 1
 #          attemptBeforeNext: 20
@@ -134,7 +134,7 @@ downloader:
 #          isMarkWatched: false
 #          extractors: "youtube:formats=missing_pot"
 
-pathtodb: "/Users/arturdavydov/Downloads/github.com/RenterRus/dwld-downloader"
+pathtodb: "/Users/arturdavydov/Downloads/dwld-downloader"
 namedb: "links.db"
 
 

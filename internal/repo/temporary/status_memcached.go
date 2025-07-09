@@ -2,6 +2,7 @@ package temporary
 
 import (
 	"context"
+
 	"encoding/json"
 	"fmt"
 	"time"
@@ -9,7 +10,6 @@ import (
 	"github.com/RenterRus/dwld-downloader/internal/entity"
 	"github.com/RenterRus/dwld-downloader/internal/repo/sensors"
 	"github.com/RenterRus/dwld-downloader/pkg/cache"
-
 	"github.com/bradfitz/gomemcache/memcache"
 )
 

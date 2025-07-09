@@ -1,4 +1,4 @@
-# github.com/RenterRus/dwld-downloader
+# dwld-downloader
 
 Сервис скачиваний
 

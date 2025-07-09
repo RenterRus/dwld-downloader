@@ -6,7 +6,6 @@ import (
 	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
 	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 	"github.com/RenterRus/dwld-downloader/internal/usecase"
-
 	"github.com/samber/lo"
 )
 

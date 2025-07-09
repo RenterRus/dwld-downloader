@@ -14,11 +14,10 @@ import (
 	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 	"github.com/RenterRus/dwld-downloader/internal/usecase/download"
 	"github.com/RenterRus/dwld-downloader/pkg/cache"
-	"github.com/RenterRus/dwld-downloader/pkg/downloader"
+	dwnld "github.com/RenterRus/dwld-downloader/pkg/downloader"
 	"github.com/RenterRus/dwld-downloader/pkg/ftp"
 	"github.com/RenterRus/dwld-downloader/pkg/grpcserver"
 	"github.com/RenterRus/dwld-downloader/pkg/sqldb"
-
 	"github.com/samber/lo"
 )
 
@@ -39,7 +38,7 @@ func NewApp(configPath string) error {
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
 	cache := temporary.NewMemCache(cc)
 
-	dwld := downloader.NewDownloader(downloader.DownloaderConf{
+	dwld := dwnld.NewDownloader(dwnld.DownloaderConf{
 		WorkDir:       conf.Downloader.WorkPath,
 		Threads:       conf.Downloader.Threads,
 		PercentToNext: conf.Downloader.PercentToNext,
