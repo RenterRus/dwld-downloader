@@ -2,7 +2,8 @@ package temporary
 
 import (
 	"context"
-	"dwld-downloader/internal/entity"
+
+	"github.com/RenterRus/dwld-downloader/internal/entity"
 )
 
 type TaskRequest struct {

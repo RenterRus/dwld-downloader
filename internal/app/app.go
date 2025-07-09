@@ -1,22 +1,23 @@
 package app
 
 import (
-	"dwld-downloader/internal/controller/grpc"
-	"dwld-downloader/internal/entity"
-	"dwld-downloader/internal/repo/persistent"
-	"dwld-downloader/internal/repo/temporary"
-	"dwld-downloader/internal/usecase/download"
-	"dwld-downloader/pkg/cache"
-	"dwld-downloader/pkg/downloader"
-	"dwld-downloader/pkg/ftp"
-	"dwld-downloader/pkg/grpcserver"
-	"dwld-downloader/pkg/sqldb"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"strconv"
 	"syscall"
+
+	"github.com/RenterRus/dwld-downloader/internal/controller/grpc"
+	"github.com/RenterRus/dwld-downloader/internal/entity"
+	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
+	"github.com/RenterRus/dwld-downloader/internal/usecase/download"
+	"github.com/RenterRus/dwld-downloader/pkg/cache"
+	"github.com/RenterRus/dwld-downloader/pkg/downloader"
+	"github.com/RenterRus/dwld-downloader/pkg/ftp"
+	"github.com/RenterRus/dwld-downloader/pkg/grpcserver"
+	"github.com/RenterRus/dwld-downloader/pkg/sqldb"
 
 	"github.com/samber/lo"
 )

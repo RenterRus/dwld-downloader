@@ -2,9 +2,10 @@ package persistent
 
 import (
 	"database/sql"
-	"dwld-downloader/internal/entity"
-	"dwld-downloader/pkg/sqldb"
 	"fmt"
+
+	"github.com/RenterRus/dwld-downloader/internal/entity"
+	"github.com/RenterRus/dwld-downloader/pkg/sqldb"
 )
 
 type persistentRepo struct {

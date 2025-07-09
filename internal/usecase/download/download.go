@@ -1,10 +1,11 @@
 package download
 
 import (
-	"dwld-downloader/internal/repo/persistent"
-	"dwld-downloader/internal/repo/temporary"
-	"dwld-downloader/internal/usecase"
 	"fmt"
+
+	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 
 	"github.com/samber/lo"
 )

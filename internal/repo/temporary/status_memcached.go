@@ -2,12 +2,13 @@ package temporary
 
 import (
 	"context"
-	"dwld-downloader/internal/entity"
-	"dwld-downloader/internal/repo/sensors"
-	"dwld-downloader/pkg/cache"
 	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/RenterRus/dwld-downloader/internal/entity"
+	"github.com/RenterRus/dwld-downloader/internal/repo/sensors"
+	"github.com/RenterRus/dwld-downloader/pkg/cache"
 
 	"github.com/bradfitz/gomemcache/memcache"
 )

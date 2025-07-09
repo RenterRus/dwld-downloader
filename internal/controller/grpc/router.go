@@ -1,8 +1,8 @@
 package grpc
 
 import (
-	v1 "dwld-downloader/internal/controller/grpc/apiv1"
-	"dwld-downloader/internal/usecase"
+	v1 "github.com/RenterRus/dwld-downloader/internal/controller/grpc/apiv1"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 
 	pbgrpc "google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

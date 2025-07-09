@@ -2,10 +2,11 @@ package apiv1
 
 import (
 	"context"
-	proto "dwld-downloader/docs/proto/v1"
-	"dwld-downloader/internal/controller/grpc/apiv1/response"
-	"dwld-downloader/internal/usecase"
 	"fmt"
+
+	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
+	"github.com/RenterRus/dwld-downloader/internal/controller/grpc/apiv1/response"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 
 	"github.com/AlekSi/pointer"
 	"github.com/samber/lo"

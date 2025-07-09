@@ -1,8 +1,8 @@
 package apiv1
 
 import (
-	proto "dwld-downloader/docs/proto/v1"
-	"dwld-downloader/internal/usecase"
+	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 )
 
 type V1 struct {

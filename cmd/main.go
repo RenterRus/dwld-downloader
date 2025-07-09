@@ -1,11 +1,12 @@
 package main
 
 import (
-	"dwld-downloader/internal/app"
 	"flag"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/RenterRus/dwld-downloader/internal/app"
 )
 
 func main() {

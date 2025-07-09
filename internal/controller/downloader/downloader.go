@@ -2,14 +2,15 @@ package downloader
 
 import (
 	"context"
-	"dwld-downloader/internal/entity"
-	"dwld-downloader/internal/repo/persistent"
-	"dwld-downloader/internal/repo/temporary"
 	"fmt"
 	"math/rand/v2"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/RenterRus/dwld-downloader/internal/entity"
+	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 
 	"github.com/AlekSi/pointer"
 	"github.com/lrstanley/go-ytdlp"

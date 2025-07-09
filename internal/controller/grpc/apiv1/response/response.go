@@ -1,8 +1,8 @@
 package response
 
 import (
-	proto "dwld-downloader/docs/proto/v1"
-	"dwld-downloader/internal/usecase"
+	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 )
 
 func TasksToLinks(task *usecase.Task) *proto.Task {

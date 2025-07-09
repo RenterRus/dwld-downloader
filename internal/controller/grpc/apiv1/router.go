@@ -1,9 +1,9 @@
 package apiv1
 
 import (
-	proto "dwld-downloader/docs/proto/v1"
+	proto "github.com/RenterRus/dwld-downloader/docs/proto/v1"
 
-	"dwld-downloader/internal/usecase"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 
 	pbgrpc "google.golang.org/grpc"
 )

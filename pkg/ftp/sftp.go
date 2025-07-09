@@ -2,9 +2,10 @@ package ftp
 
 import (
 	"context"
-	"dwld-downloader/internal/controller/ftp"
-	"dwld-downloader/internal/repo/persistent"
-	"dwld-downloader/internal/repo/temporary"
+
+	"github.com/RenterRus/dwld-downloader/internal/controller/ftp"
+	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 )
 
 type SenderConf struct {

@@ -2,14 +2,15 @@ package ftp
 
 import (
 	"context"
-	"dwld-downloader/internal/entity"
-	"dwld-downloader/internal/repo/persistent"
-	"dwld-downloader/internal/repo/temporary"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/RenterRus/dwld-downloader/internal/entity"
+	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"

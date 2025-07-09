@@ -1,6 +1,6 @@
 package persistent
 
-import "dwld-downloader/internal/entity"
+import "github.com/RenterRus/dwld-downloader/internal/entity"
 
 type LinkModel struct {
 	Link           string  `sql:"link"`

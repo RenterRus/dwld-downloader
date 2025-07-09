@@ -1,9 +1,10 @@
 package download
 
 import (
-	"dwld-downloader/internal/repo/persistent"
-	"dwld-downloader/internal/usecase"
 	"strconv"
+
+	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/usecase"
 )
 
 func LinkToTask(item persistent.LinkModel, _ int) *usecase.Task {
