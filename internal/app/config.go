@@ -28,6 +28,7 @@ type Stage struct {
 	IsCookie          bool   `validate:"required"`
 	IsEmbededCharters bool   `validate:"required"`
 	IsMarkWatched     bool   `validate:"required"`
+	IsFormat          bool   `validate:"required"`
 	Extractors        string `validate:"required"`
 }
 

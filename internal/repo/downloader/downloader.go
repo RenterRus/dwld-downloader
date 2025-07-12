@@ -135,50 +135,55 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		IgnoreNoFormatsError().
 		NoAbortOnError().
 		RmCacheDir().
-		Format(fmt.Sprintf("bv*[height<=%d]+ba", qualtiy)).ProgressFunc(time.Duration(time.Millisecond*750), func(update ytdlp.ProgressUpdate) {
-		size = (float64(update.DownloadedBytes) / 1024) / 1024 // К мегабайтам
-		totalSize = (float64(update.TotalBytes) / 1024) / 1024 // К мегабайтам
-		fmt.Println(update.Status, update.PercentString(), fmt.Sprintf("[%.2f/%.2f]mb", size, totalSize), update.Filename)
+		ProgressFunc(time.Duration(time.Millisecond*750), func(update ytdlp.ProgressUpdate) {
+			size = (float64(update.DownloadedBytes) / 1024) / 1024 // К мегабайтам
+			totalSize = (float64(update.TotalBytes) / 1024) / 1024 // К мегабайтам
+			fmt.Println(update.Status, update.PercentString(), fmt.Sprintf("[%.2f/%.2f]mb", size, totalSize), update.Filename)
 
-		status := string(update.Status)
-		if strings.Contains(status, "finished") {
-			status = "converting"
-		}
+			status := string(update.Status)
+			if strings.Contains(status, "finished") {
+				status = "converting"
+			}
 
-		if filename != *update.Info.Filename {
-			filename = *update.Info.Filename
-			d.sqlRepo.Update(&persistent.LinkModelRequest{
-				Link:           task.Link,
-				Filename:       pointer.To(filename),
-				WorkStatus:     entity.WORK,
-				Message:        pointer.To(status),
-				TargetQuantity: task.Quality,
+			if filename != *update.Info.Filename {
+				filename = *update.Info.Filename
+				d.sqlRepo.Update(&persistent.LinkModelRequest{
+					Link:           task.Link,
+					Filename:       pointer.To(filename),
+					WorkStatus:     entity.WORK,
+					Message:        pointer.To(status),
+					TargetQuantity: task.Quality,
+				})
+			}
+
+			d.cache.SetStatus(&temporary.TaskRequest{
+				FileName:     filename,
+				Link:         task.Link,
+				MoveTo:       d.WorkDir,
+				MaxQuality:   qualtiy,
+				Procentage:   update.Percent(),
+				Status:       entity.WORK,
+				DownloadSize: totalSize,
+				CurrentSize:  size,
+				Message:      status,
 			})
-		}
+			if update.Percent() > float64(d.PercentToNext) {
+				toNext.Do(func() {
+					<-d.workersPool
+				})
+			}
 
-		d.cache.SetStatus(&temporary.TaskRequest{
-			FileName:     filename,
-			Link:         task.Link,
-			MoveTo:       d.WorkDir,
-			MaxQuality:   qualtiy,
-			Procentage:   update.Percent(),
-			Status:       entity.WORK,
-			DownloadSize: totalSize,
-			CurrentSize:  size,
-			Message:      status,
 		})
-		if update.Percent() > float64(d.PercentToNext) {
-			toNext.Do(func() {
-				<-d.workersPool
-			})
-		}
-
-	})
 
 	if err := func() error {
 		var err_resp error
 		for i := range d.totalStages {
 			stg := d.Stages[(i + 1)]
+
+			dl.UnsetFormat()
+			if stg.IsFormat {
+				dl.Format(fmt.Sprintf("bv*[height<=%d]+ba", qualtiy))
+			}
 
 			dl.UnsetCookiesFromBrowser()
 			if stg.IsCookie {

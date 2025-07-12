@@ -51,6 +51,7 @@ func NewApp(configPath string) error {
 				IsEmbededCharters: stage.IsEmbededCharters,
 				IsMarkWatched:     stage.IsEmbededCharters,
 				Extractors:        stage.Extractors,
+				IsFormat:          stage.IsFormat,
 			}
 		}),
 		SqlRepo: db,

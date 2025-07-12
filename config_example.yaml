@@ -23,12 +23,21 @@ downloader:
           isCookie: false
           isEmbededCharters: true
           isMarkWatched: false
+          isFormat: true
           extractors: ""
         - positions: 2
           attemptBeforeNext: 20
           isCookie: false
           isEmbededCharters: false
           isMarkWatched: false
+          isFormat: true
+          extractors: ""
+        - positions: 3
+          attemptBeforeNext: 20
+          isCookie: false
+          isEmbededCharters: false
+          isMarkWatched: false
+          isFormat: false
           extractors: ""
 
 #YT
@@ -43,93 +52,123 @@ downloader:
 #          isEmbededCharters: true
 #          isMarkWatched: true
 #          extractors: ""
+#          isFormat: true
 #        - positions: 2
 #          attemptBeforeNext: 20
 #          isCookie: true
 #          isEmbededCharters: true
 #          isMarkWatched: true
-#          extractors: "youtube:player-client=tv_embedded"
+#          extractors: ""
+#          isFormat: false
 #        - positions: 3
 #          attemptBeforeNext: 20
-#          isCookie: true
-#          isEmbededCharters: true
-#          isMarkWatched: true
-#          extractors: "youtube:player_client=default,ios"
+#          isCookie: false
+#          isEmbededCharters: false
+#          isMarkWatched: false
+#          extractors: ""
+#          isFormat: false
 #        - positions: 4
 #          attemptBeforeNext: 20
 #          isCookie: true
 #          isEmbededCharters: true
 #          isMarkWatched: true
-#          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
+#          isFormat: true
+#          extractors: "youtube:player-client=tv_embedded"
 #        - positions: 5
 #          attemptBeforeNext: 20
-#          isCookie: false
-#          isEmbededCharters: false
-#          isMarkWatched: false
-#          extractors: ""
+#          isCookie: true
+#          isEmbededCharters: true
+#          isMarkWatched: true
+#          isFormat: true
+#          extractors: "youtube:player_client=default,ios"
 #        - positions: 6
 #          attemptBeforeNext: 20
-#          isCookie: false
-#          isEmbededCharters: false
-#          isMarkWatched: false
-#          extractors: "youtube:player-client=tv_embedded"
+#          isCookie: true
+#          isFormat: true
+#          isEmbededCharters: true
+#          isMarkWatched: true
+#          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
 #        - positions: 7
 #          attemptBeforeNext: 20
 #          isCookie: false
+#          isFormat: true
 #          isEmbededCharters: false
 #          isMarkWatched: false
-#          extractors: "youtube:player_client=default,ios"
+#          extractors: ""
 #        - positions: 8
 #          attemptBeforeNext: 20
 #          isCookie: false
 #          isEmbededCharters: false
-#          isMarkWatched: false
-#          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
-#        - positions: 9
-#          attemptBeforeNext: 20
-#          isCookie: true
-#          isEmbededCharters: false
-#          isMarkWatched: false
-#          extractors: ""
-#        - positions: 10
-#          attemptBeforeNext: 20
-#          isCookie: true
-#          isEmbededCharters: false
+#          isFormat: true
 #          isMarkWatched: false
 #          extractors: "youtube:player-client=tv_embedded"
+#        - positions: 9
+#          attemptBeforeNext: 20
+#          isCookie: false
+#          isEmbededCharters: false
+#          isFormat: true
+#          isMarkWatched: false
+#          extractors: "youtube:player_client=default,ios"
+#        - positions: 10
+#          attemptBeforeNext: 20
+#          isCookie: false
+#          isEmbededCharters: false
+#          isFormat: true
+#          isMarkWatched: false
+#          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
 #        - positions: 11
 #          attemptBeforeNext: 20
 #          isCookie: true
 #          isEmbededCharters: false
 #          isMarkWatched: false
-#          extractors: "youtube:player_client=default,ios"
+#          isFormat: true
+#          extractors: ""
 #        - positions: 12
 #          attemptBeforeNext: 20
+#          isFormat: true
 #          isCookie: true
 #          isEmbededCharters: false
 #          isMarkWatched: false
-#          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
+#          extractors: "youtube:player-client=tv_embedded"
 #        - positions: 13
 #          attemptBeforeNext: 20
 #          isCookie: true
-#          isEmbededCharters: true
-#          isMarkWatched: true
-#          extractors: "youtube:formats=missing_pot"
-#        - positions: 14
-#          attemptBeforeNext: 20
-#          isCookie: false
-#          isEmbededCharters: true
+#          isFormat: true
+#          isEmbededCharters: false
 #          isMarkWatched: false
-#          extractors: "youtube:formats=missing_pot"
-#        - positions: 15
+#          extractors: "youtube:player_client=default,ios"
+#        - positions: 14
 #          attemptBeforeNext: 20
 #          isCookie: true
 #          isEmbededCharters: false
+#          isFormat: true
+#          isMarkWatched: false
+#          extractors: "youtube:player-client=default,-tv,web_safari,web_embedded"
+#        - positions: 15
+#          attemptBeforeNext: 20
+#          isCookie: true
+#          isFormat: true
+#          isEmbededCharters: true
 #          isMarkWatched: true
 #          extractors: "youtube:formats=missing_pot"
 #        - positions: 16
 #          attemptBeforeNext: 20
+#          isFormat: true
 #          isCookie: false
+#          isEmbededCharters: true
+#          isMarkWatched: false
+#          extractors: "youtube:formats=missing_pot"
+#        - positions: 17
+#          attemptBeforeNext: 20
+#          isCookie: true
+#          isEmbededCharters: false
+#          isFormat: true
+#          isMarkWatched: true
+#          extractors: "youtube:formats=missing_pot"
+#        - positions: 18
+#          attemptBeforeNext: 20
+#          isCookie: false
+#          isFormat: true
 #          isEmbededCharters: false
 #          isMarkWatched: false
 #          extractors: "youtube:formats=missing_pot"

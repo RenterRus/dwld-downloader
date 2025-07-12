@@ -22,6 +22,7 @@ type Stage struct {
 	Threads           int
 	IsCookie          bool
 	IsEmbededCharters bool
+	IsFormat          bool
 	IsMarkWatched     bool
 	Extractors        string
 }
