@@ -11,6 +11,7 @@ import (
 	"github.com/RenterRus/dwld-downloader/internal/controller/grpc"
 	"github.com/RenterRus/dwld-downloader/internal/entity"
 	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
+	"github.com/RenterRus/dwld-downloader/internal/repo/register"
 	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 	"github.com/RenterRus/dwld-downloader/internal/usecase/download"
 	"github.com/RenterRus/dwld-downloader/pkg/cache"
@@ -79,8 +80,22 @@ func NewApp(configPath string) error {
 	go dwld.Start()
 	go ftpSender.Start()
 
+	go func() {
+		register.Register(register.RegisterConfig{
+			To: register.Server{
+				Host: conf.Register.To.Host,
+				Port: conf.Register.To.Port,
+			},
+			From: register.Server{
+				Host: conf.GRPC.Host,
+				Port: conf.GRPC.Port,
+			},
+			Assign: conf.Register.Assign,
+			Name:   conf.Register.Name,
+		})
+	}()
 	// gRPC Server
-	grpcServer := grpcserver.New(grpcserver.Port(strconv.Itoa(conf.GRPC.Port)))
+	grpcServer := grpcserver.New(grpcserver.Port(conf.GRPC.Host, strconv.Itoa(conf.GRPC.Port)))
 	grpc.NewRouter(grpcServer.App, downloadUsecases)
 	grpcServer.Start()
 

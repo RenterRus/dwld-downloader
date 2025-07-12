@@ -5,12 +5,20 @@ grpc:
 
 ftp:
     addr:
-        host: "192.168.0.105"
+        host: "192.168.0.100"
         port: 22
         enable: true
-    user: "artur"
-    pass: "Test_1tesT"
+    user: "name"
+    pass: "pass"
     remotedirectory: "/home/artur/raid/video"
+
+register:
+    to:
+        host: "127.0.0.1"
+        port: 9999
+        enable: true    
+    assign: "vk.com"
+    name: "Unona"
 
 # RU
 downloader:
@@ -28,9 +36,9 @@ downloader:
         - positions: 2
           attemptBeforeNext: 20
           isCookie: false
-          isEmbededCharters: false
-          isMarkWatched: false
-          isFormat: true
+          isEmbededCharters: true
+          isMarkWatched: false  
+          isFormat: false
           extractors: ""
         - positions: 3
           attemptBeforeNext: 20

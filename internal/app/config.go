@@ -39,12 +39,18 @@ type DownloadConfig struct {
 	Stages        []Stage `validate:"required"`
 }
 
-type Config struct {
-	GRPC Server    `validate:"required"`
-	FTP  FTPClient `validate:"required"`
+type Register struct {
+	To     Server `validate:"required"`
+	Name   string `validate:"required"`
+	Assign string `validate:"required"`
+}
 
-	PathToDB string `validate:"required"`
-	NameDB   string `validate:"required"`
+type Config struct {
+	GRPC     Server    `validate:"required"`
+	FTP      FTPClient `validate:"required"`
+	Register Register  `validate:"required"`
+	PathToDB string    `validate:"required"`
+	NameDB   string    `validate:"required"`
 
 	Cache Server `validate:"required"`
 

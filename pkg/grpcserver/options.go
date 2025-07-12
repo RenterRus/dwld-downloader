@@ -4,12 +4,10 @@ import (
 	"net"
 )
 
-// Option -.
 type Option func(*Server)
 
-// Port -.
-func Port(port string) Option {
+func Port(host, port string) Option {
 	return func(s *Server) {
-		s.address = net.JoinHostPort("", port)
+		s.address = net.JoinHostPort(host, port)
 	}
 }
