@@ -8,9 +8,9 @@ ftp:
         host: "192.168.0.100"
         port: 22
         enable: true
-    user: "----"
-    pass: "----"
-    remotedirectory: "-------------"
+    user: "-----"
+    pass: "-----"
+    remotedirectory: "--------------"
 
 register:
     to:
@@ -24,7 +24,7 @@ register:
 downloader:
     threads: 2
     percentToNext: 71
-    workPath: "---------------------"
+    workPath: "-------------------"
     stages:
         - positions: 1
           attemptBeforeNext: 10
@@ -181,7 +181,7 @@ downloader:
 #          isMarkWatched: false
 #          extractors: "youtube:formats=missing_pot"
 
-pathtodb: "--------"
+pathtodb: "----------"
 namedb: "links.db"
 
 
