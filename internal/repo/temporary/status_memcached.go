@@ -15,7 +15,7 @@ import (
 
 const (
 	RETOUCH_CACHE  = 120
-	TOUCH_LIFETIME = RETOUCH_CACHE + 17
+	TOUCH_LIFETIME = RETOUCH_CACHE*2 + 17
 )
 
 type Cache struct {
@@ -78,6 +78,7 @@ func (c *Cache) SetStatus(task *TaskRequest) error {
 
 	err = c.set(task.FileName, string(b), TOUCH_LIFETIME)
 	if err != nil {
+		fmt.Println("set cache:", err.Error())
 		return fmt.Errorf("SetStaus(set cache): %w", err)
 	}
 
@@ -108,7 +109,7 @@ func (c *Cache) Revisor(ctx context.Context) {
 func (c *Cache) toucer() {
 	for _, link := range c.links {
 		for file := range link {
-			c.c.Conn.Touch(file, TOUCH_LIFETIME)
+			c.c.Conn.Touch(keygen(file), TOUCH_LIFETIME)
 		}
 	}
 }

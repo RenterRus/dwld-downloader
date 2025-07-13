@@ -82,6 +82,7 @@ func (f *FTPSender) presend(link *persistent.LinkModel) error {
 }
 
 func (f *FTPSender) send(filename, link string, targetQuantity int) error {
+	fmt.Println("Prepare to send (ftp)")
 	config := &ssh.ClientConfig{
 		User: f.User,
 		Auth: []ssh.AuthMethod{
@@ -90,27 +91,32 @@ func (f *FTPSender) send(filename, link string, targetQuantity int) error {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(), // Use a proper HostKeyCallback in production
 	}
 
+	fmt.Println("Prepare connect to ftp")
 	client, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", f.Host, f.Port), config)
 	if err != nil {
 		return fmt.Errorf("ftp send (dial): %w", err)
 	}
 	defer client.Close()
 
+	fmt.Println("Prepare new client (ftp)")
 	sc, err := sftp.NewClient(client)
 	if err != nil {
 		return fmt.Errorf("ftp send (newClient): %w", err)
 	}
 	defer sc.Close()
 
+	fmt.Println("Open local file (ftp):", fmt.Sprintf("%s/%s", f.LocalPath, filename))
 	srcFile, err := os.Open(fmt.Sprintf("%s/%s", f.LocalPath, filename))
 	if err != nil {
 		return fmt.Errorf("ftp send (open): %w", err)
 	}
 	defer srcFile.Close()
 
+	fmt.Println("Remote dir (ftp)")
 	remoteDir := filepath.Dir(f.RemotePath)
 	_ = sc.MkdirAll(remoteDir)
 
+	fmt.Println("Create remote dir (ftp):", fmt.Sprintf("%s/%s", f.RemotePath, filename))
 	dstFile, err := sc.Create(fmt.Sprintf("%s/%s", f.RemotePath, filename))
 	if err != nil {
 		return fmt.Errorf("ftp send (create remote): %w", err)
@@ -118,26 +124,56 @@ func (f *FTPSender) send(filename, link string, targetQuantity int) error {
 	defer dstFile.Close()
 
 	st, _ := srcFile.Stat()
-	f.cache.SetStatus(&temporary.TaskRequest{
-		FileName:     filename,
-		Link:         link,
-		MoveTo:       f.RemotePath,
-		MaxQuality:   targetQuantity,
-		Procentage:   100,
-		Status:       entity.SENDING,
-		DownloadSize: float64(float64(st.Size()/1024) / 1024),
-		CurrentSize:  float64(float64(st.Size()/1024) / 1024),
-		Message:      "sending",
-	})
+
+	notify := make(chan struct{}, 1)
+	go func() {
+		t := time.NewTicker(temporary.RETOUCH_CACHE * time.Second)
+		f.cache.SetStatus(&temporary.TaskRequest{
+			FileName:     filename,
+			Link:         link,
+			MoveTo:       f.RemotePath,
+			MaxQuality:   targetQuantity,
+			Procentage:   100,
+			Status:       entity.SENDING,
+			DownloadSize: float64(float64(st.Size()/1024) / 1024),
+			CurrentSize:  float64(float64(st.Size()/1024) / 1024),
+			Message:      "sending",
+		})
+		for {
+			select {
+			case <-t.C:
+				f.cache.SetStatus(&temporary.TaskRequest{
+					FileName:     filename,
+					Link:         link,
+					MoveTo:       f.RemotePath,
+					MaxQuality:   targetQuantity,
+					Procentage:   100,
+					Status:       entity.SENDING,
+					DownloadSize: float64(float64(st.Size()/1024) / 1024),
+					CurrentSize:  float64(float64(st.Size()/1024) / 1024),
+					Message:      "sending",
+				})
+
+			case <-notify:
+				f.cache.LinkDone(link)
+				return
+			}
+		}
+	}()
+
+	fmt.Println("Copy file to remote (ftp):", fmt.Sprintf("%s/%s", f.RemotePath, filename))
 
 	_, err = io.Copy(dstFile, srcFile)
 	if err != nil {
 		return fmt.Errorf("ftp send (copy): %w", err)
 	}
 
+	fmt.Println("Remove local file (ftp):", fmt.Sprintf("%s/%s", f.LocalPath, filename))
 	if err = os.Remove(fmt.Sprintf("%s/%s", f.LocalPath, filename)); err != nil {
 		return fmt.Errorf("file remove: %w", err)
 	}
 
+	notify <- struct{}{}
+	notify <- struct{}{} // lazy wait cancel gorutine
 	return nil
 }
