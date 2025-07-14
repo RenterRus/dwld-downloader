@@ -245,7 +245,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 }
 
 func (d *DownloaderSource) Processor(ctx context.Context) {
-	fmt.Println("Workers pool:", len(d.workersPool))
+	fmt.Println("Workers pool:", cap(d.workersPool))
 	for {
 		select {
 		case <-ctx.Done():
@@ -253,16 +253,15 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 			return
 		case d.workersPool <- struct{}{}:
 			go func() {
-				fmt.Println("New download")
 				task, err := d.GetLink()
 				if err != nil {
 					fmt.Printf("downloader(select link): %s\n", err.Error())
 					<-d.workersPool
 					return
 				}
-				fmt.Println("New download:", task.Link)
 
 				if task.Link != "" {
+					fmt.Println("New download:", task.Link)
 					err := d.Downloader(task)
 					if err != nil {
 						<-d.workersPool

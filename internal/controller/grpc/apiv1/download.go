@@ -96,8 +96,8 @@ func (v *V1) Status(ctx context.Context, in *emptypb.Empty) (*proto.StatusRespon
 				TargetQuantity: t.TargetQuantity,
 				Procentage:     t.Procentage,
 				Status:         t.Status,
-				TotalSize:      t.TotalSize,
 				CurrentSize:    t.CurrentSize,
+				TotalSize:      t.TotalSize,
 				Message:        t.Message,
 			}
 		}),

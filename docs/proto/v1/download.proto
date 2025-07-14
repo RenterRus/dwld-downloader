@@ -34,8 +34,8 @@ message OnWork{
     int64 targetQuantity = 4;
     double procentage = 5;
     string status = 6;
-    double totalSize = 7;
-    double currentSize = 8;
+    double currentSize = 7;
+    double totalSize = 8;
     string message = 9;
 }
 

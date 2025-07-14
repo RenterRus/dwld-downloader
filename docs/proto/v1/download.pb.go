@@ -120,8 +120,8 @@ type OnWork struct {
 	TargetQuantity int64                  `protobuf:"varint,4,opt,name=targetQuantity,proto3" json:"targetQuantity,omitempty"`
 	Procentage     float64                `protobuf:"fixed64,5,opt,name=procentage,proto3" json:"procentage,omitempty"`
 	Status         string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
-	TotalSize      float64                `protobuf:"fixed64,7,opt,name=totalSize,proto3" json:"totalSize,omitempty"`
-	CurrentSize    float64                `protobuf:"fixed64,8,opt,name=currentSize,proto3" json:"currentSize,omitempty"`
+	CurrentSize    float64                `protobuf:"fixed64,7,opt,name=currentSize,proto3" json:"currentSize,omitempty"`
+	TotalSize      float64                `protobuf:"fixed64,8,opt,name=totalSize,proto3" json:"totalSize,omitempty"`
 	Message        string                 `protobuf:"bytes,9,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
@@ -199,16 +199,16 @@ func (x *OnWork) GetStatus() string {
 	return ""
 }
 
-func (x *OnWork) GetTotalSize() float64 {
+func (x *OnWork) GetCurrentSize() float64 {
 	if x != nil {
-		return x.TotalSize
+		return x.CurrentSize
 	}
 	return 0
 }
 
-func (x *OnWork) GetCurrentSize() float64 {
+func (x *OnWork) GetTotalSize() float64 {
 	if x != nil {
-		return x.CurrentSize
+		return x.TotalSize
 	}
 	return 0
 }
@@ -595,9 +595,9 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\n" +
 	"procentage\x18\x05 \x01(\x01R\n" +
 	"procentage\x12\x16\n" +
-	"\x06status\x18\x06 \x01(\tR\x06status\x12\x1c\n" +
-	"\ttotalSize\x18\a \x01(\x01R\ttotalSize\x12 \n" +
-	"\vcurrentSize\x18\b \x01(\x01R\vcurrentSize\x12\x18\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status\x12 \n" +
+	"\vcurrentSize\x18\a \x01(\x01R\vcurrentSize\x12\x1c\n" +
+	"\ttotalSize\x18\b \x01(\x01R\ttotalSize\x12\x18\n" +
 	"\amessage\x18\t \x01(\tR\amessage\"]\n" +
 	"\x0eStatusResponse\x121\n" +
 	"\vlinksInWork\x18\x01 \x03(\v2\x0f.grpc.v1.OnWorkR\vlinksInWork\x12\x18\n" +

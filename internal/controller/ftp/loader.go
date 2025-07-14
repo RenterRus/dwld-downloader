@@ -15,7 +15,9 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-const TIMEOUT_LOAD_SEC = 17
+const (
+	TIMEOUT_LOAD_SEC = 17
+)
 
 type FTPSender struct {
 	Host       string
@@ -127,7 +129,7 @@ func (f *FTPSender) send(filename, link string, targetQuantity int) error {
 
 	notify := make(chan struct{}, 1)
 	go func() {
-		t := time.NewTicker(temporary.RETOUCH_CACHE * time.Second)
+		t := time.NewTicker(TIMEOUT_LOAD_SEC * time.Second)
 		f.cache.SetStatus(&temporary.TaskRequest{
 			FileName:     filename,
 			Link:         link,
@@ -136,23 +138,49 @@ func (f *FTPSender) send(filename, link string, targetQuantity int) error {
 			Procentage:   100,
 			Status:       entity.SENDING,
 			DownloadSize: float64(float64(st.Size()/1024) / 1024),
-			CurrentSize:  float64(float64(st.Size()/1024) / 1024),
+			CurrentSize:  0,
 			Message:      "sending",
 		})
 		for {
 			select {
 			case <-t.C:
-				f.cache.SetStatus(&temporary.TaskRequest{
-					FileName:     filename,
-					Link:         link,
-					MoveTo:       f.RemotePath,
-					MaxQuality:   targetQuantity,
-					Procentage:   100,
-					Status:       entity.SENDING,
-					DownloadSize: float64(float64(st.Size()/1024) / 1024),
-					CurrentSize:  float64(float64(st.Size()/1024) / 1024),
-					Message:      "sending",
-				})
+				rmFile, err := sc.OpenFile(fmt.Sprintf("%s/%s", f.RemotePath, filename), os.O_RDONLY)
+				if err != nil {
+					fmt.Printf("ftp send (OpenFile): %s", err.Error())
+				}
+
+				rmStat, err := rmFile.Stat()
+				if err != nil {
+					fmt.Printf("ftp send (Stat): %s", err.Error())
+					fmt.Printf("Sending via ftp [%.2fmb][%s] %s\n", float64(float64(st.Size()/1024)/1024), time.Now().Format(time.DateTime), filename)
+					f.cache.SetStatus(&temporary.TaskRequest{
+						FileName:     filename,
+						Link:         link,
+						MoveTo:       f.RemotePath,
+						MaxQuality:   targetQuantity,
+						Procentage:   100,
+						Status:       entity.SENDING,
+						DownloadSize: float64(float64(st.Size()/1024) / 1024),
+						CurrentSize:  float64(float64(st.Size()/1024) / 1024),
+						Message:      "sending (without detail stat)",
+					})
+				} else {
+					curSize := float64(float64(rmStat.Size()/1024) / 1024)
+					totalSize := float64(float64(st.Size()/1024) / 1024)
+					fmt.Printf("Sending via ftp [%.2f%%][%.2f/%.2fmb][%s] %s\n", (curSize/totalSize)*100.0, curSize, totalSize, time.Now().Format(time.DateTime), filename)
+					f.cache.SetStatus(&temporary.TaskRequest{
+						FileName:     filename,
+						Link:         link,
+						MoveTo:       f.RemotePath,
+						MaxQuality:   targetQuantity,
+						Procentage:   (curSize / totalSize) * 100.0,
+						Status:       entity.SENDING,
+						DownloadSize: totalSize,
+						CurrentSize:  curSize,
+						Message:      "sending",
+					})
+				}
+				rmFile.Close()
 
 			case <-notify:
 				f.cache.LinkDone(link)
