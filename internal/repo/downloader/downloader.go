@@ -228,7 +228,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 					filename:    filename,
 					totalSize:   totalSize,
 					currectSize: size,
-					procentage:  1000,
+					procentage:  100,
 				})
 
 				return nil

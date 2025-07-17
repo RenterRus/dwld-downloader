@@ -16,8 +16,8 @@ import (
 	"github.com/RenterRus/dwld-downloader/internal/usecase/download"
 	"github.com/RenterRus/dwld-downloader/pkg/cache"
 	dwnld "github.com/RenterRus/dwld-downloader/pkg/downloader"
-	"github.com/RenterRus/dwld-downloader/pkg/ftp"
 	"github.com/RenterRus/dwld-downloader/pkg/grpcserver"
+	"github.com/RenterRus/dwld-downloader/pkg/loader"
 	"github.com/RenterRus/dwld-downloader/pkg/sqldb"
 	"github.com/samber/lo"
 )
@@ -59,23 +59,20 @@ func NewApp(configPath string) error {
 		Cache:   cache,
 	})
 
+	ftpSender := loader.NewLoader(loader.Server{
+		Host:    conf.FTP.Host,
+		Port:    conf.FTP.Port,
+		SqlRepo: db,
+		Cache:   cache,
+	})
+
 	downloadUsecases := download.NewDownload(
 		db,
 		cache,
+		ftpSender.Sender(),
 	)
 
 	// FTPSender
-	ftpSender := ftp.NewSender(ftp.SenderConf{
-		Host:       conf.FTP.Addr.Host,
-		User:       conf.FTP.User,
-		Pass:       conf.FTP.Pass,
-		LocalPath:  conf.Downloader.WorkPath,
-		RemotePath: conf.FTP.RemoteDirectory,
-		Port:       conf.FTP.Addr.Port,
-		SqlRepo:    db,
-		Cache:      cache,
-		Enable:     conf.FTP.Addr.Enable,
-	})
 
 	go dwld.Start()
 	go ftpSender.Start()

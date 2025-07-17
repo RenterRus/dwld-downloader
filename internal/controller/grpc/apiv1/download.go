@@ -88,7 +88,10 @@ func (v *V1) Status(ctx context.Context, in *emptypb.Empty) (*proto.StatusRespon
 
 	return &proto.StatusResponse{
 		Sensors: tasks.Sensors,
-		LinksInWork: lo.Map(tasks.LinksInWork, func(t *usecase.OnWork, _ int) *proto.OnWork {
+		LinksInWork: lo.FilterMap(tasks.LinksInWork, func(t *usecase.OnWork, _ int) (*proto.OnWork, bool) {
+			if t == nil {
+				return nil, false
+			}
 			return &proto.OnWork{
 				Link:           t.Link,
 				Filename:       t.Filename,
@@ -99,7 +102,7 @@ func (v *V1) Status(ctx context.Context, in *emptypb.Empty) (*proto.StatusRespon
 				CurrentSize:    t.CurrentSize,
 				TotalSize:      t.TotalSize,
 				Message:        t.Message,
-			}
+			}, true
 		}),
 	}, nil
 }

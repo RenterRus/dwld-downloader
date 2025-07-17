@@ -1,8 +1,10 @@
 package download
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/RenterRus/dwld-downloader/internal/controller/ftp"
 	"github.com/RenterRus/dwld-downloader/internal/repo/persistent"
 	"github.com/RenterRus/dwld-downloader/internal/repo/temporary"
 	"github.com/RenterRus/dwld-downloader/internal/usecase"
@@ -12,12 +14,14 @@ import (
 type downlaoder struct {
 	dbRepo    persistent.SQLRepo
 	cacheRepo temporary.CacheRepo
+	ftpSender ftp.Sender
 }
 
-func NewDownload(dbRepo persistent.SQLRepo, cache temporary.CacheRepo) usecase.Downloader {
+func NewDownload(dbRepo persistent.SQLRepo, cache temporary.CacheRepo, ftpSender ftp.Sender) usecase.Downloader {
 	return &downlaoder{
 		dbRepo:    dbRepo,
 		cacheRepo: cache,
+		ftpSender: ftpSender,
 	}
 }
 
@@ -40,6 +44,7 @@ func (d *downlaoder) DeleteFromQueue(link string) ([]*usecase.Task, error) {
 }
 
 func (d *downlaoder) CleanHistory() ([]*usecase.Task, error) {
+	d.ftpSender.CleanHistory(context.Background())
 	resp, err := d.dbRepo.DeleteHistory()
 	if err != nil {
 		return nil, fmt.Errorf("CleanHistory: %w", err)
@@ -72,6 +77,13 @@ func (d *downlaoder) Status() (*usecase.StatusResponse, error) {
 		}
 	}
 
+	files, err := d.ftpSender.Status(context.Background())
+	if err != nil {
+		fmt.Printf("Status(ftp Status): %s\n", err.Error())
+	} else {
+		links = append(links, files...)
+	}
+
 	return &usecase.StatusResponse{
 		Sensors:     resp.Sensors,
 		LinksInWork: links,
@@ -79,10 +91,19 @@ func (d *downlaoder) Status() (*usecase.StatusResponse, error) {
 }
 
 func (d *downlaoder) Queue() ([]*usecase.Task, error) {
-	resp, err := d.dbRepo.SelectHistory(nil)
+	queue, err := d.dbRepo.SelectHistory(nil)
 	if err != nil {
 		return nil, fmt.Errorf("Queue: %w", err)
 	}
 
-	return lo.Map(resp, LinkToTask), nil
+	resp := lo.Map(queue, LinkToTask)
+
+	files, err := d.ftpSender.Queue(context.Background())
+	if err != nil {
+		fmt.Printf("Queue(ftp Queue): %s\n", err.Error())
+	} else {
+		resp = append(resp, files...)
+	}
+
+	return resp, nil
 }

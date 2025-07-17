@@ -14,13 +14,6 @@ type Server struct {
 	Enable bool   `validate:"required"`
 }
 
-type FTPClient struct {
-	Addr            Server `validate:"required"`
-	User            string `validate:"required"`
-	Pass            string `validate:"required"`
-	RemoteDirectory string `validate:"required"`
-}
-
 type Stage struct {
 	Positions         int    `validate:"required"`
 	AttemptBeforeNext int    `validate:"required"`
@@ -46,11 +39,11 @@ type Register struct {
 }
 
 type Config struct {
-	GRPC     Server    `validate:"required"`
-	FTP      FTPClient `validate:"required"`
-	Register Register  `validate:"required"`
-	PathToDB string    `validate:"required"`
-	NameDB   string    `validate:"required"`
+	GRPC     Server   `validate:"required"`
+	FTP      Server   `validate:"required"`
+	Register Register `validate:"required"`
+	PathToDB string   `validate:"required"`
+	NameDB   string   `validate:"required"`
 
 	Cache Server `validate:"required"`
 

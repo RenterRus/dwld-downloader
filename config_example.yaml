@@ -4,27 +4,23 @@ grpc:
     enable: true
 
 ftp:
-    addr:
-        host: "192.168.0.100"
-        port: 22
-        enable: true
-    user: "-----"
-    pass: "-----"
-    remotedirectory: "--------------"
+    host: "127.0.0.1"
+    port: 9888
+    enable: true
 
 register:
     to:
         host: "127.0.0.1"
         port: 9999
         enable: true    
-    assign: "vk.com"
+    assign: "all"
     name: "Unona"
 
 # RU
 downloader:
     threads: 2
     percentToNext: 71
-    workPath: "-------------------"
+    workPath: "-----------------"
     stages:
         - positions: 1
           attemptBeforeNext: 10
@@ -52,7 +48,7 @@ downloader:
 #downloader:
 #    threads: 2
 #    percentToNext: 97
-#    workPath: "/Users/arturdavydov/Downloads/dwld-downloader"
+#    workPath: "---------------------"
 #    stages:
 #        - positions: 1
 #          attemptBeforeNext: 20
@@ -181,11 +177,11 @@ downloader:
 #          isMarkWatched: false
 #          extractors: "youtube:formats=missing_pot"
 
-pathtodb: "----------"
+pathtodb: "-----------------"
 namedb: "links.db"
 
 
 cache:
     host: "127.0.0.1"
-    port: 9999
+    port: 8123
     enable: true
