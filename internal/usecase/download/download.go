@@ -56,10 +56,16 @@ func (d *downlaoder) CleanHistory() ([]*usecase.Task, error) {
 func (d *downlaoder) Status() (*usecase.StatusResponse, error) {
 	resp, err := d.cacheRepo.GetStatus()
 	if err != nil {
-		return nil, fmt.Errorf("CleanHistory: %w", err)
+		return nil, fmt.Errorf("Status: %w", err)
 	}
-
 	links := make([]*usecase.OnWork, 0, len(resp.WorkStatus)*2)
+
+	files, err := d.ftpSender.Status(context.Background())
+	if err != nil {
+		fmt.Printf("Status(ftp Status): %s\n", err.Error())
+	} else {
+		links = append(links, files...)
+	}
 
 	for link, v := range resp.WorkStatus {
 		for file, info := range v {
@@ -75,13 +81,6 @@ func (d *downlaoder) Status() (*usecase.StatusResponse, error) {
 				Message:        info.Message,
 			})
 		}
-	}
-
-	files, err := d.ftpSender.Status(context.Background())
-	if err != nil {
-		fmt.Printf("Status(ftp Status): %s\n", err.Error())
-	} else {
-		links = append(links, files...)
 	}
 
 	return &usecase.StatusResponse{
