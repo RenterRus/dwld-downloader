@@ -39,7 +39,7 @@ func (f *FTPSender) Loader(ctx context.Context) {
 		case <-t.C:
 			var err error
 			var link *persistent.LinkModel
-			if link, err = f.sqlRepo.SelectOne(entity.SENDING); err != nil {
+			if link, err = f.sqlRepo.SelectOne(entity.TO_SEND); err != nil {
 				fmt.Printf("select file to send: %s\n", err.Error())
 				break
 			}
@@ -207,6 +207,8 @@ func (f *FTPSender) send(filename, link string, targetQuantity int) error {
 	}()
 
 	fmt.Println("Copy file to remote (ftp):", fmt.Sprintf("%s/%s", f.RemotePath, filename))
+
+	f.sqlRepo.UpdateStatus(link, entity.SENDING)
 
 	_, err = io.Copy(dstFile, srcFile)
 	if err != nil {

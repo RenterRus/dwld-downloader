@@ -5,6 +5,7 @@ type Status int
 const (
 	NEW Status = iota + 1
 	WORK
+	TO_SEND
 	SENDING
 	DONE
 )
@@ -12,6 +13,7 @@ const (
 var StatusMapping map[Status]string = map[Status]string{
 	NEW:     "NEW",
 	WORK:    "WORK",
+	TO_SEND: "TO_SEND",
 	SENDING: "SENDING",
 	DONE:    "DONE",
 }

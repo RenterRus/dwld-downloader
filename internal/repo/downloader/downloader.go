@@ -275,7 +275,7 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 					return
 				}
 
-				d.sqlRepo.UpdateStatus(task.Link, entity.SENDING)
+				d.sqlRepo.UpdateStatus(task.Link, entity.TO_SEND)
 
 				time.Sleep(time.Second * TIMEOUT_WORKERS)
 			}()
