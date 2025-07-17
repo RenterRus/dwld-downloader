@@ -259,29 +259,27 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 					<-d.workersPool
 					return
 				}
-
-				if task.Link != "" {
-					fmt.Println("New download:", task.Link)
-					err := d.Downloader(task)
-					if err != nil {
-						<-d.workersPool
-						fmt.Printf("downloader: %s\n", err.Error())
-						// Помещаем обратно в пул
-						d.sqlRepo.UpdateStatus(task.Link, entity.NEW)
-						d.cache.LinkDone(task.Link)
-
-						return
-					}
-
-					d.sqlRepo.UpdateStatus(task.Link, entity.SENDING)
+				if task.Link == "" {
+					<-d.workersPool
 					return
 				}
+
+				fmt.Println("New download:", task.Link)
+				if err := d.Downloader(task); err != nil {
+					<-d.workersPool
+					fmt.Printf("downloader: %s\n", err.Error())
+					// Помещаем обратно в пул
+					d.sqlRepo.UpdateStatus(task.Link, entity.NEW)
+					d.cache.LinkDone(task.Link)
+
+					return
+				}
+
+				d.sqlRepo.UpdateStatus(task.Link, entity.SENDING)
 
 				time.Sleep(time.Second * TIMEOUT_WORKERS)
 			}()
 			time.Sleep(time.Second * time.Duration(rand.IntN(TIMEOUT_WORKERS)+1))
-		default:
-			time.Sleep(time.Second * TIMEOUT_WORKERS)
 		}
 	}
 }

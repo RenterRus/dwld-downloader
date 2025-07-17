@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/RenterRus/dwld-downloader/internal/entity"
@@ -72,8 +73,24 @@ func (f *FTPSender) presend(link *persistent.LinkModel) error {
 
 	if f.Enable {
 		if err := f.send(*link.Filename, link.Link, link.TargetQuantity); err != nil {
-			fmt.Printf("[send file by ftp: %s\\n", err.Error())
-			return fmt.Errorf("send file: %s", err.Error())
+			fmt.Printf("send file by ftp: %s\\n", err.Error())
+			fmt.Printf("attempt with hard mp4")
+
+			filename := strings.Builder{}
+			names := strings.Split(*link.Filename, ".")[:len(strings.Split(*link.Filename, "."))-1]
+			for i, v := range names {
+				if i > 0 {
+					filename.WriteString(".")
+				}
+				filename.WriteString(v)
+			}
+			filename.WriteString(".mp4")
+
+			if err := f.send(filename.String(), link.Link, link.TargetQuantity); err != nil {
+				fmt.Printf("send file by ftp (with mp4): %s\\n", err.Error())
+
+				return fmt.Errorf("send file: %s", err.Error())
+			}
 		}
 	}
 
