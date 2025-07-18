@@ -10,7 +10,6 @@ import (
 	"github.com/RenterRus/dwld-downloader/internal/entity"
 	"github.com/RenterRus/dwld-downloader/internal/repo/sensors"
 	"github.com/RenterRus/dwld-downloader/pkg/cache"
-	"github.com/bradfitz/gomemcache/memcache"
 )
 
 const (
@@ -36,15 +35,17 @@ func (c *Cache) GetStatus() (*CacheResponse, error) {
 
 	for _, link := range c.links {
 		for file := range link {
-			res, err := c.get(file)
-			if err != nil {
-				return nil, fmt.Errorf("get cache: %w", err)
+			res := c.get(file)
+			if res == "" {
+				fmt.Println("miss cache for", file)
+				continue
 			}
 
 			var preResp *TaskRequest
 
-			err = json.Unmarshal([]byte(res), &preResp)
+			err := json.Unmarshal([]byte(res), &preResp)
 			if err != nil {
+				fmt.Println("get cache (unmarshal):", err)
 				return nil, fmt.Errorf("get cache (unmarshal): %w", err)
 			}
 
@@ -76,11 +77,7 @@ func (c *Cache) SetStatus(task *TaskRequest) error {
 		return fmt.Errorf("SetStatus(Marshal): %w", err)
 	}
 
-	err = c.set(task.FileName, string(b), TOUCH_LIFETIME)
-	if err != nil {
-		fmt.Println("set cache:", err.Error())
-		return fmt.Errorf("SetStaus(set cache): %w", err)
-	}
+	c.set(task.FileName, string(b))
 
 	if _, ok := c.links[task.Link]; !ok {
 		c.links[task.Link] = make(map[string]struct{})
@@ -109,29 +106,19 @@ func (c *Cache) Revisor(ctx context.Context) {
 func (c *Cache) toucer() {
 	for _, link := range c.links {
 		for file := range link {
-			c.c.Conn.Touch(keygen(file), TOUCH_LIFETIME)
+			c.c.Conn.Expire(context.Background(), keygen(file), time.Second*TOUCH_LIFETIME)
 		}
 	}
 }
 
-func (c *Cache) set(key, value string, TTLSec int32) error {
-	err := c.c.Conn.Set(&memcache.Item{
-		Key:        keygen(key),
-		Value:      []byte(value),
-		Expiration: TTLSec,
-	})
-	if err != nil {
-		return fmt.Errorf("cache set: %w", err)
-	}
-
-	return nil
+func (c *Cache) set(key, value string) {
+	c.c.Conn.Set(context.Background(), keygen(key), []byte(value), time.Second*TOUCH_LIFETIME)
 }
 
-func (c *Cache) get(key string) (string, error) {
-	item, err := c.c.Conn.Get(keygen(key))
-	if err != nil {
-		return "", fmt.Errorf("cache get: %w", err)
-	}
+func (c *Cache) get(key string) string {
+	item := c.c.Conn.Get(context.Background(), keygen(key))
 
-	return string(item.Value), nil
+	res, _ := item.Result()
+
+	return res
 }

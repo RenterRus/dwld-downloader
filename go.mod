@@ -17,7 +17,11 @@ require (
 
 require github.com/RenterRus/dwld-ftp-sender v0.0.0-20250717203705-b097892624c5
 
-require golang.org/x/crypto v0.40.0 // indirect
+require (
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	golang.org/x/crypto v0.40.0 // indirect
+)
 
 require (
 	github.com/ProtonMail/go-crypto v1.3.0 // indirect
@@ -30,6 +34,7 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
+	github.com/redis/go-redis/v9 v9.11.0
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.12.0 // indirect
