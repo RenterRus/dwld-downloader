@@ -40,13 +40,12 @@ func (p *persistentRepo) SelectHistory(withoutStatus *entity.Status) ([]LinkMode
 	} else {
 		rows, err = p.db.Select("select link, filename, work_status, message, target_quality from links")
 	}
-
-	defer func() {
-		rows.Close()
-	}()
 	if err != nil {
 		return nil, fmt.Errorf("SelectHistory: %w", err)
 	}
+	defer func() {
+		rows.Close()
+	}()
 
 	resp := make([]LinkModel, 0)
 	var row LinkModel
