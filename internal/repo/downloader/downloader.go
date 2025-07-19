@@ -157,16 +157,14 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 				})
 			}
 
-			d.cache.SetStatus(&temporary.TaskRequest{
-				FileName:     filename,
-				Link:         task.Link,
-				MoveTo:       d.WorkDir,
-				MaxQuality:   qualtiy,
-				Procentage:   update.Percent(),
-				Status:       entity.WORK,
-				DownloadSize: totalSize,
-				CurrentSize:  size,
-				Message:      status,
+			d.statUpdate(statInfo{
+				task:        task,
+				msg:         status,
+				filename:    filename,
+				totalSize:   totalSize,
+				currectSize: size,
+				procentage:  update.Percent(),
+				status:      entity.WORK,
 			})
 			if update.Percent() > float64(d.PercentToNext) {
 				toNext.Do(func() {
@@ -177,6 +175,10 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		})
 
 	if err := func() error {
+		defer func() {
+			d.cache.LinkDone(task.Link)
+		}()
+
 		var err_resp error
 		for i := range d.totalStages {
 			stg := d.Stages[(i + 1)]
