@@ -407,7 +407,8 @@ func (x *DeleteFromQueueResponse) GetLinksInWork() []*Task {
 type SetToQueueRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Link          string                 `protobuf:"bytes,1,opt,name=link,proto3" json:"link,omitempty"`
-	MaxQuality    *int32                 `protobuf:"varint,2,opt,name=maxQuality,proto3,oneof" json:"maxQuality,omitempty"`
+	UserName      string                 `protobuf:"bytes,2,opt,name=userName,proto3" json:"userName,omitempty"`
+	MaxQuality    *int32                 `protobuf:"varint,3,opt,name=maxQuality,proto3,oneof" json:"maxQuality,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -445,6 +446,13 @@ func (*SetToQueueRequest) Descriptor() ([]byte, []int) {
 func (x *SetToQueueRequest) GetLink() string {
 	if x != nil {
 		return x.Link
+	}
+	return ""
+}
+
+func (x *SetToQueueRequest) GetUserName() string {
+	if x != nil {
+		return x.UserName
 	}
 	return ""
 }
@@ -607,11 +615,12 @@ const file_docs_proto_v1_download_proto_rawDesc = "" +
 	"\x16DeleteFromQueueRequest\x12\x12\n" +
 	"\x04link\x18\x01 \x01(\tR\x04link\"J\n" +
 	"\x17DeleteFromQueueResponse\x12/\n" +
-	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"[\n" +
+	"\vlinksInWork\x18\x01 \x03(\v2\r.grpc.v1.TaskR\vlinksInWork\"w\n" +
 	"\x11SetToQueueRequest\x12\x12\n" +
-	"\x04link\x18\x01 \x01(\tR\x04link\x12#\n" +
+	"\x04link\x18\x01 \x01(\tR\x04link\x12\x1a\n" +
+	"\buserName\x18\x02 \x01(\tR\buserName\x12#\n" +
 	"\n" +
-	"maxQuality\x18\x02 \x01(\x05H\x00R\n" +
+	"maxQuality\x18\x03 \x01(\x05H\x00R\n" +
 	"maxQuality\x88\x01\x01B\r\n" +
 	"\v_maxQuality\"E\n" +
 	"\x12SetToQueueResponse\x12/\n" +

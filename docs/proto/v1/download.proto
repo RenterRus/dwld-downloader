@@ -58,7 +58,8 @@ message DeleteFromQueueResponse{
 
 message SetToQueueRequest{
     string link = 1;
-    optional int32 maxQuality = 2;
+    string userName = 2;
+    optional int32 maxQuality = 3;
 }
 
 message SetToQueueResponse{
