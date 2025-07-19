@@ -5,8 +5,8 @@ link text unique,
 filename text,
 target_quality integer,
 work_status text,
-message text
-user_name text, 
+message text,
+user_name text 
 );
 -- +goose StatementEnd
 
