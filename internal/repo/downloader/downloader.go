@@ -81,6 +81,7 @@ type statInfo struct {
 	totalSize   float64
 	currectSize float64
 	procentage  float64
+	status      entity.Status
 }
 
 func (d *DownloaderSource) statUpdate(stat statInfo) {
@@ -97,7 +98,7 @@ func (d *DownloaderSource) statUpdate(stat statInfo) {
 		MoveTo:       d.WorkDir,
 		MaxQuality:   stat.task.Quality,
 		Procentage:   stat.procentage,
-		Status:       entity.WORK,
+		Status:       stat.status,
 		DownloadSize: stat.totalSize,
 		CurrentSize:  stat.currectSize,
 		Message:      stat.msg,
@@ -215,6 +216,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 						totalSize:   totalSize,
 						currectSize: size,
 						procentage:  0,
+						status:      entity.WORK,
 					})
 					err_resp = err
 					fmt.Printf("download failed: %s\n", err.Error())
@@ -229,6 +231,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 					totalSize:   totalSize,
 					currectSize: size,
 					procentage:  100,
+					status:      entity.WORK,
 				})
 
 				return nil

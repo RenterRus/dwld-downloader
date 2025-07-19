@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -73,7 +74,8 @@ func NewApp(configPath string) error {
 	)
 
 	// FTPSender
-
+	ctx, cncl := context.WithCancel(context.Background())
+	go cache.Revisor(ctx)
 	go dwld.Start()
 	go ftpSender.Start()
 
@@ -107,6 +109,7 @@ func NewApp(configPath string) error {
 		log.Fatal(fmt.Errorf("app - Run - grpcServer.Notify: %w", err))
 	}
 
+	cncl()
 	cc.Close()
 	dwld.Stop()
 	ftpSender.Stop()
