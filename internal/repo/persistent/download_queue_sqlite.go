@@ -36,9 +36,9 @@ func (p *persistentRepo) SelectHistory(withoutStatus *entity.Status) ([]LinkMode
 	var err error
 
 	if withoutStatus != nil {
-		rows, err = p.db.Select("select link, filename, work_status, message, target_quality from links where work_status != $1", entity.StatusMapping[*withoutStatus])
+		rows, err = p.db.Select("select link, filename, work_status, message, target_quality, user_name from links where work_status != $1", entity.StatusMapping[*withoutStatus])
 	} else {
-		rows, err = p.db.Select("select link, filename, work_status, message, target_quality from links")
+		rows, err = p.db.Select("select link, filename, work_status, message, target_quality, user_name from links")
 	}
 	if err != nil {
 		return nil, fmt.Errorf("SelectHistory: %w", err)
@@ -50,7 +50,7 @@ func (p *persistentRepo) SelectHistory(withoutStatus *entity.Status) ([]LinkMode
 	resp := make([]LinkModel, 0)
 	var row LinkModel
 	for rows.Next() {
-		err := rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.Message, &row.TargetQuantity)
+		err := rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.Message, &row.TargetQuantity, &row.UserName)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -61,14 +61,15 @@ func (p *persistentRepo) SelectHistory(withoutStatus *entity.Status) ([]LinkMode
 			WorkStatus:     row.WorkStatus,
 			Message:        row.Message,
 			TargetQuantity: row.TargetQuantity,
+			UserName:       row.UserName,
 		})
 	}
 
 	return resp, nil
 }
 
-func (p *persistentRepo) Insert(link string, maxQuality int) ([]LinkModel, error) {
-	_, err := p.db.Exec("insert into links (link, filename, target_quality, work_status) values($1, $2, $3, $4);", link, "COMING SOON", maxQuality, entity.StatusMapping[entity.NEW])
+func (p *persistentRepo) Insert(link, userName string, maxQuality int) ([]LinkModel, error) {
+	_, err := p.db.Exec("insert into links (link, filename, target_quality, work_status, user_name) values($1, $2, $3, $4, $5);", link, "COMING SOON", maxQuality, entity.StatusMapping[entity.NEW], userName)
 	if err != nil {
 		return nil, fmt.Errorf("insert new link: %w", err)
 	}
@@ -104,7 +105,7 @@ func (p *persistentRepo) DeleteHistory() ([]LinkModel, error) {
 }
 
 func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
-	rows, err := p.db.Select(`select link, filename, work_status, message, target_quality from links
+	rows, err := p.db.Select(`select link, filename, work_status, message, target_quality, user_name from links
 	 where work_status = $1 order by RANDOM() limit 1;`, entity.StatusMapping[status])
 	if err != nil {
 		return nil, fmt.Errorf("db.SelectOne(query): %w", err)
@@ -121,8 +122,7 @@ func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
 
 	row := &LinkModel{}
 
-	err = rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.Message, &row.TargetQuantity)
-	if err != nil {
+	if err = rows.Scan(&row.Link, &row.Filename, &row.WorkStatus, &row.Message, &row.TargetQuantity, &row.UserName); err != nil {
 		return nil, fmt.Errorf("db.SelectOne(Scan): %w", err)
 	}
 

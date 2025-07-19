@@ -25,8 +25,8 @@ func NewDownload(dbRepo persistent.SQLRepo, cache temporary.CacheRepo, ftpSender
 	}
 }
 
-func (d *downlaoder) SetToQueue(link string, maxQuantity int32) ([]*usecase.Task, error) {
-	resp, err := d.dbRepo.Insert(link, int(maxQuantity))
+func (d *downlaoder) SetToQueue(link, userName string, maxQuantity int32) ([]*usecase.Task, error) {
+	resp, err := d.dbRepo.Insert(link, userName, int(maxQuantity))
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}

@@ -40,6 +40,7 @@ func (f *FTPSender) Sender(ctx context.Context) {
 			if _, err := f.sender.ToQueue(ctx, &v1.ToQueueRequest{
 				Link:          link.Link,
 				Filename:      pointer.Get(link.Filename),
+				UserName:      link.UserName,
 				TargetQuality: int32(link.TargetQuantity),
 			}); err != nil {
 				fmt.Printf("Sedner(ftp(sendToQueue)): %s\n", err)

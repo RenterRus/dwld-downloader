@@ -4,7 +4,6 @@ go 1.24.4
 
 require (
 	github.com/AlekSi/pointer v1.2.0
-	github.com/bradfitz/gomemcache v0.0.0-20250403215159-8d39553ac7cf
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/lrstanley/go-ytdlp v1.1.0
 	github.com/mattn/go-sqlite3 v1.14.28
@@ -15,7 +14,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require github.com/RenterRus/dwld-ftp-sender v0.0.0-20250717203705-b097892624c5
+require github.com/RenterRus/dwld-ftp-sender v0.0.0-20250719005237-5d81b6b9287d
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -50,4 +49,4 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250528174236-200df99c418a // indirect
 )
 
-replace github.com/RenterRus/dwld-ftp-sender => github.com/RenterRus/dwld-ftp-sender v0.0.0-20250717205716-0c8f04bc8617
+replace github.com/RenterRus/dwld-ftp-sender => github.com/RenterRus/dwld-ftp-sender v0.0.0-20250719212427-41578dcb0b1c

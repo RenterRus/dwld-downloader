@@ -26,7 +26,7 @@ func (v *V1) SetToQueue(ctx context.Context, in *proto.SetToQueueRequest) (*prot
 		return nil, fmt.Errorf("SetToQueue: empty request")
 	}
 
-	tasks, err := v.u.SetToQueue(in.GetLink(), *in.MaxQuality)
+	tasks, err := v.u.SetToQueue(in.GetLink(), in.GetUserName(), in.GetMaxQuality())
 	if err != nil {
 		return nil, fmt.Errorf("SetToQueue: %w", err)
 	}

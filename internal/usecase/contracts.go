@@ -25,7 +25,7 @@ type Task struct {
 }
 
 type Downloader interface {
-	SetToQueue(link string, maxQuantity int32) ([]*Task, error)
+	SetToQueue(link, userName string, maxQuantity int32) ([]*Task, error)
 	DeleteFromQueue(link string) ([]*Task, error)
 	CleanHistory() ([]*Task, error)
 	Status() (*StatusResponse, error)

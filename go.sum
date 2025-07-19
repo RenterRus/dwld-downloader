@@ -4,10 +4,12 @@ github.com/ProtonMail/go-crypto v1.3.0 h1:ILq8+Sf5If5DCpHQp4PbZdS1J7HDFRXz/+xKBi
 github.com/ProtonMail/go-crypto v1.3.0/go.mod h1:9whxjD8Rbs29b4XWbB8irEcE8KHMqaR2e7GWU1R+/PE=
 github.com/RenterRus/dwld-bot v0.0.0-20250717004310-b68972ace5d3 h1:3Eatojcvwn1LSeLeJdlAUt3UK0TmqmfOsusWAz924qA=
 github.com/RenterRus/dwld-bot v0.0.0-20250717004310-b68972ace5d3/go.mod h1:KyEHbZQgDkoiccLK1NUdbv8EqGq0erc7ZR7XxTguOj0=
-github.com/RenterRus/dwld-ftp-sender v0.0.0-20250717205716-0c8f04bc8617 h1:1YWwMHbuZaohnBC6auKqCv0sUWu7if4YgKYUSvf/TD4=
-github.com/RenterRus/dwld-ftp-sender v0.0.0-20250717205716-0c8f04bc8617/go.mod h1:l7eytLbrK+HzLKdRgrTlcgwKkbdvVjiYlPwtqyliLvA=
-github.com/bradfitz/gomemcache v0.0.0-20250403215159-8d39553ac7cf h1:TqhNAT4zKbTdLa62d2HDBFdvgSbIGB3eJE8HqhgiL9I=
-github.com/bradfitz/gomemcache v0.0.0-20250403215159-8d39553ac7cf/go.mod h1:r5xuitiExdLAJ09PR7vBVENGvp4ZuTBeWTGtxuX3K+c=
+github.com/RenterRus/dwld-ftp-sender v0.0.0-20250719212427-41578dcb0b1c h1:lhNXCy2qRKK5yk3gn/aH6wRiCribnCIFqv2PreRRJjk=
+github.com/RenterRus/dwld-ftp-sender v0.0.0-20250719212427-41578dcb0b1c/go.mod h1:+y8oMag1HxowXQMbaCMM/2ERXKIkQ1YqUnADB3x9qOA=
+github.com/bsm/ginkgo/v2 v2.12.0 h1:Ny8MWAHyOepLGlLKYmXG4IEkioBysk6GpaRTLC8zwWs=
+github.com/bsm/ginkgo/v2 v2.12.0/go.mod h1:SwYbGRRDovPVboqFv0tPTcG1sN61LM1Z4ARdbAV9g4c=
+github.com/bsm/gomega v1.27.10 h1:yeMWxP2pV2fG3FgAODIY8EiRE3dy0aeFYt4l7wh6yKA=
+github.com/bsm/gomega v1.27.10/go.mod h1:JyEr/xRbxbtgWNi8tIEVPUYZ5Dzef52k01W3YH0H+O0=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cloudflare/circl v1.6.1 h1:zqIqSPIndyBh1bjLVVDHMPpVKqp8Su/V+6MeDzzQBQ0=
