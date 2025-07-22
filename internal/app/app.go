@@ -36,7 +36,8 @@ func NewApp(configPath string) error {
 		return fmt.Errorf("ReadConfig: %w", err)
 	}
 
-	db := persistent.NewSQLRepo(sqldb.NewDB(conf.PathToDB, conf.NameDB), conf.Downloader.WorkPath)
+	dbconn := sqldb.NewDB(conf.PathToDB, conf.NameDB)
+	db := persistent.NewSQLRepo(dbconn, conf.Downloader.WorkPath)
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
 	cache := temporary.NewMemCache(cc)
 
@@ -113,6 +114,7 @@ func NewApp(configPath string) error {
 	cc.Close()
 	dwld.Stop()
 	ftpSender.Stop()
+	dbconn.Close()
 	err = grpcServer.Shutdown()
 
 	if err != nil {

@@ -17,23 +17,20 @@ type DB struct {
 }
 
 func NewDB(pathToDB, dbName string) *DB {
-	return &DB{
+	db := &DB{
 		pathToDB: pathToDB,
 		dbName:   dbName,
 	}
+	db.connect()
+	return db
 }
 
 func (d *DB) Select(query string, args ...any) (*sql.Rows, error) {
-	d.connect()
-	defer func() {
-		d.close()
-	}()
-
 	res, err := d.conn.Query(query, args...)
 	if err != nil {
 		for i := range MAX_RETRY {
 			fmt.Printf("Retry %d of %d", (i + 1), MAX_RETRY)
-			d.close()
+
 			res, err = d.conn.Query(query, args...)
 			if err == nil {
 				return res, nil
@@ -46,16 +43,10 @@ func (d *DB) Select(query string, args ...any) (*sql.Rows, error) {
 }
 
 func (d *DB) Exec(query string, args ...any) (sql.Result, error) {
-	d.connect()
-	defer func() {
-		d.close()
-	}()
-
 	res, err := d.conn.Exec(query, args...)
 	if err != nil {
 		for i := range MAX_RETRY {
-			fmt.Printf("Retry %d of %d", (i + 1), MAX_RETRY)
-			d.close()
+			fmt.Printf("Retry %d of %d\n", (i + 1), MAX_RETRY)
 			res, err = d.conn.Exec(query, args...)
 			if err == nil {
 				return res, nil
@@ -83,6 +74,12 @@ func (d *DB) connect() (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (d *DB) Close() {
+	if err := d.close(); err != nil {
+		fmt.Println("Attempt close db connection:", err.Error())
+	}
 }
 
 func (d *DB) close() error {
