@@ -77,7 +77,7 @@ func (c *Cache) SetStatus(task *TaskRequest) error {
 		return fmt.Errorf("SetStatus(Marshal): %w", err)
 	}
 
-	c.set(task.FileName, string(b))
+	c.set(task.Link, string(b))
 
 	if _, ok := c.links[task.Link]; !ok {
 		c.links[task.Link] = make(map[string]struct{})
