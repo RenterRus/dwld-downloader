@@ -33,9 +33,9 @@ func NewMemCache(conn *cache.Cache) CacheRepo {
 func (c *Cache) GetStatus() (*CacheResponse, error) {
 	resp := make(map[string]map[string]TaskResp)
 
-	for _, link := range c.links {
+	for row_link, link := range c.links {
 		for file := range link {
-			res := c.get(file)
+			res := c.get(row_link)
 			if res == "" {
 				fmt.Println("miss cache for", file)
 				continue
