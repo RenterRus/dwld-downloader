@@ -126,12 +126,6 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 	upd := sync.Once{}
 
 	mst.Do(func() {
-		defer func() {
-			if r := recover(); r != nil {
-				fmt.Println("UPDATE TOOLS FAILED")
-			}
-		}()
-
 		res := ytdlp.MustInstallAll(context.Background())
 		fmt.Println("==================")
 		for i, v := range res {
@@ -196,7 +190,9 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		})
 
 	upd.Do(func() {
+		fmt.Println("===UPDATE YT-DLP===")
 		dl.Update(context.Background())
+		fmt.Println("===UPDATE YT-DLP===")
 	})
 
 	if err := func() error {
