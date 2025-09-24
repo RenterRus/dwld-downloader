@@ -46,17 +46,28 @@ type DownloaderConf struct {
 	Cache         temporary.CacheRepo
 }
 
-func InstallYTDLP() {
+func MustInstallTools() {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Printf("YTDLP failed auto install: %v\nLaunch without\n", r)
+			fmt.Printf("Validate tools install: %v\n", r)
 		}
 	}()
+
+	res := ytdlp.MustInstallAll(context.Background())
+	fmt.Println("==================")
+	for i, v := range res {
+		if i > 0 {
+			fmt.Println("-------------------------")
+		}
+		fmt.Printf("Executable: %s\nVersion:    %s\nFromCache:  %v\nDownloaded: %v\n", v.Executable, v.Version, v.FromCache, v.Downloaded)
+	}
+	fmt.Println("==================")
+
 	ytdlp.MustInstall(context.Background(), nil)
 }
 
 func NewDownloader(conf DownloaderConf) Downloader {
-	InstallYTDLP()
+	MustInstallTools()
 
 	stages := make(map[int]entity.Stage)
 	for _, v := range conf.Stages {
@@ -122,20 +133,6 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 	size := float64(0)
 	totalSize := float64(0)
-	mst := sync.Once{}
-	upd := sync.Once{}
-
-	mst.Do(func() {
-		res := ytdlp.MustInstallAll(context.Background())
-		fmt.Println("==================")
-		for i, v := range res {
-			if i > 0 {
-				fmt.Println("-------------------------")
-			}
-			fmt.Printf("Executable: %s\nVersion:    %s\nFromCache:  %v\nDownloaded: %v\n", v.Executable, v.Version, v.FromCache, v.Downloaded)
-		}
-		fmt.Println("==================")
-	})
 
 	dl := ytdlp.New().
 		SetWorkDir(d.WorkDir).
@@ -189,11 +186,8 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 		})
 
-	upd.Do(func() {
-		fmt.Println("===UPDATE YT-DLP===")
-		dl.Update(context.Background())
-		fmt.Println("===UPDATE YT-DLP===")
-	})
+	fmt.Println("===UPDATE YT-DLP===")
+	dl.Update(context.Background())
 
 	if err := func() error {
 		defer func() {
