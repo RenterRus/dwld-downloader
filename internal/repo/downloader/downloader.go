@@ -246,7 +246,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 						status:      entity.WORK,
 					})
 					err_resp = err
-					fmt.Printf("download failed: %s\n", err.Error())
+					fmt.Printf("download failed: %s\n\n", err.Error())
 					continue
 				}
 
