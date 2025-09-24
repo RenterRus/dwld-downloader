@@ -274,8 +274,23 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 	return nil
 }
 
+func (d *DownloaderSource) autoScale(ctx context.Context) {
+	t := time.NewTicker(time.Minute * 5)
+	for {
+		select {
+		case <-t.C:
+			<-d.workersPool
+		case <-ctx.Done():
+			return
+		}
+	}
+}
+
 func (d *DownloaderSource) Processor(ctx context.Context) {
 	fmt.Println("Workers pool:", cap(d.workersPool))
+	go func() {
+		d.autoScale(ctx)
+	}()
 	for {
 		select {
 		case <-ctx.Done():
