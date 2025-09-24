@@ -122,9 +122,10 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 	size := float64(0)
 	totalSize := float64(0)
+	mst := sync.Once{}
 	upd := sync.Once{}
 
-	upd.Do(func() {
+	mst.Do(func() {
 		defer func() {
 			if r := recover(); r != nil {
 				fmt.Println("UPDATE TOOLS FAILED")
@@ -140,7 +141,6 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 			fmt.Printf("Executable: %s\nVersion:    %s\nFromCache:  %v\nDownloaded: %v\n", v.Executable, v.Version, v.FromCache, v.Downloaded)
 		}
 		fmt.Println("==================")
-
 	})
 
 	dl := ytdlp.New().
@@ -194,6 +194,10 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 			}
 
 		})
+
+	upd.Do(func() {
+		dl.Update(context.Background())
+	})
 
 	if err := func() error {
 		defer func() {
