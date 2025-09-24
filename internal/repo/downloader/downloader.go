@@ -196,7 +196,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 	defer func() {
 		wg.Done()
-		fmt.Printf("[%d] %s finished", task.Quality, task.Link)
+		fmt.Printf("[%d] %s finished\n", task.Quality, task.Link)
 	}()
 
 	if err := func() error {
