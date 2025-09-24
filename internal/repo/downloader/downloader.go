@@ -279,7 +279,9 @@ func (d *DownloaderSource) autoScale(ctx context.Context) {
 	for {
 		select {
 		case <-t.C:
+			fmt.Println("New additional worker is ready")
 			<-d.workersPool
+			fmt.Println("Start additional worker")
 		case <-ctx.Done():
 			return
 		}
