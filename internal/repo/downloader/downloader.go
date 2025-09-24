@@ -283,20 +283,21 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 			return
 		case d.workersPool <- struct{}{}:
 			go func() {
+				defer func() {
+					<-d.workersPool
+				}()
+
 				task, err := d.GetLink()
 				if err != nil {
 					fmt.Printf("downloader(select link): %s\n", err.Error())
-					<-d.workersPool
 					return
 				}
 				if task.Link == "" {
-					<-d.workersPool
 					return
 				}
 
 				fmt.Println("New download:", task.Link)
 				if err := d.Downloader(task); err != nil {
-					<-d.workersPool
 					fmt.Printf("downloader: %s\n", err.Error())
 					// Помещаем обратно в пул
 					d.sqlRepo.UpdateStatus(task.Link, entity.NEW)
