@@ -196,7 +196,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 	defer func() {
 		wg.Done()
-		fmt.Printf("[%d] %s finished\n", task.Quality, task.Link)
+		fmt.Printf("[%d] %s finished\n\n", task.Quality, task.Link)
 	}()
 
 	if err := func() error {
@@ -246,7 +246,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 						status:      entity.WORK,
 					})
 					err_resp = err
-					fmt.Printf("download failed: %s\n\n", err.Error())
+					fmt.Printf("download failed: %s\n", err.Error())
 					continue
 				}
 
