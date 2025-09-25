@@ -275,7 +275,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 }
 
 func (d *DownloaderSource) autoScale(ctx context.Context) {
-	t := time.NewTicker(time.Minute * 5)
+	t := time.NewTicker(time.Hour * 7)
 	for {
 		select {
 		case <-t.C:
