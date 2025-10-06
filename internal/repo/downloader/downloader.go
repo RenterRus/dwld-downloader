@@ -147,6 +147,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		IgnoreNoFormatsError().
 		NoAbortOnError().
 		RmCacheDir().
+		EmbedThumbnail().
 		DownloaderArgs("-S language \"ru,en\"").
 		ProgressFunc(time.Duration(time.Millisecond*750), func(update ytdlp.ProgressUpdate) {
 			size = (float64(update.DownloadedBytes) / 1024) / 1024 // К мегабайтам
