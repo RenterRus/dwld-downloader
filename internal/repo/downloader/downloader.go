@@ -152,7 +152,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		ProgressFunc(time.Duration(time.Millisecond*750), func(update ytdlp.ProgressUpdate) {
 			size = (float64(update.DownloadedBytes) / 1024) / 1024 // К мегабайтам
 			totalSize = (float64(update.TotalBytes) / 1024) / 1024 // К мегабайтам
-			fmt.Println(update.Status, update.PercentString(), fmt.Sprintf("[%.2f/%.2f]mb", size, totalSize), update.Filename)
+			fmt.Println(update.PercentString(), fmt.Sprintf("[%.2f/%.2f]mb", size, totalSize), update.Filename)
 
 			status := string(update.Status)
 			if strings.Contains(status, "finished") {
