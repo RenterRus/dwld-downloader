@@ -187,17 +187,17 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 		})
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		fmt.Println("===UPDATE YT-DLP===")
-		dl.Update(context.Background())
-	}()
+	//var wg sync.WaitGroup
+	//wg.Add(1)
+	//go func() {
+	//	defer wg.Done()
+	//		fmt.Println("===UPDATE YT-DLP===")
+	//		dl.Update(context.Background())
+	//	}()
 
 	defer func() {
-		wg.Wait()
-		fmt.Printf("[%d] %s finished\n\n", task.Quality, task.Link)
+		//wg.Wait()
+		fmt.Printf("%s [%d] finished\n\n", task.Link, task.Quality)
 	}()
 
 	if err := func() error {
