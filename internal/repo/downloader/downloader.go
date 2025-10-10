@@ -186,18 +186,17 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 			}
 
 		})
-	fmt.Println("===UPDATE YT-DLP===")
-	dl.Update(context.Background())
 
-	/*	var wg sync.WaitGroup
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-
-		}()*/
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fmt.Println("===UPDATE YT-DLP===")
+		dl.Update(context.Background())
+	}()
 
 	defer func() {
-		//wg.Wait()
+		wg.Wait()
 		fmt.Printf("%s [%d] finished\n\n", task.Link, task.Quality)
 	}()
 
