@@ -134,8 +134,6 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 	size := float64(0)
 	totalSize := float64(0)
 
-	upd := sync.Once{}
-
 	dl := ytdlp.New().
 		SetWorkDir(d.WorkDir).
 		FormatSort("res,ext:mp4:m4a").
@@ -170,18 +168,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 					Message:        pointer.To(fmt.Sprintf("%s [%s]", status, update.Info.Format)),
 					TargetQuantity: int(pointer.Get(update.Info.Height)),
 				})
-			}
-
-			if update.Percent() > 1.0 && update.Percent() < 50 {
-				upd.Do(func() {
-					d.sqlRepo.Update(&persistent.LinkModelRequest{
-						Link:           task.Link,
-						Filename:       pointer.To(filename),
-						WorkStatus:     entity.WORK,
-						Message:        pointer.To(fmt.Sprintf("%s [%s]", status, update.Info.Format)),
-						TargetQuantity: int(pointer.Get(update.Info.Height)),
-					})
-				})
+				task.Quality = int(pointer.Get(update.Info.Height))
 			}
 
 			d.statUpdate(statInfo{
