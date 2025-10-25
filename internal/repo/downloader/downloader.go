@@ -189,12 +189,6 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		})
 
 	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		fmt.Println("===UPDATE YT-DLP===")
-		dl.Update(context.Background())
-	}()
 
 	defer func() {
 		wg.Wait()
@@ -236,34 +230,36 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 			}
 
 			for retry := range stg.AttemptBeforeNext {
-				_, err := dl.Run(context.TODO(), task.Link)
-				if err != nil {
+				if task != nil {
+					_, err := dl.Run(context.TODO(), task.Link)
+					if err != nil {
+						d.statUpdate(statInfo{
+							task:        task,
+							msg:         fmt.Sprintf("download failed on stage #%d with retries on stage %d. Reason: %s", i+1, retry, err.Error()),
+							filename:    filename,
+							totalSize:   totalSize,
+							currectSize: size,
+							procentage:  0,
+							status:      entity.WORK,
+						})
+						err_resp = err
+						fmt.Printf("download failed: %s\n", err.Error())
+						continue
+					}
+
+					// Скачивание и конвертация прошли успешно
 					d.statUpdate(statInfo{
 						task:        task,
-						msg:         fmt.Sprintf("download failed on stage #%d with retries on stage %d. Reason: %s", i+1, retry, err.Error()),
+						msg:         fmt.Sprintf("download complete on stage #%d witn retries on stage %d", i+1, retry),
 						filename:    filename,
 						totalSize:   totalSize,
 						currectSize: size,
-						procentage:  0,
+						procentage:  100,
 						status:      entity.WORK,
 					})
-					err_resp = err
-					fmt.Printf("download failed: %s\n", err.Error())
-					continue
+
+					return nil
 				}
-
-				// Скачивание и конвертация прошли успешно
-				d.statUpdate(statInfo{
-					task:        task,
-					msg:         fmt.Sprintf("download complete on stage #%d witn retries on stage %d", i+1, retry),
-					filename:    filename,
-					totalSize:   totalSize,
-					currectSize: size,
-					procentage:  100,
-					status:      entity.WORK,
-				})
-
-				return nil
 			}
 		}
 
@@ -301,6 +297,14 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 
 		d.autoScale(ctx)
 	}()
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fmt.Println("===UPDATE YT-DLP===")
+		ytdlp.New().Update(context.Background())
+	}()
+	wg.Wait()
 
 	for {
 		select {
