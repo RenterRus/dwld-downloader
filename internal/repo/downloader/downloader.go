@@ -141,7 +141,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		Output("%(title)s.%(ext)s").
 		NoRestrictFilenames().
 		Fixup(ytdlp.FixupForce).
-		Retries("20").
+		Retries("10").
 		NoWriteSubs().
 		IgnoreErrors().
 		IgnoreNoFormatsError().
