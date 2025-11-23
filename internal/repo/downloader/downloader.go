@@ -138,7 +138,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		SetWorkDir(d.WorkDir).
 		FormatSort("res,ext:mp4:m4a").
 		RecodeVideo("mp4").
-		Output("%(title)s.%(ext)s").
+		Output("%(title)s(%(duration_string)s).%(ext)s").
 		NoRestrictFilenames().
 		Fixup(ytdlp.FixupForce).
 		Retries("10").
