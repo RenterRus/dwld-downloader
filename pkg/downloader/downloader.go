@@ -16,6 +16,7 @@ type DownloaderConf struct {
 	Stages        []entity.Stage
 	SqlRepo       persistent.SQLRepo
 	Cache         temporary.CacheRepo
+	EagleMode     bool
 }
 
 type Downloader struct {
@@ -32,6 +33,7 @@ func NewDownloader(conf DownloaderConf) *Downloader {
 			Stages:        conf.Stages,
 			SqlRepo:       conf.SqlRepo,
 			Cache:         conf.Cache,
+			EagleMode:     conf.EagleMode,
 		}),
 		notify: make(chan struct{}, 1),
 	}

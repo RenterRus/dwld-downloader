@@ -35,6 +35,7 @@ type DownloaderSource struct {
 	cache         temporary.CacheRepo
 	workersPool   chan struct{}
 	totalStages   int
+	eagleMode     bool
 }
 
 type DownloaderConf struct {
@@ -44,6 +45,7 @@ type DownloaderConf struct {
 	Stages        []entity.Stage
 	SqlRepo       persistent.SQLRepo
 	Cache         temporary.CacheRepo
+	EagleMode     bool
 }
 
 func MustInstallTools() {
@@ -180,7 +182,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 				procentage:  update.Percent(),
 				status:      entity.WORK,
 			})
-			if update.Percent() > float64(d.PercentToNext) {
+			if d.eagleMode && update.Percent() > float64(d.PercentToNext) {
 				toNext.Do(func() {
 					<-d.workersPool
 				})
@@ -192,6 +194,9 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 	defer func() {
 		wg.Wait()
+		if !d.eagleMode {
+			<-d.workersPool
+		}
 		fmt.Printf("%s [%d] finished\n\n", task.Link, task.Quality)
 	}()
 

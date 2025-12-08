@@ -57,8 +57,9 @@ func NewApp(configPath string) error {
 				IsFormat:          stage.IsFormat,
 			}
 		}),
-		SqlRepo: db,
-		Cache:   cache,
+		SqlRepo:   db,
+		Cache:     cache,
+		EagleMode: true,
 	})
 
 	ftpSender := loader.NewLoader(loader.Server{

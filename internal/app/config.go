@@ -30,6 +30,7 @@ type DownloadConfig struct {
 	PercentToNext int     `validate:"required"`
 	WorkPath      string  `validate:"required"`
 	Stages        []Stage `validate:"required"`
+	EagleMode     bool    `validate:"required"`
 }
 
 type Register struct {

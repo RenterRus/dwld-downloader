@@ -21,6 +21,7 @@ downloader:
     threads: 2
     percentToNext: 71
     workPath: "-----------------"
+    eagleMode: false
     stages:
         - positions: 1
           attemptBeforeNext: 10
