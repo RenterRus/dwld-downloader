@@ -46,7 +46,10 @@ func (f *FTPSender) Sender(ctx context.Context) {
 				fmt.Printf("Sedner(ftp(sendToQueue)): %s\n", err)
 				break
 			}
-			f.sqlRepo.Delete(link.Link)
+
+			if _, err := f.sqlRepo.Delete(link.Link); err != nil {
+				fmt.Println("Sender.Delete:", err.Error())
+			}
 		case <-ctx.Done():
 			fmt.Println("Sender(ftp): context done")
 			return
@@ -55,7 +58,9 @@ func (f *FTPSender) Sender(ctx context.Context) {
 }
 
 func (f *FTPSender) CleanHistory(ctx context.Context) {
-	f.sender.CleanDone(ctx, &emptypb.Empty{})
+	if _, err := f.sender.CleanDone(ctx, &emptypb.Empty{}); err != nil {
+		fmt.Println("CleanHistory:", err.Error())
+	}
 }
 
 func (f *FTPSender) Status(ctx context.Context) ([]*usecase.OnWork, error) {

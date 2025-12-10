@@ -21,7 +21,9 @@ func NewDB(pathToDB, dbName string) *DB {
 		pathToDB: pathToDB,
 		dbName:   dbName,
 	}
-	db.connect()
+	if _, err := db.connect(); err != nil {
+		fmt.Println("db.connect:", err.Error())
+	}
 	return db
 }
 

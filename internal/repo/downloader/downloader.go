@@ -98,14 +98,17 @@ type statInfo struct {
 }
 
 func (d *DownloaderSource) statUpdate(stat statInfo) {
-	d.sqlRepo.Update(&persistent.LinkModelRequest{
+	if err := d.sqlRepo.Update(&persistent.LinkModelRequest{
 		Link:           stat.task.Link,
 		Filename:       pointer.To(stat.filename),
 		WorkStatus:     entity.WORK,
 		Message:        pointer.To(stat.msg),
 		TargetQuantity: stat.task.Quality,
-	})
-	d.cache.SetStatus(&temporary.TaskRequest{
+	}); err != nil {
+		fmt.Println("statUpdate:", err.Error())
+	}
+
+	if err := d.cache.SetStatus(&temporary.TaskRequest{
 		FileName:     stat.filename,
 		Link:         stat.task.Link,
 		MoveTo:       d.WorkDir,
@@ -115,11 +118,15 @@ func (d *DownloaderSource) statUpdate(stat statInfo) {
 		DownloadSize: stat.totalSize,
 		CurrentSize:  stat.currectSize,
 		Message:      stat.msg,
-	})
+	}); err != nil {
+		fmt.Println("SetStatus:", err.Error())
+	}
 }
 
 func (d *DownloaderSource) Downloader(task *Task) error {
-	d.sqlRepo.UpdateStatus(task.Link, entity.WORK)
+	if _, err := d.sqlRepo.UpdateStatus(task.Link, entity.WORK); err != nil {
+		fmt.Println("Downloader.UpdateStatus:", err.Error())
+	}
 
 	qualtiy := task.Quality
 	if qualtiy > MAX_QUALITY {
@@ -163,13 +170,15 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 
 			if filename != *update.Info.Filename {
 				filename = *update.Info.Filename
-				d.sqlRepo.Update(&persistent.LinkModelRequest{
+				if err := d.sqlRepo.Update(&persistent.LinkModelRequest{
 					Link:           task.Link,
 					Filename:       pointer.To(filename),
 					WorkStatus:     entity.WORK,
 					Message:        pointer.To(fmt.Sprintf("%s [%s]", status, update.Info.Format)),
 					TargetQuantity: int(pointer.Get(update.Info.Height)),
-				})
+				}); err != nil {
+					fmt.Println("Update:", err.Error())
+				}
 				task.Quality = int(pointer.Get(update.Info.Height))
 			}
 
@@ -307,7 +316,10 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 	go func() {
 		defer wg.Done()
 		fmt.Println("===UPDATE YT-DLP===")
-		ytdlp.New().Update(context.Background())
+
+		if _, err := ytdlp.New().Update(context.Background()); err != nil {
+			fmt.Println("Processor.UpdateStatus:", err.Error())
+		}
 	}()
 	wg.Wait()
 
@@ -334,13 +346,18 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 					fmt.Printf("downloader: %s\n", err.Error())
 					// Помещаем обратно в пул
 					<-d.workersPool
-					d.sqlRepo.UpdateStatus(task.Link, entity.NEW)
+
+					if _, err := d.sqlRepo.UpdateStatus(task.Link, entity.NEW); err != nil {
+						fmt.Println("Processor.UpdateStatus:", err.Error())
+					}
 					d.cache.LinkDone(task.Link)
 
 					return
 				}
 
-				d.sqlRepo.UpdateStatus(task.Link, entity.TO_SEND)
+				if _, err := d.sqlRepo.UpdateStatus(task.Link, entity.TO_SEND); err != nil {
+					fmt.Println("Processor.UpdateStatus:", err.Error())
+				}
 
 				time.Sleep(time.Second * TIMEOUT_WORKERS)
 			}()
@@ -361,7 +378,9 @@ func (d *DownloaderSource) GetLink() (*Task, error) {
 		}
 	}
 
-	d.sqlRepo.UpdateStatus(link.Link, entity.WORK)
+	if _, err := d.sqlRepo.UpdateStatus(link.Link, entity.WORK); err != nil {
+		fmt.Println("UpdateStatus:", err.Error())
+	}
 
 	return &Task{
 		Link:    link.Link,

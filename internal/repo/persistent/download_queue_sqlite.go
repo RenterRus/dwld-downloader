@@ -44,7 +44,9 @@ func (p *persistentRepo) SelectHistory(withoutStatus *entity.Status) ([]LinkMode
 		return nil, fmt.Errorf("SelectHistory: %w", err)
 	}
 	defer func() {
-		rows.Close()
+		if err := rows.Close(); err != nil {
+			fmt.Println("Close:", err.Error())
+		}
 	}()
 
 	resp := make([]LinkModel, 0)
@@ -112,7 +114,9 @@ func (p *persistentRepo) SelectOne(status entity.Status) (*LinkModel, error) {
 	}
 
 	defer func() {
-		rows.Close()
+		if err := rows.Close(); err != nil {
+			fmt.Println("Close:", err.Error())
+		}
 	}()
 
 	isNext := rows.Next()

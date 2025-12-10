@@ -21,5 +21,7 @@ func NewCache(addr string, port int) *Cache {
 }
 
 func (c *Cache) Close() {
-	c.Conn.Close()
+	if err := c.Conn.Close(); err != nil {
+		fmt.Println("c.Conn.Close():", err.Error())
+	}
 }
