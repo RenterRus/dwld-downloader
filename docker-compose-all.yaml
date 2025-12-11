@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  bot:
+    build:
+      context: ./dwld-bot
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: "bot"
+
+    networks:
+      - dwld
+    volumes:
+      - /bot.yaml:/app/bot.yaml
+
+  downloader:
+    build:
+      context: ./dwld-downloader
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: "downloader"
+    depends_on:
+      - bot
+    networks:
+      - dwld
+    volumes:
+      - /downloader.yaml:/app/downloader.yaml
+
+  ftp_sender:
+    build:
+      context: ./dwld-ftp-sender
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: "ftp_sender"
+
+    networks:
+      - dwld
+    volumes:
+      - /ftp_sender.yaml:/app/ftp_sender.yaml
+
+
+networks:
+  dwld:
+    driver: bridge
