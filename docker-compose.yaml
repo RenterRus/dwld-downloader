@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  downloader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: "downloader"
+
+    networks:
+      - dwld
+    volumes:
+      - /downloader.yaml:/app/downloader.yaml
+
+
+networks:
+  dwld:
+    driver: bridge
