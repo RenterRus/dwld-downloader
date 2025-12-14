@@ -313,6 +313,7 @@ func (d *DownloaderSource) autoScale(ctx context.Context) {
 
 func (d *DownloaderSource) Processor(ctx context.Context) {
 	fmt.Println("Workers pool:", cap(d.workersPool))
+	fmt.Println("EagleMode:", d.eagleMode)
 
 	go func() {
 		fmt.Println("Launch auto scale")
