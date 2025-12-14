@@ -19,7 +19,8 @@ services:
     networks:
       - dwld
     volumes:
-      - /bot.yaml:/app/bot.yaml
+      - ../bot.yaml:/var/bot.yaml
+      - ../bot.db:/var/bot.db
 
   downloader:
     build:
@@ -33,9 +34,10 @@ services:
     networks:
       - dwld
     volumes:
-      - /downloader.yaml:/app/downloader.yaml
+      - ../downloader.yaml:/var/downloader.yaml
+      - ../downloader.db:/var/downloader.db
 
-  ftp_sender:
+  ftp:
     build:
       context: ./dwld-ftp-sender
       dockerfile: Dockerfile
@@ -46,7 +48,8 @@ services:
     networks:
       - dwld
     volumes:
-      - /ftp_sender.yaml:/app/ftp_sender.yaml
+      - ../ftp_sender.yaml:/var/ftp_sender.yaml
+      - ../ftp_sender.db:/var/ftp_sender.db
 
 
 networks:

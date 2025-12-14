@@ -17,9 +17,10 @@ import (
 )
 
 const (
-	TIMEOUT_WORKERS = 7
-	MIN_QUALITY     = 720
-	MAX_QUALITY     = 10000
+	TIMEOUT_WORKERS  = 7
+	TIMEOUT_INTERVAL = 11.1
+	MIN_QUALITY      = 720
+	MAX_QUALITY      = 10000
 )
 
 type Task struct {
@@ -164,6 +165,8 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		IgnoreErrors().
 		IgnoreNoFormatsError().
 		NoAbortOnError().
+		SleepRequests(TIMEOUT_INTERVAL).
+		SleepInterval(TIMEOUT_INTERVAL).
 		RmCacheDir().
 		EmbedThumbnail().
 		DownloaderArgs("-S language \"ru,en\"").

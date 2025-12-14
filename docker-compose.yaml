@@ -11,7 +11,8 @@ services:
     networks:
       - dwld
     volumes:
-      - /downloader.yaml:/app/downloader.yaml
+      - ../downloader.yaml:/var/downloader.yaml
+      - ../downloader.db:/var/downloader.db
 
 
 networks:
