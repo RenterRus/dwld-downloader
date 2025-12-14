@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"strconv"
 	"syscall"
+	"time"
 
 	"github.com/RenterRus/dwld-downloader/internal/controller/grpc"
 	"github.com/RenterRus/dwld-downloader/internal/entity"
@@ -36,6 +37,8 @@ func NewApp(configPath string) error {
 		return fmt.Errorf("ReadConfig: %w", err)
 	}
 
+	time.Sleep(time.Second * 17)
+
 	dbconn := sqldb.NewDB(conf.PathToDB, conf.NameDB)
 	db := persistent.NewSQLRepo(dbconn, conf.Downloader.WorkPath)
 	cc := cache.NewCache(conf.Cache.Host, conf.Cache.Port)
@@ -59,7 +62,7 @@ func NewApp(configPath string) error {
 		}),
 		SqlRepo:   db,
 		Cache:     cache,
-		EagleMode: true,
+		EagleMode: conf.Downloader.EagleMode == "true",
 	})
 
 	ftpSender := loader.NewLoader(loader.Server{

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/RenterRus/dwld-downloader/internal/app"
 )
@@ -17,8 +16,6 @@ func main() {
 		log.Fatal("config flag not found")
 		os.Exit(1)
 	}
-
-	time.Sleep(time.Second * 17)
 
 	if err := app.NewApp(*path); err != nil {
 		fmt.Println(err)

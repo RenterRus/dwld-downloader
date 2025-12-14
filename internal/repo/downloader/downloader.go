@@ -77,13 +77,22 @@ func NewDownloader(conf DownloaderConf) Downloader {
 	}
 
 	return &DownloaderSource{
-		WorkDir:       conf.WorkDir,
-		PercentToNext: conf.PercentToNext,
-		Stages:        stages,
-		sqlRepo:       conf.SqlRepo,
-		cache:         conf.Cache,
-		workersPool:   make(chan struct{}, conf.Threads),
-		totalStages:   len(stages),
+		WorkDir: conf.WorkDir,
+		PercentToNext: func() int {
+			if conf.PercentToNext < 1 {
+				return 1
+			}
+			if conf.PercentToNext > 99 {
+				return 99
+			}
+
+			return conf.PercentToNext
+		}(),
+		Stages:      stages,
+		sqlRepo:     conf.SqlRepo,
+		cache:       conf.Cache,
+		workersPool: make(chan struct{}, conf.Threads),
+		totalStages: len(stages),
 	}
 }
 
