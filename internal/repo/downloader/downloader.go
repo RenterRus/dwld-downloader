@@ -318,12 +318,12 @@ func (d *DownloaderSource) Processor(ctx context.Context) {
 	fmt.Println("Workers pool:", cap(d.workersPool))
 	fmt.Println("EagleMode:", d.eagleMode)
 
-	go func() {
+	/*go func() {
 		fmt.Println("Launch auto scale")
 		defer fmt.Println("Turn off auto scale")
 
 		d.autoScale(ctx)
-	}()
+	}()*/
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
