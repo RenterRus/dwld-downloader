@@ -298,32 +298,10 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 	return nil
 }
 
-func (d *DownloaderSource) autoScale(ctx context.Context) {
-	t := time.NewTicker(time.Hour * TIMEOUT_WORKERS)
-
-	for {
-		select {
-		case <-t.C:
-			if len(d.workersPool) == cap(d.workersPool) {
-				<-d.workersPool
-				fmt.Println("Queue is scaled")
-			}
-		case <-ctx.Done():
-			return
-		}
-	}
-}
-
 func (d *DownloaderSource) Processor(ctx context.Context) {
 	fmt.Println("Workers pool:", cap(d.workersPool))
 	fmt.Println("EagleMode:", d.eagleMode)
 
-	/*go func() {
-		fmt.Println("Launch auto scale")
-		defer fmt.Println("Turn off auto scale")
-
-		d.autoScale(ctx)
-	}()*/
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
