@@ -17,10 +17,11 @@ import (
 )
 
 const (
-	TIMEOUT_WORKERS  = 7
-	TIMEOUT_INTERVAL = 11.1
-	MIN_QUALITY      = 720
-	MAX_QUALITY      = 10000
+	TIMEOUT_WORKERS   = 7
+	TIMEOUT_INTERVAL  = 11.1
+	MIN_QUALITY       = 720
+	MAX_QUALITY       = 10000
+	MAX_FILENAME_SIZE = 128
 )
 
 type Task struct {
@@ -157,7 +158,7 @@ func (d *DownloaderSource) Downloader(task *Task) error {
 		SetWorkDir(d.WorkDir).
 		FormatSort("res,ext:mp4:m4a").
 		RecodeVideo("mp4").
-		TrimFilenames(100).
+		TrimFilenames(MAX_FILENAME_SIZE).
 		Output("%(title)s [%(duration_string)s].%(ext)s").
 		//Output("%(channel)s - %(title)s [%(duration_string)s].%(ext)s").
 		NoRestrictFilenames().
